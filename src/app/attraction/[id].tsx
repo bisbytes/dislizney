@@ -15,9 +15,6 @@ import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 const WAIT_CHOICES = [15, 30, 45, 60, 75, 90, 120];
 
-const closestChoice = (minutes: number) =>
-  WAIT_CHOICES.reduce((best, m) => (Math.abs(m - minutes) < Math.abs(best - minutes) ? m : best), WAIT_CHOICES[0]);
-
 export default function RideIntro() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const ref = getAttraction(id);
@@ -25,6 +22,7 @@ export default function RideIntro() {
   const [posted, setPosted] = useState<PostedWait>();
   const [wait, setWait] = useState(30);
   const [touched, setTouched] = useState(false);
+  const [changing, setChanging] = useState(false);
 
   useEffect(() => {
     const qt = ref?.park.queueTimesId;
@@ -32,7 +30,7 @@ export default function RideIntro() {
     fetchPostedWaits(qt).then((waits) => {
       const w = findWait(waits, ref.attraction.name);
       setPosted(w);
-      if (w?.open && w.minutes > 0 && !touched) setWait(closestChoice(w.minutes));
+      if (w?.open && w.minutes > 0 && !touched) setWait(w.minutes);
     });
     // Only on first load; later taps on the chips win.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,39 +113,44 @@ export default function RideIntro() {
           ) : (
             <View style={[styles.box, pageShadow]}>
               <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
-                How long is the wait?
+                Ready to play?
               </Txt>
-              <Txt size={15} color={colors.inkSoft} style={{ textAlign: 'center' }}>
-                {posted?.open
-                  ? `The posted wait is ${posted.minutes} minutes. Change it if your sign says something different.`
-                  : 'Check the sign at the entrance and pick the closest time.'}
-              </Txt>
-              <View style={styles.chips}>
-                {WAIT_CHOICES.map((m) => {
-                  const on = m === wait;
-                  return (
-                    <Pressable
-                      key={m}
-                      accessibilityRole="radio"
-                      accessibilityState={{ selected: on }}
-                      accessibilityLabel={m >= 60 ? `${m / 60} hour${m > 60 ? 's' : ''}` : `${m} minutes`}
-                      onPress={() => {
-                        tap();
-                        setTouched(true);
-                        setWait(m);
-                      }}
-                      style={[styles.chip, { backgroundColor: on ? c.ground : colors.white, borderColor: c.ground }]}>
-                      <Txt weight="bold" size={16} color={on ? colors.white : c.ink}>
-                        {label(m)}
-                      </Txt>
-                    </Pressable>
-                  );
-                })}
-              </View>
               <Txt size={15} style={{ textAlign: 'center' }}>
-                📖 We’ll fill your <Txt weight="bold">{label(wait)}</Txt> wait with one long scroll of trivia, games and
-                challenges.
+                {posted?.open && posted.minutes > 0 && !touched
+                  ? `📖 The posted wait is ${posted.minutes} minutes, so we’ll fill it with trivia, games and challenges.`
+                  : `📖 We’ll fill about ${label(wait)} with trivia, games and challenges, and keep going if the line is slower.`}
               </Txt>
+              {changing ? (
+                <View style={styles.chips}>
+                  {WAIT_CHOICES.map((m) => {
+                    const on = m === wait;
+                    return (
+                      <Pressable
+                        key={m}
+                        accessibilityRole="radio"
+                        accessibilityState={{ selected: on }}
+                        accessibilityLabel={m >= 60 ? `${m / 60} hour${m > 60 ? 's' : ''}` : `${m} minutes`}
+                        onPress={() => {
+                          tap();
+                          setTouched(true);
+                          setWait(m);
+                          setChanging(false);
+                        }}
+                        style={[styles.chip, { backgroundColor: on ? c.ground : colors.white, borderColor: c.ground }]}>
+                        <Txt weight="bold" size={16} color={on ? colors.white : c.ink}>
+                          {label(m)}
+                        </Txt>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              ) : (
+                <Pressable accessibilityRole="button" onPress={() => setChanging(true)} style={{ alignSelf: 'center' }}>
+                  <Txt size={14} color={colors.inkSoft} style={{ textDecorationLine: 'underline' }}>
+                    Sign says something different? Change the wait
+                  </Txt>
+                </Pressable>
+              )}
               {elsewhere && (
                 <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center' }}>
                   This ends your line story for {elsewhere.name}.

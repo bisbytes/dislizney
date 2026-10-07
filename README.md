@@ -16,7 +16,7 @@ Built for kids, families and grown-ups who still feel like kids. Runs on iPhone,
 ## What's inside
 
 - **Pick your ride**: every ride in the park, grouped by land, with the posted wait time in big colored badges (green for short, gold for medium, pink for long). Waits come from [Queue-Times.com](https://queue-times.com).
-- **Stories sized to your wait**: choose your wait (15 minutes to 2 hours, preset from the posted wait) and the app fills it with one continuous scroll of quests. It starts with quests about your ride, then mixes in trivia about nearby rides and the park with play-anywhere games. Every quest is open to play in any order, and more keep appearing as you scroll.
+- **Stories sized to your wait**: the app uses the posted wait (or one you pick if the sign says something different) and fills it with one continuous scroll of quests. It starts with quests about your ride, then mixes in trivia about nearby rides and the park with play-anywhere games. Every quest is open to play in any order, and more keep appearing as you scroll.
 - **Eight quest types**: Trivia, Fact or Fiction, Guess the Number, Put in Order, Emoji Riddles, I Spy, Would You Rather and Group Challenges.
 - **Keepsakes and My Journey**: tap "We're boarding!" and the ride becomes a keepsake card with your wait, stars, a fact you learned, a rating and a memory. Share it as a picture with a caption and hashtags (#dislizney #LineTimeAdventures and the park and ride), or share your whole day from the My Journey scrapbook.
 - **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
