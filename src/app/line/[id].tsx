@@ -1,15 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FactCard } from '@/components/cards';
 import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
-import { StoryButton, tap, Txt } from '@/components/ui';
+import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { useJourney } from '@/lib/journey';
-import { buildQueue, pageNarration, pagesForWait, paginate } from '@/lib/plan';
+import { buildQueue, countForMinutes, MINUTES } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -23,9 +23,6 @@ export default function LineStory() {
   const { play } = useSound();
   const insets = useSafeAreaInsets();
   const [now, setNow] = useState(Date.now());
-  const scroller = useRef<ScrollView>(null);
-  const pageY = useRef<number[]>([]);
-  const scrollTo = useRef<number | null>(null);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 30_000);
@@ -36,10 +33,10 @@ export default function LineStory() {
 
   // Quests seen before this line started, so the story prefers fresh ones and
   // stays in the same order when the app is reopened mid-line.
-  const pages = useMemo(() => {
+  const queue = useMemo(() => {
     if (!ref || !active || !progress.ready) return [];
     const seen = new Set(Object.keys(progress.done).filter((q) => !active.done[q]));
-    return paginate(buildQueue(ref, active.id, seen));
+    return buildQueue(ref, active.id, seen);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref?.attraction.id, active?.id, progress.ready]);
 
@@ -65,23 +62,19 @@ export default function LineStory() {
 
   const { land, attraction: a, park } = ref;
   const c = land.colors;
-  const planned = pagesForWait(active.waitMinutes);
-  const shown = pages.slice(0, Math.min(active.pagesUnlocked, pages.length));
+  const planned = countForMinutes(queue, active.waitMinutes);
+  const total = Math.min(queue.length, countForMinutes(queue, active.waitMinutes + (active.bonusMinutes ?? 0)));
+  const list = queue.slice(0, total);
+  const current = list.findIndex((pq) => !active.done[pq.quest.id]);
+  // Show what's done, the quest you're on, and a peek at the next two.
+  const visible = current === -1 ? list : list.slice(0, current + 3);
+  const hidden = list.slice(visible.length);
+  const hiddenMinutes = Math.round(hidden.reduce((n, pq) => n + MINUTES[pq.quest.type], 0));
   const elapsed = Math.floor((now - active.startedAt) / 60000);
   const left = active.waitMinutes - elapsed;
   const pct = Math.min(1, elapsed / active.waitMinutes);
   const stars = Object.values(active.done).filter((d) => d.star).length;
-
-  const lastPage = shown[shown.length - 1];
-  const lastDone = lastPage?.quests.every((pq) => active.done[pq.quest.id]);
-  const more = active.pagesUnlocked < pages.length;
-
-  const turnPage = () => {
-    tap();
-    play('pop');
-    scrollTo.current = active.pagesUnlocked;
-    updateSession((s) => ({ ...s, pagesUnlocked: s.pagesUnlocked + 1 }));
-  };
+  const outOfQuests = current === -1 && total >= queue.length;
 
   const board = () => {
     const k = finishLine();
@@ -123,76 +116,65 @@ export default function LineStory() {
       </View>
 
       <ScrollView
-        ref={scroller}
         style={{ backgroundColor: c.sky }}
         contentContainerStyle={{ alignItems: 'center', paddingBottom: 120 + insets.bottom }}>
-        <View style={[styles.page, { paddingHorizontal: 16, paddingTop: 16 }]}>
-          {shown.map((page, p) => {
-            const firstOpen = page.quests.findIndex((pq) => !active.done[pq.quest.id]);
-            const fact = a.facts.length ? a.facts[(p + 1) % a.facts.length] : undefined;
+        <View style={[styles.page, { paddingHorizontal: 16, paddingTop: 16, gap: 14 }]}>
+          <View style={[styles.narration, pageShadow, { borderColor: c.ink }]}>
+            <View style={StyleSheet.absoluteFill} pointerEvents="none">
+              <LandScene landId={land.id} color={c.ground} opacity={0.12} />
+            </View>
+            <Txt weight="medium" size={19} style={{ textAlign: 'center' }}>
+              Once upon a time, a brave group joined the line for {a.name}. Their adventure begins now! Scroll down and
+              play your way to the front.
+            </Txt>
+          </View>
+
+          {visible.map((pq, i) => {
+            const fact = a.facts.length ? a.facts[Math.floor(i / 6) % a.facts.length] : undefined;
             return (
-              <View
-                key={p}
-                onLayout={(e) => {
-                  pageY.current[p] = e.nativeEvent.layout.y;
-                  if (scrollTo.current === p) {
-                    scrollTo.current = null;
-                    scroller.current?.scrollTo({ y: e.nativeEvent.layout.y, animated: true });
+              <Fragment key={pq.quest.id}>
+                {i === planned && (
+                  <Txt weight="bold" size={18} color={c.ink} style={{ textAlign: 'center', marginTop: 8 }}>
+                    ✨ Still waiting? The fun keeps going!
+                  </Txt>
+                )}
+                <QuestCard
+                  quest={pq.quest}
+                  step={i + 1}
+                  locked={current !== -1 && i > current}
+                  accent={c.accent}
+                  from={pq.from}
+                  finished={active.done[pq.quest.id]}
+                  onFinish={(star, pick) =>
+                    updateSession((s) => {
+                      const done = { ...s.done, [pq.quest.id]: { star } };
+                      // Reached the end of the list but still in line: keep it going.
+                      const extend = i === list.length - 1 ? 10 : 0;
+                      return {
+                        ...s,
+                        done,
+                        picks: pick ? [...s.picks, pick] : s.picks,
+                        bonusMinutes: (s.bonusMinutes ?? 0) + extend,
+                      };
+                    })
                   }
-                }}
-                style={{ gap: 14, marginBottom: 18 }}>
-                <View style={[styles.narration, pageShadow, { borderColor: c.ink }]}>
-                  <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                    <LandScene landId={land.id} color={c.ground} opacity={0.12} />
-                  </View>
-                  <Txt weight="bold" size={13} color={c.ink} style={{ letterSpacing: 2 }}>
-                    {p < planned ? `PAGE ${p + 1} OF ${planned}` : `BONUS PAGE ${p + 1 - planned}`}
-                  </Txt>
-                  <Txt weight="medium" size={19} style={{ textAlign: 'center' }}>
-                    {pageNarration(p, planned, a.name)}
-                  </Txt>
-                </View>
-                {page.quests.map((pq, i) => (
-                  <Fragment key={pq.quest.id}>
-                    <QuestCard
-                      quest={pq.quest}
-                      step={i + 1}
-                      locked={firstOpen !== -1 && i > firstOpen}
-                      accent={c.accent}
-                      from={pq.from}
-                      finished={active.done[pq.quest.id]}
-                      onFinish={(star, pick) =>
-                        updateSession((s) => ({
-                          ...s,
-                          done: { ...s.done, [pq.quest.id]: { star } },
-                          picks: pick ? [...s.picks, pick] : s.picks,
-                        }))
-                      }
-                    />
-                    {i === Math.floor(page.quests.length / 2) && fact && firstOpen === -1 && <FactCard fact={fact} />}
-                  </Fragment>
-                ))}
-              </View>
+                />
+                {i % 6 === 5 && fact && active.done[pq.quest.id] && <FactCard fact={fact} />}
+              </Fragment>
             );
           })}
 
-          {lastDone && (
+          {hidden.length > 0 && (
+            <Txt size={15} color={c.ink} style={{ textAlign: 'center' }}>
+              🔒 {hidden.length} more quests ahead, about {hiddenMinutes} minutes of fun
+            </Txt>
+          )}
+
+          {outOfQuests && (
             <View style={[styles.end, pageShadow]}>
-              {more ? (
-                <>
-                  <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
-                    {active.pagesUnlocked < planned ? 'Page complete! 🎉' : 'Your story is done! Still waiting?'}
-                  </Txt>
-                  <StoryButton
-                    label={active.pagesUnlocked < planned ? '📖 Turn the page' : '✨ Add a bonus page'}
-                    onPress={turnPage}
-                  />
-                </>
-              ) : (
-                <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
-                  You read every page we have! You’re a true line legend. 🏆
-                </Txt>
-              )}
+              <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
+                You played every quest we have! You’re a true line legend. 🏆
+              </Txt>
             </View>
           )}
 

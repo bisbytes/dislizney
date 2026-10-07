@@ -2,21 +2,21 @@
 
 **Line-time storybook adventures for Walt Disney World.**
 
-Standing in line? Open dislizney, pick the ride you're waiting for, and get a storybook that lasts exactly as long as your wait: trivia, I Spy hunts, would-you-rathers and group challenges, page after page. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
+Standing in line? Open dislizney, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
 
 Built for kids, families and grown-ups who still feel like kids. Runs on iPhone, Android and the web from one codebase.
 
 <p>
-  <img src="docs/screenshots/park.png" width="200" alt="Storybook map with posted wait times" />
+  <img src="docs/screenshots/park.png" width="200" alt="Pick your ride, with posted wait times" />
   <img src="docs/screenshots/ride.png" width="200" alt="Pick your wait" />
-  <img src="docs/screenshots/line.png" width="200" alt="A line story page" />
+  <img src="docs/screenshots/line.png" width="200" alt="A line story" />
   <img src="docs/screenshots/keepsake.png" width="200" alt="A shareable keepsake" />
 </p>
 
 ## What's inside
 
-- **Storybook map**: scroll through the park like a storybook. Each land is a chapter with its own colors and narration, rides are stops along a winding path, and each stop shows its posted wait time (from [Queue-Times.com](https://queue-times.com)). Tap the ride you're in line for.
-- **Stories sized to your wait**: choose your wait (15 minutes to 2 hours, preset from the posted wait) and the app builds a story with one ~10-minute page per 10 minutes of waiting. It starts with quests about your ride, then mixes in trivia about nearby rides and the park with play-anywhere games. Still waiting at the end? Add bonus pages.
+- **Pick your ride**: every ride in the park, grouped by land, with the posted wait time in big colored badges (green for short, gold for medium, pink for long). Waits come from [Queue-Times.com](https://queue-times.com).
+- **Stories sized to your wait**: choose your wait (15 minutes to 2 hours, preset from the posted wait) and the app fills it with one continuous scroll of quests. It starts with quests about your ride, then mixes in trivia about nearby rides and the park with play-anywhere games. Still waiting at the end? More quests keep coming.
 - **Eight quest types**: Trivia, Fact or Fiction, Guess the Number, Put in Order, Emoji Riddles, I Spy, Would You Rather and Group Challenges.
 - **Keepsakes and My Journey**: tap "We're boarding!" and the ride becomes a keepsake card with your wait, stars, a fact you learned, a rating and a memory. Share it as a picture with a caption and hashtags (#dislizney #LineTimeAdventures and the park and ride), or share your whole day from the My Journey scrapbook.
 - **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
@@ -49,7 +49,7 @@ npx expo export --platform web   # outputs to dist/
 src/
   app/                 screens (Expo Router: every file is a route)
     index.tsx          the cover and park shelf
-    park/[parkId].tsx  the storybook map, with posted waits
+    park/[parkId].tsx  pick your ride, with posted waits
     attraction/[id].tsx ride intro and wait picker
     line/[id].tsx      the line story, sized to the wait
     keepsake/[id].tsx  a shareable keepsake for one ride

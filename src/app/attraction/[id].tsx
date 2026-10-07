@@ -10,7 +10,6 @@ import { StoryButton, tap, Txt } from '@/components/ui';
 import { WaitBadge } from '@/components/wait-badge';
 import { getAttraction } from '@/data/parks';
 import { useJourney } from '@/lib/journey';
-import { pagesForWait } from '@/lib/plan';
 import { fetchPostedWaits, findWait, type PostedWait } from '@/lib/waits';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
@@ -55,7 +54,6 @@ export default function RideIntro() {
   const here = session?.attractionId === a.id;
   const elsewhere = session && !here ? getAttraction(session.attractionId)?.attraction : undefined;
   const past = keepsakes.filter((k) => k.attractionId === a.id);
-  const pages = pagesForWait(wait);
 
   const start = () => {
     if (session && !here) cancelLine();
@@ -147,11 +145,8 @@ export default function RideIntro() {
                 })}
               </View>
               <Txt size={15} style={{ textAlign: 'center' }}>
-                📖 Your story will have{' '}
-                <Txt weight="bold">
-                  {pages} page{pages === 1 ? '' : 's'}
-                </Txt>
-                , about {wait} minutes of trivia, games and challenges.
+                📖 We’ll fill your <Txt weight="bold">{label(wait)}</Txt> wait with one long scroll of trivia, games and
+                challenges.
               </Txt>
               {elsewhere && (
                 <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center' }}>

@@ -9,7 +9,8 @@ export type LineSession = {
   attractionId: string;
   waitMinutes: number;
   startedAt: number;
-  pagesUnlocked: number;
+  /** Extra minutes of play added after the planned story ran out. */
+  bonusMinutes: number;
   done: Record<string, { star: boolean }>;
   /** What was picked in Would You Rather quests, kept for the keepsake. */
   picks: string[];
@@ -75,7 +76,7 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
         attractionId,
         waitMinutes,
         startedAt: Date.now(),
-        pagesUnlocked: 1,
+        bonusMinutes: 0,
         done: {},
         picks: [],
       };

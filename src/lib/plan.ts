@@ -4,7 +4,7 @@ import type { Quest } from '@/data/types';
 
 /**
  * Builds a line story sized to the wait. Rough minutes each activity takes
- * when a family plays together; used to fill each 10-minute "page".
+ * when a family plays together; used to fill the wait.
  */
 export const MINUTES: Record<Quest['type'], number> = {
   trivia: 1.5,
@@ -17,10 +17,7 @@ export const MINUTES: Record<Quest['type'], number> = {
   wyr: 2,
 };
 
-export const PAGE_MINUTES = 10;
-
 export type PlannedQuest = { quest: Quest; from?: string };
-export type StoryPage = { quests: PlannedQuest[]; minutes: number };
 
 function seeded(seed: string) {
   let h = 2166136261;
@@ -104,44 +101,10 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
   return mixed.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));
 }
 
-/** Splits the queue into ~10-minute pages. */
-export function paginate(queue: PlannedQuest[]): StoryPage[] {
-  const pages: StoryPage[] = [];
-  let current: StoryPage = { quests: [], minutes: 0 };
-  for (const pq of queue) {
-    current.quests.push(pq);
-    current.minutes += MINUTES[pq.quest.type];
-    if (current.minutes >= PAGE_MINUTES) {
-      pages.push(current);
-      current = { quests: [], minutes: 0 };
-    }
-  }
-  if (current.quests.length) pages.push(current);
-  return pages;
-}
-
-/** How many pages fill a wait of this many minutes. */
-export function pagesForWait(waitMinutes: number) {
-  return Math.max(1, Math.round(waitMinutes / PAGE_MINUTES));
-}
-
-const MIDDLE = [
-  'The line shuffles forward. Somewhere up ahead, {ride} is waiting for you.',
-  'A little closer now! Look around: every corner of this line has a story.',
-  'Deep breath, adventurer. The best stories take their time.',
-  'The crowd hums with excitement. You can almost hear {ride} from here.',
-  'Halfway heroes don’t give up. Turn the page and keep the magic going!',
-  'A breeze drifts by and the line creeps on. What will you discover next?',
-  'Look how far you’ve come! The path to {ride} winds on.',
-  'Every step forward is a step closer to the magic.',
-];
-
-/** Storybook narration that opens each page of the line story. */
-export function pageNarration(index: number, planned: number, rideName: string) {
-  const fill = (t: string) => t.replace('{ride}', rideName);
-  if (index === 0)
-    return fill('Once upon a time, a brave group joined the line for {ride}. Their adventure begins now!');
-  if (index >= planned) return fill('A bonus page! The line is taking its time, so the story keeps going.');
-  if (index === planned - 1) return fill('The end of the line is almost in sight. Get ready for {ride}!');
-  return fill(MIDDLE[(index - 1) % MIDDLE.length]);
+/** How many quests from the front of the queue fill this many minutes. */
+export function countForMinutes(queue: PlannedQuest[], minutes: number) {
+  let total = 0;
+  let n = 0;
+  while (n < queue.length && total < minutes) total += MINUTES[queue[n++].quest.type];
+  return Math.max(1, n);
 }
