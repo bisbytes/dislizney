@@ -12,7 +12,7 @@ export function WaitBadge({ wait, large }: { wait: PostedWait; large?: boolean }
   return (
     <View style={[styles.waitBadge, large && styles.waitBadgeLarge, { backgroundColor: bg }]}>
       <Txt weight="bold" size={large ? 26 : 17} color={fg} style={{ textAlign: 'center' }}>
-        {open ? `⏳ ${wait.minutes} min` : 'Closed now'}
+        {!open ? 'Closed now' : wait.minutes === 0 ? '🚶 No wait' : `⏳ ${wait.minutes} min`}
       </Txt>
       {open && (
         <Txt size={large ? 13 : 10} weight="medium" color={fg} style={{ textAlign: 'center', letterSpacing: 1 }}>

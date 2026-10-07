@@ -11,7 +11,8 @@ const FRESH_MS = 5 * 60 * 1000;
 export function normalizeName(name: string) {
   return name
     .toLowerCase()
-    .replace(/[’'"“”~:!.,]/g, '')
+    .replace(/\s*[-–:~]\s*/g, ' ')
+    .replace(/[’'"“”!.,]/g, '')
     .replace(/^the /, '')
     .replace(/&/g, 'and')
     .replace(/\s+/g, ' ')
