@@ -6,6 +6,7 @@ import Svg, { Path } from 'react-native-svg';
 import type { Land } from '@/data/types';
 import { attractionProgress, useProgress } from '@/lib/progress';
 import { colors, pageShadow } from '@/theme';
+import { LandScene } from './land-scene';
 import { Stars, tap, Txt } from './ui';
 
 const STEP = 170;
@@ -16,6 +17,10 @@ export function Chapter({ land, number, highlightId }: { land: Land; number: num
   const [width, setWidth] = useState(0);
   const { done } = useProgress();
   const c = land.colors;
+  const landDone = land.attractions.every((a) => {
+    const p = attractionProgress(a, done);
+    return p.finished === p.total;
+  });
 
   const points = land.attractions.map((_, i) => ({
     x: width * (i % 2 === 0 ? 0.3 : 0.7),
@@ -32,12 +37,22 @@ export function Chapter({ land, number, highlightId }: { land: Land; number: num
   return (
     <View style={[styles.chapter, { backgroundColor: c.sky }]}>
       <View style={[styles.banner, { backgroundColor: c.ground }]}>
+        <View style={StyleSheet.absoluteFill} pointerEvents="none">
+          <LandScene landId={land.id} />
+        </View>
         <Txt weight="medium" size={14} color={colors.paper} style={styles.kicker}>
           CHAPTER {number}
         </Txt>
         <Txt weight="bold" size={30} color={colors.white} style={{ textAlign: 'center' }}>
           {land.emoji} {land.name}
         </Txt>
+        {landDone && (
+          <View style={[styles.ribbon, { backgroundColor: colors.gold }]}>
+            <Txt weight="bold" size={13}>
+              🏅 CHAPTER COMPLETE
+            </Txt>
+          </View>
+        )}
       </View>
       <Svg width="100%" height={22} viewBox="0 0 100 10" preserveAspectRatio="none" style={{ marginTop: -1 }}>
         <Path d="M0 0 H100 V2 Q 87.5 10 75 2 Q 62.5 10 50 2 Q 37.5 10 25 2 Q 12.5 10 0 2 Z" fill={c.ground} />
@@ -106,7 +121,22 @@ export function Chapter({ land, number, highlightId }: { land: Land; number: num
 
 const styles = StyleSheet.create({
   chapter: { paddingBottom: 24 },
-  banner: { paddingTop: 28, paddingBottom: 10, paddingHorizontal: 16, alignItems: 'center' },
+  banner: {
+    paddingTop: 56,
+    paddingBottom: 14,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    overflow: 'hidden',
+    gap: 2,
+  },
+  ribbon: {
+    marginTop: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 3,
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: colors.ink,
+  },
   kicker: { letterSpacing: 3, opacity: 0.85 },
   intro: { marginHorizontal: 24, marginTop: 10, marginBottom: 18, textAlign: 'center', fontStyle: 'italic' },
   stop: { position: 'absolute', width: 160, alignItems: 'center' },

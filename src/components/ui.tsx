@@ -1,6 +1,16 @@
 import * as Haptics from 'expo-haptics';
 import type { ReactNode } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View, type StyleProp, type TextProps, type TextStyle, type ViewStyle } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type TextProps,
+  type TextStyle,
+  type ViewStyle,
+} from 'react-native';
 
 import { colors, fonts, pageShadow } from '@/theme';
 
@@ -10,7 +20,10 @@ export function Txt({ weight = 'regular', size = 17, color = colors.ink, style, 
   return (
     <Text
       {...rest}
-      style={[{ fontFamily: fonts[weight], fontSize: size, color, lineHeight: Math.round(size * 1.35) }, style as StyleProp<TextStyle>]}
+      style={[
+        { fontFamily: fonts[weight], fontSize: size, color, lineHeight: Math.round(size * 1.35) },
+        style as StyleProp<TextStyle>,
+      ]}
     />
   );
 }
@@ -30,7 +43,16 @@ type ButtonProps = {
   accessibilityHint?: string;
 };
 
-export function StoryButton({ label, onPress, color = colors.gold, textColor = colors.ink, small, disabled, style, accessibilityHint }: ButtonProps) {
+export function StoryButton({
+  label,
+  onPress,
+  color = colors.gold,
+  textColor = colors.ink,
+  small,
+  disabled,
+  style,
+  accessibilityHint,
+}: ButtonProps) {
   return (
     <Pressable
       accessibilityRole="button"
@@ -54,7 +76,15 @@ export function StoryButton({ label, onPress, color = colors.gold, textColor = c
   );
 }
 
-export function Card({ children, style, color = colors.white }: { children: ReactNode; style?: StyleProp<ViewStyle>; color?: string }) {
+export function Card({
+  children,
+  style,
+  color = colors.white,
+}: {
+  children: ReactNode;
+  style?: StyleProp<ViewStyle>;
+  color?: string;
+}) {
   return <View style={[styles.card, { backgroundColor: color }, pageShadow, style]}>{children}</View>;
 }
 

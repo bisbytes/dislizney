@@ -3,17 +3,21 @@ import { Link, router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Card, tap, Txt } from '@/components/ui';
+import { Twinkles } from '@/components/twinkles';
+import { Card, StoryButton, tap, Txt } from '@/components/ui';
 import { parks } from '@/data/parks';
 import { useProgress } from '@/lib/progress';
+import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 export default function Cover() {
   const { totalStars } = useProgress();
+  const sound = useSound();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.lemon }}>
       <ScrollView contentContainerStyle={styles.scroll}>
+        <Twinkles />
         <View style={styles.inner}>
           <View style={[styles.book, pageShadow]}>
             <Image
@@ -55,7 +59,10 @@ export default function Cover() {
                 {({ pressed }) => (
                   <Card
                     color={park.comingSoon ? '#F5EFD9' : colors.white}
-                    style={[styles.parkCard, { opacity: park.comingSoon ? 0.7 : 1, transform: [{ translateY: pressed ? 3 : 0 }] }]}>
+                    style={[
+                      styles.parkCard,
+                      { opacity: park.comingSoon ? 0.7 : 1, transform: [{ translateY: pressed ? 3 : 0 }] },
+                    ]}>
                     <Txt size={44}>{park.emoji}</Txt>
                     <View style={{ flex: 1 }}>
                       <Txt weight="bold" size={22}>
@@ -74,6 +81,13 @@ export default function Cover() {
             ))}
           </View>
 
+          <StoryButton
+            small
+            label={sound.enabled ? '🔊 Sounds on' : '🔇 Sounds off'}
+            color={colors.white}
+            onPress={sound.toggle}
+            style={{ alignSelf: 'center', marginTop: 18 }}
+          />
           <Link href="/about" style={styles.about}>
             <Txt size={15} color={colors.inkSoft} style={{ textDecorationLine: 'underline' }}>
               About dislizney · open source
@@ -106,5 +120,5 @@ const styles = StyleSheet.create({
   center: { textAlign: 'center' },
   shelfLabel: { letterSpacing: 2, marginTop: 14, textAlign: 'center' },
   parkCard: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  about: { alignSelf: 'center', marginTop: 22 },
+  about: { alignSelf: 'center', marginTop: 10 },
 });

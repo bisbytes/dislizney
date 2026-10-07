@@ -1,20 +1,37 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { FactCard, WikiCard } from '@/components/cards';
+import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
+import { StarBurst } from '@/components/star-burst';
 import { Stars, StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { attractionProgress, useProgress } from '@/lib/progress';
+import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH } from '@/theme';
 
 export default function AttractionQuests() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const ref = getAttraction(id);
   const { done } = useProgress();
+  const { play } = useSound();
+  const [party, setParty] = useState(0);
+  const quests = ref?.attraction.quests ?? [];
+  const allDone = quests.length > 0 && quests.every((q) => done[q.id]);
+  const wasDone = useRef(allDone);
+
+  // Fanfare the moment the last quest at this ride is finished.
+  useEffect(() => {
+    if (allDone && !wasDone.current) {
+      play('fanfare');
+      setParty(Date.now());
+    }
+    wasDone.current = allDone;
+  }, [allDone, play]);
 
   if (!ref) {
     return (
@@ -31,14 +48,22 @@ export default function AttractionQuests() {
   const c = land.colors;
   const prog = attractionProgress(a, done);
   const firstOpen = a.quests.findIndex((q) => !done[q.id]);
-  const allDone = firstOpen === -1;
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: c.ground }}>
-      <ScrollView style={{ backgroundColor: c.sky }} contentContainerStyle={{ alignItems: 'center', paddingBottom: 48 }}>
+      <ScrollView
+        style={{ backgroundColor: c.sky }}
+        contentContainerStyle={{ alignItems: 'center', paddingBottom: 48 }}>
         <View style={[styles.hero, { backgroundColor: c.ground }]}>
+          <View style={StyleSheet.absoluteFill} pointerEvents="none">
+            <LandScene landId={land.id} opacity={0.16} />
+          </View>
           <View style={styles.page}>
-            <Pressable accessibilityRole="button" accessibilityLabel="Back to map" hitSlop={12} onPress={() => router.back()}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Back to map"
+              hitSlop={12}
+              onPress={() => router.back()}>
               <Txt weight="bold" size={18} color={colors.white}>
                 ← Map
               </Txt>
@@ -88,8 +113,9 @@ export default function AttractionQuests() {
               <View style={[styles.connector, { borderColor: c.ground }]} />
               <View style={[styles.finale, { borderColor: c.ink }]}>
                 <Txt size={48}>🏆</Txt>
+                <StarBurst trigger={party} />
                 <Txt weight="bold" size={24} style={{ textAlign: 'center' }}>
-                  Chapter complete!
+                  Ride quest complete!
                 </Txt>
                 <Txt size={16} style={{ textAlign: 'center' }}>
                   You earned {prog.stars} star{prog.stars === 1 ? '' : 's'} at {a.name}. Still in line? Read the fresh
@@ -115,7 +141,14 @@ export default function AttractionQuests() {
 }
 
 const styles = StyleSheet.create({
-  hero: { width: '100%', alignItems: 'center', paddingHorizontal: 16, paddingTop: 12, paddingBottom: 8 },
+  hero: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 8,
+    overflow: 'hidden',
+  },
   page: { width: '100%', maxWidth: MAX_WIDTH },
   starPill: {
     backgroundColor: colors.paper,

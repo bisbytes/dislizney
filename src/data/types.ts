@@ -51,7 +51,60 @@ export type WouldYouRatherQuest = {
   b: string;
 };
 
-export type Quest = TriviaQuest | SpyQuest | ChallengeQuest | WouldYouRatherQuest;
+/** Fact or Fiction: is this statement true? */
+export type TrueFalseQuest = {
+  type: 'truefalse';
+  id: string;
+  statement: string;
+  answer: boolean;
+  explain: string;
+  source: string;
+};
+
+/** Tap the items in the right order. `items` is listed in the correct order; the app shuffles them. */
+export type OrderQuest = {
+  type: 'order';
+  id: string;
+  prompt: string;
+  items: string[];
+  explain: string;
+  source: string;
+};
+
+/** Guess a number with a slider. A guess within `tolerance` of `answer` earns the star. */
+export type GuessQuest = {
+  type: 'guess';
+  id: string;
+  question: string;
+  answer: number;
+  min: number;
+  max: number;
+  step: number;
+  unit: string;
+  tolerance: number;
+  explain: string;
+  source: string;
+};
+
+/** Emoji Riddle: work out what the emojis spell. */
+export type EmojiQuest = {
+  type: 'emoji';
+  id: string;
+  emojis: string;
+  hint: string;
+  choices: string[];
+  answer: number;
+};
+
+export type Quest =
+  | TriviaQuest
+  | SpyQuest
+  | ChallengeQuest
+  | WouldYouRatherQuest
+  | TrueFalseQuest
+  | OrderQuest
+  | GuessQuest
+  | EmojiQuest;
 
 export type Attraction = {
   id: string;

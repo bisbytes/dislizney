@@ -16,12 +16,13 @@ Built for kids, families and grown-ups who still feel like kids. Runs on iPhone,
 ## What's inside
 
 - **Storybook map**: each land is a chapter with its own colors and narration, and rides are stops along a winding path.
-- **Quest roadmaps**: every ride has a sequence of quests that unlock one after another. Trivia, I Spy, Would You Rather and Group Challenges.
+- **Quest roadmaps**: every ride has a sequence of quests that unlock one after another: Trivia, Fact or Fiction, Guess the Number, Put in Order, Emoji Riddles, I Spy, Would You Rather and Group Challenges.
+- **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
 - **Facts you can check**: every fact and trivia answer links to its source, and each ride page pulls a live summary from Wikipedia.
 - **Fun Fact Radar**: turn it on and the app pops a fun fact (a notification on phones, a banner everywhere) when you're near a ride. Location never leaves your device.
 - **Stars and progress**: saved on your device.
 
-Magic Kingdom is the first storybook (18 rides, 6 lands). EPCOT, Hollywood Studios and Animal Kingdom are on the shelf as "coming soon."
+Magic Kingdom is the first storybook (30 rides and shows across 6 lands). EPCOT, Hollywood Studios and Animal Kingdom are on the shelf as "coming soon."
 
 ## Run it
 

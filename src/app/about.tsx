@@ -43,19 +43,30 @@ export default function About() {
               💛 Open source
             </Txt>
             <Txt size={16}>Anyone can add rides, parks and quests. The code and content live on GitHub.</Txt>
-            <StoryButton small label="View on GitHub" onPress={() => WebBrowser.openBrowserAsync(REPO)} style={{ alignSelf: 'flex-start', marginTop: 10 }} />
+            <StoryButton
+              small
+              label="View on GitHub"
+              onPress={() => WebBrowser.openBrowserAsync(REPO)}
+              style={{ alignSelf: 'flex-start', marginTop: 10 }}
+            />
           </Card>
           <Card>
             <Txt weight="bold" size={18}>
               📡 Your location
             </Txt>
             <Txt size={16}>
-              Fun Fact Radar only uses your location on your device, while the app is open, to notice when you are near a
-              ride. It is never sent anywhere.
+              Fun Fact Radar only uses your location on your device, while the app is open, to notice when you are near
+              a ride. It is never sent anywhere.
             </Txt>
           </Card>
           {totalStars > 0 && (
-            <StoryButton small label="Start my storybook over" color={colors.white} onPress={reset} style={{ alignSelf: 'center' }} />
+            <StoryButton
+              small
+              label="Start my storybook over"
+              color={colors.white}
+              onPress={reset}
+              style={{ alignSelf: 'center' }}
+            />
           )}
           <Txt size={12} color={colors.inkSoft} style={{ textAlign: 'center' }}>
             An unofficial fan project. Not affiliated with or endorsed by The Walt Disney Company. All attraction names

@@ -30,6 +30,10 @@ Quest types:
 | `spy`       | prompt, hint?                            | find something in the queue                  |
 | `challenge` | prompt                                   | a silly thing the whole group does together  |
 | `wyr`       | a, b                                     | Would You Rather; no wrong answer            |
+| `truefalse` | statement, answer (true/false), explain, source | Fact or Fiction                       |
+| `guess`     | question, answer, min, max, step, unit, tolerance, explain, source | guess a number; a star if within `tolerance` |
+| `order`     | prompt, items (in the correct order), explain, source | tap items in order; the app shuffles them |
+| `emoji`     | emojis, hint, choices, answer            | Emoji Riddle; guess what the emojis spell    |
 
 Keep the wording kid friendly and short enough to read in line.
 
