@@ -6,37 +6,56 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "dislizney",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bisbytes.dislizney"
     },
     "android": {
+      "package": "com.bisbytes.dislizney",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FFFD54",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundImage": "./assets/images/android-icon-background.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "dislizney",
+      "themeColor": "#FFFD54",
+      "backgroundColor": "#FFF8E7"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#FFFD54",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 200
         }
-      ]
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "dislizney uses your location while the app is open to pop up fun facts when you are near a ride."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#FFFD54"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "description": "Line-time storybook adventures for Walt Disney World: trivia, I Spy and challenges while you wait."
   }
 }

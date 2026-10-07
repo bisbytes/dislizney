@@ -1,98 +1,110 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { Link, router } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Card, tap, Txt } from '@/components/ui';
+import { parks } from '@/data/parks';
+import { useProgress } from '@/lib/progress';
+import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function Cover() {
+  const { totalStars } = useProgress();
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.lemon }}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={styles.inner}>
+          <View style={[styles.book, pageShadow]}>
+            <Image
+              source={require('@/assets/images/logo.png')}
+              style={styles.logo}
+              contentFit="contain"
+              accessibilityLabel="disLIZney logo"
+            />
+          </View>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+          <Txt weight="bold" size={30} style={styles.center}>
+            Line-time adventures
+          </Txt>
+          <Txt size={18} color={colors.inkSoft} style={[styles.center, { marginBottom: 8 }]}>
+            Waiting in line? Open a storybook, pick your ride, and play trivia, I Spy and silly challenges until it’s
+            your turn.
+          </Txt>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+          {totalStars > 0 && (
+            <Txt weight="medium" size={18} style={styles.center}>
+              ⭐ You’ve collected {totalStars} star{totalStars === 1 ? '' : 's'}!
+            </Txt>
+          )}
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <Txt weight="bold" size={14} color={colors.inkSoft} style={styles.shelfLabel}>
+            CHOOSE YOUR STORYBOOK
+          </Txt>
+          <View style={{ gap: 14 }}>
+            {parks.map((park) => (
+              <Pressable
+                key={park.id}
+                disabled={park.comingSoon}
+                accessibilityRole="button"
+                accessibilityLabel={park.comingSoon ? `${park.name}, coming soon` : `Open ${park.name}`}
+                onPress={() => {
+                  tap();
+                  router.push({ pathname: '/park/[parkId]', params: { parkId: park.id } });
+                }}>
+                {({ pressed }) => (
+                  <Card
+                    color={park.comingSoon ? '#F5EFD9' : colors.white}
+                    style={[styles.parkCard, { opacity: park.comingSoon ? 0.7 : 1, transform: [{ translateY: pressed ? 3 : 0 }] }]}>
+                    <Txt size={44}>{park.emoji}</Txt>
+                    <View style={{ flex: 1 }}>
+                      <Txt weight="bold" size={22}>
+                        {park.name}
+                      </Txt>
+                      <Txt size={15} color={colors.inkSoft}>
+                        {park.tagline}
+                      </Txt>
+                    </View>
+                    <Txt weight="bold" size={14} color={park.comingSoon ? colors.inkSoft : colors.berry}>
+                      {park.comingSoon ? 'SOON' : 'OPEN →'}
+                    </Txt>
+                  </Card>
+                )}
+              </Pressable>
+            ))}
+          </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          <Link href="/about" style={styles.about}>
+            <Txt size={15} color={colors.inkSoft} style={{ textDecorationLine: 'underline' }}>
+              About dislizney · open source
+            </Txt>
+          </Link>
+          <Txt size={12} color={colors.inkSoft} style={styles.center}>
+            An unofficial fan project. Not affiliated with or endorsed by The Walt Disney Company.
+          </Txt>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+  scroll: { padding: 16, paddingBottom: 48, alignItems: 'center' },
+  inner: { width: '100%', maxWidth: MAX_WIDTH, gap: 10 },
+  book: {
+    alignSelf: 'center',
+    width: 260,
+    height: 260,
+    borderRadius: 24,
+    borderWidth: 4,
+    borderColor: colors.ink,
+    overflow: 'hidden',
+    backgroundColor: colors.lemon,
+    marginVertical: 12,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+  logo: { width: '100%', height: '100%' },
+  center: { textAlign: 'center' },
+  shelfLabel: { letterSpacing: 2, marginTop: 14, textAlign: 'center' },
+  parkCard: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  about: { alignSelf: 'center', marginTop: 22 },
 });

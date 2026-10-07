@@ -1,56 +1,68 @@
-# Welcome to your Expo app 👋
+# disLIZney
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Line-time storybook adventures for Walt Disney World.**
 
-## Get started
+Standing in line? Open dislizney, scroll through the park like a storybook, tap the ride you're waiting for, and work your way down a roadmap of trivia, I Spy hunts, would-you-rathers and group challenges. Earn stars, finish chapters, and get a fun fact the moment you walk up to a ride.
 
-1. Install dependencies
+Built for kids, families and grown-ups who still feel like kids. Runs on iPhone, Android and the web from one codebase.
 
-   ```bash
-   npm install
-   ```
+<p>
+  <img src="docs/screenshots/1-cover.png" width="200" alt="Cover and park shelf" />
+  <img src="docs/screenshots/2-park.png" width="200" alt="Magic Kingdom storybook map" />
+  <img src="docs/screenshots/5-answered.png" width="200" alt="Trivia quest" />
+  <img src="docs/screenshots/6-radar.png" width="200" alt="Fun Fact Radar banner" />
+</p>
 
-2. Start the app
+## What's inside
 
-   ```bash
-   npx expo start
-   ```
+- **Storybook map**: each land is a chapter with its own colors and narration, and rides are stops along a winding path.
+- **Quest roadmaps**: every ride has a sequence of quests that unlock one after another. Trivia, I Spy, Would You Rather and Group Challenges.
+- **Facts you can check**: every fact and trivia answer links to its source, and each ride page pulls a live summary from Wikipedia.
+- **Fun Fact Radar**: turn it on and the app pops a fun fact (a notification on phones, a banner everywhere) when you're near a ride. Location never leaves your device.
+- **Stars and progress**: saved on your device.
 
-In the output, you'll find options to open the app in a
+Magic Kingdom is the first storybook (18 rides, 6 lands). EPCOT, Hollywood Studios and Animal Kingdom are on the shelf as "coming soon."
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Run it
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+You need [Node.js](https://nodejs.org) 20 or newer.
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Then press `w` for web, or scan the QR code with the Expo Go app on your phone.
 
-### Other setup steps
+To build a web version you can host anywhere:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npx expo export --platform web   # outputs to dist/
+```
 
-## Learn more
+## Project layout
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+src/
+  app/                 screens (Expo Router: every file is a route)
+    index.tsx          the cover and park shelf
+    park/[parkId].tsx  the storybook map for a park
+    attraction/[id].tsx the quest roadmap for one ride
+    about.tsx
+  data/
+    types.ts           the content model (Park → Land → Attraction → Quest)
+    parks/             one file per park, registered in parks/index.ts
+  components/          storybook UI pieces
+  lib/                 progress, location radar, Wikipedia fetch
+  theme/               colors and fonts
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Adding rides, quests and parks
 
-## Join the community
+All content lives in plain TypeScript files under `src/data/parks/`. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a quest, a ride or a whole new park.
 
-Join our community of developers creating universal apps.
+## License
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+[MIT](LICENSE). Code and content contributions are welcome.
+
+dislizney is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.
