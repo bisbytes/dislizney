@@ -56,7 +56,7 @@ Add an `Attraction` to a land's `attractions` list. You'll need:
 2. In `src/data/parks/index.ts`, import it and replace the matching `comingSoon(...)` entry with it.
 3. Optional: add park-wide `parkQuests`, and set `queueTimesId` to the park's id on [Queue-Times.com](https://queue-times.com/parks) to show posted waits. Ride names are matched loosely, so they should be close to the official names.
 
-The ride picker, line stories, keepsakes and radar pick it up automatically.
+The storybook map, line stories, keepsakes and radar pick it up automatically.
 
 ## Code changes
 
