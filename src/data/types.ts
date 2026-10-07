@@ -142,4 +142,8 @@ export type Park = {
   comingSoon?: boolean;
   center: LatLng;
   lands: Land[];
+  /** Park id on queue-times.com, used to show posted wait times. */
+  queueTimesId?: number;
+  /** Park-wide quests used to fill long waits at any ride in this park. */
+  parkQuests?: Quest[];
 };

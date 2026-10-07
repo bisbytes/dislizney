@@ -1,37 +1,43 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { FactCard, WikiCard } from '@/components/cards';
 import { LandScene } from '@/components/land-scene';
-import { QuestCard } from '@/components/quest-card';
-import { StarBurst } from '@/components/star-burst';
-import { Stars, StoryButton, Txt } from '@/components/ui';
+import { StoryButton, tap, Txt } from '@/components/ui';
+import { WaitBadge } from '@/components/wait-badge';
 import { getAttraction } from '@/data/parks';
-import { attractionProgress, useProgress } from '@/lib/progress';
-import { useSound } from '@/lib/sound';
-import { colors, MAX_WIDTH } from '@/theme';
+import { useJourney } from '@/lib/journey';
+import { pagesForWait } from '@/lib/plan';
+import { fetchPostedWaits, findWait, type PostedWait } from '@/lib/waits';
+import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
-export default function AttractionQuests() {
+const WAIT_CHOICES = [15, 30, 45, 60, 75, 90, 120];
+
+const closestChoice = (minutes: number) =>
+  WAIT_CHOICES.reduce((best, m) => (Math.abs(m - minutes) < Math.abs(best - minutes) ? m : best), WAIT_CHOICES[0]);
+
+export default function RideIntro() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const ref = getAttraction(id);
-  const { done } = useProgress();
-  const { play } = useSound();
-  const [party, setParty] = useState(0);
-  const quests = ref?.attraction.quests ?? [];
-  const allDone = quests.length > 0 && quests.every((q) => done[q.id]);
-  const wasDone = useRef(allDone);
+  const { session, keepsakes, startLine, cancelLine } = useJourney();
+  const [posted, setPosted] = useState<PostedWait>();
+  const [wait, setWait] = useState(30);
+  const [touched, setTouched] = useState(false);
 
-  // Fanfare the moment the last quest at this ride is finished.
   useEffect(() => {
-    if (allDone && !wasDone.current) {
-      play('fanfare');
-      setParty(Date.now());
-    }
-    wasDone.current = allDone;
-  }, [allDone, play]);
+    const qt = ref?.park.queueTimesId;
+    if (!qt) return;
+    fetchPostedWaits(qt).then((waits) => {
+      const w = findWait(waits, ref.attraction.name);
+      setPosted(w);
+      if (w?.open && w.minutes > 0 && !touched) setWait(closestChoice(w.minutes));
+    });
+    // Only on first load; later taps on the chips win.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref?.attraction.id]);
 
   if (!ref) {
     return (
@@ -46,8 +52,16 @@ export default function AttractionQuests() {
 
   const { land, attraction: a } = ref;
   const c = land.colors;
-  const prog = attractionProgress(a, done);
-  const firstOpen = a.quests.findIndex((q) => !done[q.id]);
+  const here = session?.attractionId === a.id;
+  const elsewhere = session && !here ? getAttraction(session.attractionId)?.attraction : undefined;
+  const past = keepsakes.filter((k) => k.attractionId === a.id);
+  const pages = pagesForWait(wait);
+
+  const start = () => {
+    if (session && !here) cancelLine();
+    startLine(a.id, wait);
+    router.replace({ pathname: '/line/[id]', params: { id: a.id } });
+  };
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: c.ground }}>
@@ -59,13 +73,9 @@ export default function AttractionQuests() {
             <LandScene landId={land.id} opacity={0.16} />
           </View>
           <View style={styles.page}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Back to map"
-              hitSlop={12}
-              onPress={() => router.back()}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => router.back()}>
               <Txt weight="bold" size={18} color={colors.white}>
-                ← Map
+                ← Rides
               </Txt>
             </Pressable>
             <View style={{ alignItems: 'center', gap: 4, marginTop: 8 }}>
@@ -73,7 +83,7 @@ export default function AttractionQuests() {
                 {a.emoji}
               </Txt>
               <Txt weight="medium" size={14} color={colors.paper} style={{ letterSpacing: 2 }}>
-                YOU’RE IN LINE FOR
+                {land.name.toUpperCase()}
               </Txt>
               <Txt weight="bold" size={30} color={colors.white} style={{ textAlign: 'center' }}>
                 {a.name}
@@ -81,9 +91,11 @@ export default function AttractionQuests() {
               <Txt size={16} color={colors.paper} style={{ textAlign: 'center' }}>
                 {a.blurb}
               </Txt>
-              <View style={styles.starPill}>
-                <Stars n={prog.finished} of={prog.total} size={18} />
-              </View>
+              {posted && (
+                <View style={{ marginTop: 10 }}>
+                  <WaitBadge wait={posted} large />
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -91,53 +103,97 @@ export default function AttractionQuests() {
           <Path d="M0 0 H100 V2 Q 87.5 10 75 2 Q 62.5 10 50 2 Q 37.5 10 25 2 Q 12.5 10 0 2 Z" fill={c.ground} />
         </Svg>
 
-        <View style={[styles.page, { gap: 0, paddingHorizontal: 16 }]}>
-          <Txt weight="bold" size={14} color={c.ink} style={styles.section}>
-            YOUR QUEST ROADMAP
-          </Txt>
-          {a.quests.map((q, i) => (
-            <Fragment key={q.id}>
-              {i > 0 && <View style={[styles.connector, { borderColor: c.ground }]} />}
-              <QuestCard quest={q} step={i + 1} locked={!allDone && i > firstOpen} accent={c.accent} />
-              {i % 2 === 1 && a.facts[(i - 1) / 2] && (
-                <>
-                  <View style={[styles.connector, { borderColor: c.ground }]} />
-                  <FactCard fact={a.facts[(i - 1) / 2]} />
-                </>
-              )}
-            </Fragment>
-          ))}
-
-          {allDone && (
-            <>
-              <View style={[styles.connector, { borderColor: c.ground }]} />
-              <View style={[styles.finale, { borderColor: c.ink }]}>
-                <Txt size={48}>🏆</Txt>
-                <StarBurst trigger={party} />
-                <Txt weight="bold" size={24} style={{ textAlign: 'center' }}>
-                  Ride quest complete!
-                </Txt>
-                <Txt size={16} style={{ textAlign: 'center' }}>
-                  You earned {prog.stars} star{prog.stars === 1 ? '' : 's'} at {a.name}. Still in line? Read the fresh
-                  facts below.
-                </Txt>
+        <View style={[styles.page, { paddingHorizontal: 16, gap: 14 }]}>
+          {here ? (
+            <View style={[styles.box, pageShadow, { backgroundColor: colors.lemon }]}>
+              <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
+                You’re already in this line!
+              </Txt>
+              <StoryButton
+                label="📖 Keep reading my story"
+                onPress={() => router.replace({ pathname: '/line/[id]', params: { id: a.id } })}
+              />
+            </View>
+          ) : (
+            <View style={[styles.box, pageShadow]}>
+              <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
+                How long is the wait?
+              </Txt>
+              <Txt size={15} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+                {posted?.open
+                  ? `The posted wait is ${posted.minutes} minutes. Change it if your sign says something different.`
+                  : 'Check the sign at the entrance and pick the closest time.'}
+              </Txt>
+              <View style={styles.chips}>
+                {WAIT_CHOICES.map((m) => {
+                  const on = m === wait;
+                  return (
+                    <Pressable
+                      key={m}
+                      accessibilityRole="radio"
+                      accessibilityState={{ selected: on }}
+                      accessibilityLabel={m >= 60 ? `${m / 60} hour${m > 60 ? 's' : ''}` : `${m} minutes`}
+                      onPress={() => {
+                        tap();
+                        setTouched(true);
+                        setWait(m);
+                      }}
+                      style={[styles.chip, { backgroundColor: on ? c.ground : colors.white, borderColor: c.ground }]}>
+                      <Txt weight="bold" size={16} color={on ? colors.white : c.ink}>
+                        {label(m)}
+                      </Txt>
+                    </Pressable>
+                  );
+                })}
               </View>
-            </>
+              <Txt size={15} style={{ textAlign: 'center' }}>
+                📖 Your story will have{' '}
+                <Txt weight="bold">
+                  {pages} page{pages === 1 ? '' : 's'}
+                </Txt>
+                , about {wait} minutes of trivia, games and challenges.
+              </Txt>
+              {elsewhere && (
+                <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+                  This ends your line story for {elsewhere.name}.
+                </Txt>
+              )}
+              <StoryButton label="✨ Start my line story" onPress={start} />
+            </View>
           )}
 
-          <Txt weight="bold" size={14} color={c.ink} style={styles.section}>
-            MORE TO EXPLORE
+          {a.facts[0] && <FactCard fact={a.facts[0]} />}
+
+          {past.length > 0 && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.push({ pathname: '/keepsake/[id]', params: { id: past[0].id } })}
+              style={[styles.box, pageShadow, { backgroundColor: colors.gold }]}>
+              <Txt weight="bold" size={17} style={{ textAlign: 'center' }}>
+                📸 You have {past.length} keepsake{past.length === 1 ? '' : 's'} from this ride
+              </Txt>
+              <Txt size={14} style={{ textAlign: 'center' }}>
+                Tap to see your latest →
+              </Txt>
+            </Pressable>
+          )}
+
+          {a.wikiTitle && <WikiCard title={a.wikiTitle} />}
+          <Txt size={13} color={c.ink} style={{ textAlign: 'center' }}>
+            Opened {a.opened}
+            {posted ? ' · Posted wait times powered by Queue-Times.com' : ''}
           </Txt>
-          <View style={{ gap: 14 }}>
-            {a.wikiTitle && <WikiCard title={a.wikiTitle} />}
-            <Txt size={13} color={c.ink} style={{ textAlign: 'center' }}>
-              Opened {a.opened}
-            </Txt>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
+}
+
+function label(m: number) {
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60);
+  const r = m % 60;
+  return r ? `${h}h ${r}m` : `${h} hr${h > 1 ? 's' : ''}`;
 }
 
 const styles = StyleSheet.create({
@@ -150,24 +206,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   page: { width: '100%', maxWidth: MAX_WIDTH },
-  starPill: {
-    backgroundColor: colors.paper,
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 4,
-    borderWidth: 2,
-    borderColor: colors.ink,
-    marginTop: 8,
-  },
-  section: { letterSpacing: 2, textAlign: 'center', marginVertical: 14 },
-  connector: { alignSelf: 'center', height: 28, borderLeftWidth: 5, borderStyle: 'dotted' },
-  finale: {
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: colors.gold,
+  box: {
+    backgroundColor: colors.white,
     borderWidth: 3,
+    borderColor: colors.ink,
     borderRadius: 22,
-    padding: 20,
+    padding: 18,
+    gap: 12,
   },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' },
+  chip: { borderWidth: 3, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 14 },
   missing: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24 },
 });

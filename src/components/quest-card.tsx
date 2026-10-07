@@ -30,7 +30,7 @@ export function SourceLink({ url }: { url: string }) {
   );
 }
 
-type Finish = (star: boolean) => void;
+type Finish = (star: boolean, pick?: string) => void;
 type Done = { star: boolean } | undefined;
 
 export function QuestCard({
@@ -38,20 +38,27 @@ export function QuestCard({
   step,
   locked,
   accent,
+  finished,
+  onFinish,
+  from,
 }: {
   quest: Quest;
   step: number;
   locked: boolean;
   accent: string;
+  finished: Done;
+  onFinish: (star: boolean, pick?: string) => void;
+  /** Where a borrowed quest comes from, e.g. a neighboring ride. */
+  from?: string;
 }) {
-  const { done, complete } = useProgress();
+  const { complete } = useProgress();
   const { play } = useSound();
   const [burst, setBurst] = useState(0);
-  const finished = done[quest.id];
   const kind = KIND[quest.type];
 
-  const finish: Finish = (star) => {
+  const finish: Finish = (star, pick) => {
     complete(quest.id, star);
+    onFinish(star, pick);
     play(star ? 'correct' : 'wrong');
     if (star) setBurst(Date.now());
   };
@@ -64,9 +71,16 @@ export function QuestCard({
             {finished ? '★' : step}
           </Txt>
         </View>
-        <Txt weight="bold" size={14} color={colors.inkSoft} style={{ letterSpacing: 1 }}>
-          {kind.emoji} {kind.label.toUpperCase()}
-        </Txt>
+        <View style={{ flex: 1 }}>
+          <Txt weight="bold" size={14} color={colors.inkSoft} style={{ letterSpacing: 1 }}>
+            {kind.emoji} {kind.label.toUpperCase()}
+          </Txt>
+          {from && !locked && (
+            <Txt size={12} color={colors.inkSoft}>
+              About {from}
+            </Txt>
+          )}
+        </View>
       </View>
 
       {locked ? (
@@ -208,7 +222,7 @@ function QuestBody({ quest, finished, finish }: { quest: Quest; finished: Done; 
                 onPress={() => {
                   tap();
                   setPicked(i);
-                  finish(true);
+                  finish(true, opt);
                 }}
                 style={[styles.choice, { backgroundColor: picked === i ? colors.mint : colors.white }]}>
                 <Txt weight="medium" size={17} color={picked === i ? colors.white : colors.ink}>
@@ -397,6 +411,8 @@ function OrderBody({ quest, finished, finish }: { quest: OrderQuest; finished: D
 }
 
 function GuessBody({ quest, finished, finish }: { quest: GuessQuest; finished: Done; finish: Finish }) {
+  // Years read better without a thousands separator.
+  const fmt = (n: number) => (quest.unit ? n.toLocaleString() : String(n));
   const start = Math.round((quest.min + quest.max) / 2 / quest.step) * quest.step;
   const [value, setValue] = useState(start);
   const [locked, setLocked] = useState<number | null>(null);
@@ -421,7 +437,7 @@ function GuessBody({ quest, finished, finish }: { quest: GuessQuest; finished: D
             <StepBtn label="−" onPress={() => nudge(-quest.step)} />
             <View style={styles.guessValue}>
               <Txt weight="bold" size={34} style={{ fontVariant: ['tabular-nums'] }}>
-                {value.toLocaleString()}
+                {fmt(value)}
               </Txt>
               <Txt size={14} color={colors.inkSoft}>
                 {quest.unit}
@@ -445,8 +461,7 @@ function GuessBody({ quest, finished, finish }: { quest: GuessQuest; finished: D
         <View style={{ marginTop: 10 }}>
           {locked !== null && (
             <Txt size={16}>
-              You guessed {locked.toLocaleString()} {quest.unit}. The answer is {quest.answer.toLocaleString()}{' '}
-              {quest.unit}.
+              You guessed {fmt(locked)} {quest.unit}. The answer is {fmt(quest.answer)} {quest.unit}.
             </Txt>
           )}
           <Txt weight="bold" size={17}>

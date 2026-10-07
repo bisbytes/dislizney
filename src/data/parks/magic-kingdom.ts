@@ -1,3 +1,4 @@
+import { magicKingdomParkQuests } from '../pools/magic-kingdom-park';
 import type { Park } from '../types';
 
 const WIKI = 'https://en.wikipedia.org/wiki/';
@@ -41,6 +42,8 @@ export const magicKingdom: Park = {
   emoji: '🏰',
   tagline: 'Once upon a time, in a kingdom of lines...',
   center: { lat: 28.4177, lng: -81.5812 },
+  queueTimesId: 6,
+  parkQuests: magicKingdomParkQuests,
   lands: [
     {
       id: 'main-street',
@@ -261,7 +264,8 @@ export const magicKingdom: Park = {
             {
               type: 'challenge',
               id: 'jc-ch',
-              prompt: 'Be the skipper! Everyone take a turn telling the cheesiest joke you know. Groans count as points.',
+              prompt:
+                'Be the skipper! Everyone take a turn telling the cheesiest joke you know. Groans count as points.',
             },
             {
               type: 'spy',
@@ -393,7 +397,8 @@ export const magicKingdom: Park = {
             {
               type: 'challenge',
               id: 'tiki-ch',
-              prompt: 'Everyone pick a bird sound. On “three,” make it at the same time and see who keeps a straight face.',
+              prompt:
+                'Everyone pick a bird sound. On “three,” make it at the same time and see who keeps a straight face.',
             },
             {
               type: 'truefalse',
@@ -574,7 +579,12 @@ export const magicKingdom: Park = {
               id: 'bt-3',
               emojis: '🚂 ⛰️ ⚡ 🤠',
               hint: 'The wildest ride in the wilderness.',
-              choices: ['Big Thunder Mountain Railroad', 'Space Mountain', 'Seven Dwarfs Mine Train', 'Walt Disney World Railroad'],
+              choices: [
+                'Big Thunder Mountain Railroad',
+                'Space Mountain',
+                'Seven Dwarfs Mine Train',
+                'Walt Disney World Railroad',
+              ],
               answer: 0,
             },
           ],
@@ -680,7 +690,12 @@ export const magicKingdom: Park = {
               type: 'trivia',
               id: 'cb-2',
               question: 'How does Teddi Barra show up?',
-              choices: ['Through a door', 'She swings down from the ceiling', 'Up through the floor', 'From the audience'],
+              choices: [
+                'Through a door',
+                'She swings down from the ceiling',
+                'Up through the floor',
+                'From the audience',
+              ],
               answer: 1,
               explain: 'She swings down from a hole in the ceiling.',
               source: SRC.bears,
@@ -1339,7 +1354,12 @@ export const magicKingdom: Park = {
               type: 'trivia',
               id: 'wp-1',
               question: 'Which ride was here before Winnie the Pooh?',
-              choices: ['Snow White’s Scary Adventures', 'Mr. Toad’s Wild Ride', '20,000 Leagues Under the Sea', 'The Skyway'],
+              choices: [
+                'Snow White’s Scary Adventures',
+                'Mr. Toad’s Wild Ride',
+                '20,000 Leagues Under the Sea',
+                'The Skyway',
+              ],
               answer: 1,
               explain: 'Pooh replaced Mr. Toad’s Wild Ride in 1999.',
               source: SRC.pooh,
@@ -1477,8 +1497,7 @@ export const magicKingdom: Park = {
       id: 'tomorrowland',
       name: 'Tomorrowland',
       emoji: '🚀',
-      intro:
-        'Final chapter, space cadets! The future is bright, glowing and full of rockets. Buckle up.',
+      intro: 'Final chapter, space cadets! The future is bright, glowing and full of rockets. Buckle up.',
       colors: { sky: '#DCE6FF', ground: '#1B2A6B', ink: '#0B1233', accent: '#39FF88' },
       attractions: [
         {

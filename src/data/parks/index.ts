@@ -15,7 +15,14 @@ const comingSoon = (id: string, name: string, emoji: string, tagline: string, la
 export const parks: Park[] = [
   magicKingdom,
   comingSoon('epcot', 'EPCOT', '🌐', 'A future chapter: around the world and beyond.', 28.3747, -81.5494),
-  comingSoon('hollywood-studios', 'Hollywood Studios', '🎬', 'A future chapter: lights, camera, adventure.', 28.3575, -81.5582),
+  comingSoon(
+    'hollywood-studios',
+    'Hollywood Studios',
+    '🎬',
+    'A future chapter: lights, camera, adventure.',
+    28.3575,
+    -81.5582,
+  ),
   comingSoon('animal-kingdom', 'Animal Kingdom', '🌳', 'A future chapter: into the wild.', 28.3553, -81.5901),
 ];
 

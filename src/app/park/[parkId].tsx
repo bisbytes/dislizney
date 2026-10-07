@@ -1,9 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Pressable,
   ScrollView,
   StyleSheet,
+  TextInput,
   View,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -11,24 +12,33 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RadarToggle } from '@/components/cards';
-import { Chapter } from '@/components/chapter';
 import { LandBar } from '@/components/land-bar';
-import { StoryButton, Txt } from '@/components/ui';
+import { LandScene } from '@/components/land-scene';
+import { StoryButton, tap, Txt } from '@/components/ui';
+import { WaitBadge } from '@/components/wait-badge';
 import { getPark } from '@/data/parks';
-import { attractionProgress, useProgress } from '@/lib/progress';
+import type { Attraction, Land } from '@/data/types';
+import { useJourney } from '@/lib/journey';
 import { useRadar } from '@/lib/radar';
-import { colors, MAX_WIDTH } from '@/theme';
+import { fetchPostedWaits, findWait, type PostedWait } from '@/lib/waits';
+import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
 
-export default function ParkStorybook() {
+export default function PickYourRide() {
   const { parkId } = useLocalSearchParams<{ parkId: string }>();
   const park = getPark(parkId);
-  const { done } = useProgress();
+  const { keepsakes, session } = useJourney();
   const { ping } = useRadar();
+  const [query, setQuery] = useState('');
+  const [waits, setWaits] = useState<Map<string, PostedWait>>(new Map());
   const scroller = useRef<ScrollView>(null);
-  const chaptersY = useRef(0);
-  const chapterY = useRef<number[]>([]);
+  const sectionsY = useRef(0);
+  const sectionY = useRef<number[]>([]);
   const barHeight = useRef(64);
   const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (park?.queueTimesId) fetchPostedWaits(park.queueTimesId).then(setWaits);
+  }, [park?.queueTimesId]);
 
   if (!park || park.comingSoon) {
     return (
@@ -41,30 +51,28 @@ export default function ParkStorybook() {
     );
   }
 
-  const all = park.lands.flatMap((l) => l.attractions);
-  const totals = all.reduce(
-    (acc, a) => {
-      const p = attractionProgress(a, done);
-      return { stars: acc.stars + p.stars, quests: acc.quests + p.total, finished: acc.finished + p.finished };
-    },
-    { stars: 0, quests: 0, finished: 0 },
-  );
+  const visited = new Set(keepsakes.map((k) => k.attractionId));
+  const q = query.trim().toLowerCase();
+  const lands: Land[] = park.lands.map((l) => ({
+    ...l,
+    attractions: q ? l.attractions.filter((a) => a.name.toLowerCase().includes(q)) : l.attractions,
+  }));
 
-  const topOf = (i: number) => chaptersY.current + (chapterY.current[i] ?? 0) - barHeight.current;
-
+  const topOf = (i: number) => sectionsY.current + (sectionY.current[i] ?? 0) - barHeight.current;
   const jumpTo = (i: number) => {
     setActive(i);
     scroller.current?.scrollTo({ y: Math.max(0, topOf(i) + 2), animated: true });
   };
-
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y + 40;
     let current = 0;
-    park.lands.forEach((_, i) => {
+    lands.forEach((_, i) => {
       if (y >= topOf(i)) current = i;
     });
     if (current !== active) setActive(current);
   };
+
+  const inLine = session && park.lands.flatMap((l) => l.attractions).find((a) => a.id === session.attractionId);
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.paper }}>
@@ -73,7 +81,8 @@ export default function ParkStorybook() {
         stickyHeaderIndices={[1]}
         onScroll={onScroll}
         scrollEventThrottle={64}
-        contentContainerStyle={{ flexGrow: 1 }}>
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}>
         <View style={styles.page}>
           <View style={styles.topBar}>
             <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => router.back()}>
@@ -81,82 +90,213 @@ export default function ParkStorybook() {
                 ← Shelf
               </Txt>
             </Pressable>
-            <Txt weight="bold" size={16}>
-              ⭐ {totals.stars}
-            </Txt>
+            <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.push('/journey')}>
+              <Txt weight="bold" size={16}>
+                📖 My Journey
+              </Txt>
+            </Pressable>
           </View>
 
           <View style={styles.title}>
-            <Txt size={64}>{park.emoji}</Txt>
-            <Txt weight="bold" size={36} style={{ textAlign: 'center' }}>
+            <Txt size={56}>{park.emoji}</Txt>
+            <Txt weight="bold" size={34} style={{ textAlign: 'center' }}>
               {park.name}
             </Txt>
-            <Txt size={18} color={colors.inkSoft} style={{ textAlign: 'center', fontStyle: 'italic' }}>
-              {park.tagline}
+            <Txt size={18} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+              Which line are you in? Pick your ride and we’ll write a story that lasts as long as your wait.
             </Txt>
-            <View style={styles.progressTrack}>
-              <View
-                style={[styles.progressFill, { width: `${(totals.finished / Math.max(1, totals.quests)) * 100}%` }]}
-              />
-            </View>
-            <Txt size={14} color={colors.inkSoft}>
-              {totals.finished} of {totals.quests} quests complete
-            </Txt>
-            <Txt size={16} style={{ textAlign: 'center', marginTop: 8 }}>
-              Scroll through the story, or jump to a land with the bar below. Then tap the ride you’re in line for.
-            </Txt>
-            <View style={{ marginTop: 12 }}>
-              <RadarToggle />
-            </View>
+          </View>
+
+          {inLine && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.push({ pathname: '/line/[id]', params: { id: inLine.id } })}
+              style={[styles.resume, pageShadow]}>
+              <Txt size={30}>{inLine.emoji}</Txt>
+              <View style={{ flex: 1 }}>
+                <Txt weight="bold" size={16}>
+                  You’re in line for {inLine.name}
+                </Txt>
+                <Txt size={14} color={colors.inkSoft}>
+                  Tap to keep reading your line story →
+                </Txt>
+              </View>
+            </Pressable>
+          )}
+
+          <TextInput
+            id="ride-search"
+            value={query}
+            onChangeText={setQuery}
+            placeholder="🔍  Search for a ride"
+            placeholderTextColor={colors.inkSoft}
+            style={styles.search}
+            accessibilityLabel="Search for a ride"
+            returnKeyType="search"
+          />
+          <View style={{ alignItems: 'center', marginBottom: 14 }}>
+            <RadarToggle />
           </View>
         </View>
 
         <View style={{ width: '100%' }} onLayout={(e) => (barHeight.current = e.nativeEvent.layout.height)}>
-          <LandBar lands={park.lands} active={active} onPick={jumpTo} />
+          <LandBar
+            lands={park.lands}
+            active={active}
+            onPick={jumpTo}
+            subtitle={(land) => {
+              const n = land.attractions.filter((a) => visited.has(a.id)).length;
+              return n === land.attractions.length ? '🏅 All visited!' : `${n}/${land.attractions.length} visited`;
+            }}
+          />
         </View>
 
-        <View style={styles.page} onLayout={(e) => (chaptersY.current = e.nativeEvent.layout.y)}>
-          {park.lands.map((land, i) => (
-            <View key={land.id} onLayout={(e) => (chapterY.current[i] = e.nativeEvent.layout.y)}>
-              <Chapter
-                land={land}
-                number={i + 1}
-                highlightId={ping?.attraction.id}
-                next={park.lands[i + 1]}
-                onNext={() => jumpTo(i + 1)}
-              />
+        <View style={styles.page} onLayout={(e) => (sectionsY.current = e.nativeEvent.layout.y)}>
+          {lands.map((land, i) => (
+            <View key={land.id} onLayout={(e) => (sectionY.current[i] = e.nativeEvent.layout.y)}>
+              <View style={[styles.landHeader, { backgroundColor: land.colors.ground }]}>
+                <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                  <LandScene landId={land.id} />
+                </View>
+                <Txt weight="bold" size={24} color={colors.white}>
+                  {land.emoji} {land.name}
+                </Txt>
+              </View>
+              <View style={[styles.grid, { backgroundColor: land.colors.sky }]}>
+                {land.attractions.length === 0 ? (
+                  <Txt size={15} color={land.colors.ink}>
+                    No rides match “{query}” here.
+                  </Txt>
+                ) : (
+                  land.attractions.map((a) => (
+                    <RideCard
+                      key={a.id}
+                      attraction={a}
+                      land={land}
+                      wait={findWait(waits, a.name)}
+                      visits={keepsakes.filter((k) => k.attractionId === a.id).length}
+                      nearby={ping?.attraction.id === a.id}
+                    />
+                  ))
+                )}
+              </View>
             </View>
           ))}
-
-          <View style={styles.end}>
-            <Txt weight="bold" size={30}>
-              The End
+          {waits.size > 0 && (
+            <Txt size={12} color={colors.inkSoft} style={{ textAlign: 'center', marginTop: 12 }}>
+              Posted wait times powered by Queue-Times.com
             </Txt>
-            <Txt size={16} color={colors.inkSoft} style={{ textAlign: 'center' }}>
-              ...for now. New chapters and new parks are on the way. ✨
-            </Txt>
-          </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+function RideCard({
+  attraction: a,
+  land,
+  wait,
+  visits,
+  nearby,
+}: {
+  attraction: Attraction;
+  land: Land;
+  wait?: PostedWait;
+  visits: number;
+  nearby: boolean;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${a.name}${wait?.open ? `, posted wait ${wait.minutes} minutes` : ''}`}
+      onPress={() => {
+        tap();
+        router.push({ pathname: '/attraction/[id]', params: { id: a.id } });
+      }}
+      style={({ pressed }) => [
+        styles.card,
+        pageShadow,
+        { borderColor: nearby ? land.colors.accent : colors.ink, transform: [{ scale: pressed ? 0.97 : 1 }] },
+      ]}>
+      {wait && <WaitBadge wait={wait} />}
+      <View style={[styles.cardEmoji, { backgroundColor: land.colors.sky, borderColor: land.colors.ground }]}>
+        <Txt size={32} style={{ lineHeight: 40 }}>
+          {a.emoji}
+        </Txt>
+      </View>
+      <Txt weight="bold" size={15} color={land.colors.ink} numberOfLines={2} style={{ textAlign: 'center' }}>
+        {a.name}
+      </Txt>
+      <View style={styles.pills}>
+        {visits > 0 && (
+          <View style={[styles.pill, { backgroundColor: colors.gold }]}>
+            <Txt size={12} weight="medium">
+              📖 {visits === 1 ? 'Visited' : `${visits} visits`}
+            </Txt>
+          </View>
+        )}
+        {nearby && (
+          <View style={[styles.pill, { backgroundColor: colors.mint }]}>
+            <Txt size={12} weight="medium" color={colors.white}>
+              📍 Nearby
+            </Txt>
+          </View>
+        )}
+      </View>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   page: { width: '100%', maxWidth: MAX_WIDTH, alignSelf: 'center' },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', padding: 16 },
-  title: { alignItems: 'center', paddingHorizontal: 20, paddingBottom: 24, gap: 4 },
-  progressTrack: {
-    width: '80%',
-    height: 16,
-    borderRadius: 8,
-    borderWidth: 2,
+  title: { alignItems: 'center', paddingHorizontal: 20, paddingBottom: 16, gap: 4 },
+  resume: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginHorizontal: 16,
+    marginBottom: 14,
+    padding: 12,
+    borderRadius: 18,
+    borderWidth: 3,
     borderColor: colors.ink,
-    backgroundColor: colors.white,
-    overflow: 'hidden',
-    marginTop: 12,
+    backgroundColor: colors.lemon,
   },
-  progressFill: { height: '100%', backgroundColor: colors.gold },
-  end: { alignItems: 'center', padding: 40, gap: 6 },
+  search: {
+    marginHorizontal: 16,
+    marginBottom: 14,
+    borderWidth: 3,
+    borderColor: colors.ink,
+    borderRadius: 999,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    fontFamily: fonts.medium,
+    fontSize: 17,
+    color: colors.ink,
+    backgroundColor: colors.white,
+  },
+  landHeader: { paddingTop: 44, paddingBottom: 12, alignItems: 'center', overflow: 'hidden', marginTop: 18 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, padding: 14, justifyContent: 'space-between' },
+  card: {
+    width: '47.5%',
+    backgroundColor: colors.white,
+    borderWidth: 3,
+    borderRadius: 20,
+    padding: 12,
+    alignItems: 'center',
+    gap: 8,
+  },
+  cardEmoji: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, justifyContent: 'center' },
+  pill: { borderRadius: 999, paddingHorizontal: 8, paddingVertical: 2, borderWidth: 1.5, borderColor: colors.ink },
   missing: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24 },
 });

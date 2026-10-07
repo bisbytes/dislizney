@@ -37,6 +37,10 @@ Quest types:
 
 Keep the wording kid friendly and short enough to read in line.
 
+## Quests for long waits
+
+A line story is built from the ride's own quests first, then quests from other rides in the park, a park's `parkQuests` (for example `src/data/pools/magic-kingdom-park.ts`) and play-anywhere games in `src/data/pools/anywhere.ts`. Play-anywhere quests must work in any line at any park and state no facts, so they need no source. More quests anywhere means longer waits feel fresh.
+
 ## Add a ride
 
 Add an `Attraction` to a land's `attractions` list. You'll need:
@@ -50,8 +54,9 @@ Add an `Attraction` to a land's `attractions` list. You'll need:
 
 1. Copy `src/data/parks/magic-kingdom.ts` to a new file, for example `epcot.ts`, and fill in lands and rides.
 2. In `src/data/parks/index.ts`, import it and replace the matching `comingSoon(...)` entry with it.
+3. Optional: add park-wide `parkQuests`, and set `queueTimesId` to the park's id on [Queue-Times.com](https://queue-times.com/parks) to show posted waits. Ride names are matched loosely, so they should be close to the official names.
 
-The storybook map, quest screens and radar pick it up automatically.
+The ride picker, line stories, keepsakes and radar pick it up automatically.
 
 ## Code changes
 

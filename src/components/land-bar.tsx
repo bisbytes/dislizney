@@ -7,7 +7,18 @@ import { colors, MAX_WIDTH } from '@/theme';
 import { tap, Txt } from './ui';
 
 /** Sticky row of land chips on the park map. Tap one to jump to that chapter. */
-export function LandBar({ lands, active, onPick }: { lands: Land[]; active: number; onPick: (index: number) => void }) {
+export function LandBar({
+  lands,
+  active,
+  onPick,
+  subtitle,
+}: {
+  lands: Land[];
+  active: number;
+  onPick: (index: number) => void;
+  /** Small line under each land name. Defaults to quest progress. */
+  subtitle?: (land: Land) => string;
+}) {
   const { done } = useProgress();
   const scroller = useRef<ScrollView>(null);
   const chipX = useRef<number[]>([]);
@@ -34,12 +45,13 @@ export function LandBar({ lands, active, onPick }: { lands: Land[]; active: numb
               return p.finished === p.total;
             }).length;
             const isActive = i === active;
+            const sub = subtitle ? subtitle(land) : finished === rides ? '🏅 All done!' : `${finished}/${rides} rides`;
             return (
               <Pressable
                 key={land.id}
                 accessibilityRole="tab"
                 accessibilityState={{ selected: isActive }}
-                accessibilityLabel={`${land.name}. ${finished} of ${rides} rides complete.`}
+                accessibilityLabel={`${land.name}. ${sub}.`}
                 onLayout={(e) => (chipX.current[i] = e.nativeEvent.layout.x)}
                 onPress={() => {
                   tap();
@@ -59,7 +71,7 @@ export function LandBar({ lands, active, onPick }: { lands: Land[]; active: numb
                     {shortName(land.name)}
                   </Txt>
                   <Txt size={11} color={isActive ? colors.paper : colors.inkSoft}>
-                    {finished === rides ? '🏅 All done!' : `${finished}/${rides} rides`}
+                    {sub}
                   </Txt>
                 </View>
               </Pressable>

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { Platform, View } from 'react-native';
 
 import { RadarBanner } from '@/components/cards';
+import { JourneyProvider } from '@/lib/journey';
 import { ProgressProvider } from '@/lib/progress';
 import { RadarProvider } from '@/lib/radar';
 import { SoundProvider } from '@/lib/sound';
@@ -35,21 +36,23 @@ export default function RootLayout() {
 
   return (
     <ProgressProvider>
-      <SoundProvider>
-        <RadarProvider>
-          <View style={{ flex: 1, backgroundColor: colors.paper }}>
-            <StatusBar style="dark" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                animation: 'fade_from_bottom',
-                contentStyle: { backgroundColor: colors.paper },
-              }}
-            />
-            <RadarBanner />
-          </View>
-        </RadarProvider>
-      </SoundProvider>
+      <JourneyProvider>
+        <SoundProvider>
+          <RadarProvider>
+            <View style={{ flex: 1, backgroundColor: colors.paper }}>
+              <StatusBar style="dark" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  animation: 'fade_from_bottom',
+                  contentStyle: { backgroundColor: colors.paper },
+                }}
+              />
+              <RadarBanner />
+            </View>
+          </RadarProvider>
+        </SoundProvider>
+      </JourneyProvider>
     </ProgressProvider>
   );
 }

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Twinkles } from '@/components/twinkles';
 import { Card, StoryButton, tap, Txt } from '@/components/ui';
 import { parks } from '@/data/parks';
+import { useJourney } from '@/lib/journey';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -13,6 +14,7 @@ import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 export default function Cover() {
   const { totalStars } = useProgress();
   const sound = useSound();
+  const { keepsakes } = useJourney();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.lemon }}>
@@ -41,6 +43,13 @@ export default function Cover() {
               ⭐ You’ve collected {totalStars} star{totalStars === 1 ? '' : 's'}!
             </Txt>
           )}
+
+          <StoryButton
+            label={`📖 My Journey${keepsakes.length ? ` · ${keepsakes.length} keepsake${keepsakes.length === 1 ? '' : 's'}` : ''}`}
+            color={colors.white}
+            onPress={() => router.push('/journey')}
+            style={{ marginTop: 6 }}
+          />
 
           <Txt weight="bold" size={14} color={colors.inkSoft} style={styles.shelfLabel}>
             CHOOSE YOUR STORYBOOK
