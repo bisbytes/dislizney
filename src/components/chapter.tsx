@@ -13,7 +13,19 @@ const STEP = 170;
 const NODE = 92;
 
 /** One land, drawn as a storybook chapter with a winding path of stops. */
-export function Chapter({ land, number, highlightId }: { land: Land; number: number; highlightId?: string }) {
+export function Chapter({
+  land,
+  number,
+  highlightId,
+  next,
+  onNext,
+}: {
+  land: Land;
+  number: number;
+  highlightId?: string;
+  next?: Land;
+  onNext?: () => void;
+}) {
   const [width, setWidth] = useState(0);
   const { done } = useProgress();
   const c = land.colors;
@@ -115,12 +127,33 @@ export function Chapter({ land, number, highlightId }: { land: Land; number: num
           </>
         )}
       </View>
+      {next && onNext && (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            tap();
+            onNext();
+          }}
+          style={({ pressed }) => [styles.next, { borderColor: c.ink, opacity: pressed ? 0.8 : 1 }]}>
+          <Txt weight="bold" size={15} color={c.ink}>
+            Next chapter: {next.emoji} {next.name} ↓
+          </Txt>
+        </Pressable>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   chapter: { paddingBottom: 24 },
+  next: {
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: colors.paper,
+  },
   banner: {
     paddingTop: 56,
     paddingBottom: 14,
