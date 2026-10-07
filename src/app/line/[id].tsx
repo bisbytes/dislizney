@@ -1,6 +1,13 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FactCard } from '@/components/cards';
@@ -9,7 +16,7 @@ import { QuestCard } from '@/components/quest-card';
 import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { useJourney } from '@/lib/journey';
-import { buildQueue, countForMinutes, MINUTES } from '@/lib/plan';
+import { buildQueue, countForMinutes } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -23,6 +30,7 @@ export default function LineStory() {
   const { play } = useSound();
   const insets = useSafeAreaInsets();
   const [now, setNow] = useState(Date.now());
+  const grownAt = useRef(-1);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 30_000);
@@ -65,16 +73,22 @@ export default function LineStory() {
   const planned = countForMinutes(queue, active.waitMinutes);
   const total = Math.min(queue.length, countForMinutes(queue, active.waitMinutes + (active.bonusMinutes ?? 0)));
   const list = queue.slice(0, total);
-  const current = list.findIndex((pq) => !active.done[pq.quest.id]);
-  // Show what's done, the quest you're on, and a peek at the next two.
-  const visible = current === -1 ? list : list.slice(0, current + 3);
-  const hidden = list.slice(visible.length);
-  const hiddenMinutes = Math.round(hidden.reduce((n, pq) => n + MINUTES[pq.quest.type], 0));
   const elapsed = Math.floor((now - active.startedAt) / 60000);
   const left = active.waitMinutes - elapsed;
   const pct = Math.min(1, elapsed / active.waitMinutes);
   const stars = Object.values(active.done).filter((d) => d.star).length;
-  const outOfQuests = current === -1 && total >= queue.length;
+  const outOfQuests = total >= queue.length;
+
+  // Everything is open to play in any order. Scrolling near the bottom adds
+  // more, so the story never runs out while you're still in line.
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const nearEnd = contentOffset.y + layoutMeasurement.height > contentSize.height - 900;
+    if (nearEnd && !outOfQuests && grownAt.current !== total) {
+      grownAt.current = total;
+      updateSession((s) => ({ ...s, bonusMinutes: (s.bonusMinutes ?? 0) + 10 }));
+    }
+  };
 
   const board = () => {
     const k = finishLine();
@@ -116,6 +130,8 @@ export default function LineStory() {
       </View>
 
       <ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={200}
         style={{ backgroundColor: c.sky }}
         contentContainerStyle={{ alignItems: 'center', paddingBottom: 120 + insets.bottom }}>
         <View style={[styles.page, { paddingHorizontal: 16, paddingTop: 16, gap: 14 }]}>
@@ -129,7 +145,7 @@ export default function LineStory() {
             </Txt>
           </View>
 
-          {visible.map((pq, i) => {
+          {list.map((pq, i) => {
             const fact = a.facts.length ? a.facts[Math.floor(i / 6) % a.facts.length] : undefined;
             return (
               <Fragment key={pq.quest.id}>
@@ -141,34 +157,22 @@ export default function LineStory() {
                 <QuestCard
                   quest={pq.quest}
                   step={i + 1}
-                  locked={current !== -1 && i > current}
+                  locked={false}
                   accent={c.accent}
                   from={pq.from}
                   finished={active.done[pq.quest.id]}
                   onFinish={(star, pick) =>
-                    updateSession((s) => {
-                      const done = { ...s.done, [pq.quest.id]: { star } };
-                      // Reached the end of the list but still in line: keep it going.
-                      const extend = i === list.length - 1 ? 10 : 0;
-                      return {
-                        ...s,
-                        done,
-                        picks: pick ? [...s.picks, pick] : s.picks,
-                        bonusMinutes: (s.bonusMinutes ?? 0) + extend,
-                      };
-                    })
+                    updateSession((s) => ({
+                      ...s,
+                      done: { ...s.done, [pq.quest.id]: { star } },
+                      picks: pick ? [...s.picks, pick] : s.picks,
+                    }))
                   }
                 />
                 {i % 6 === 5 && fact && active.done[pq.quest.id] && <FactCard fact={fact} />}
               </Fragment>
             );
           })}
-
-          {hidden.length > 0 && (
-            <Txt size={15} color={c.ink} style={{ textAlign: 'center' }}>
-              🔒 {hidden.length} more quests ahead, about {hiddenMinutes} minutes of fun
-            </Txt>
-          )}
 
           {outOfQuests && (
             <View style={[styles.end, pageShadow]}>
