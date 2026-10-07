@@ -23,7 +23,10 @@ export type Keepsake = {
   parkId: string;
   date: string;
   waitMinutes: number;
+  /** Time the app was open in line, from Start to "We're boarding!". */
   minutesInLine: number;
+  /** How long the wait really was, as confirmed by the guest. */
+  actualMinutes?: number;
   stars: number;
   quests: number;
   picks: string[];
@@ -139,6 +142,11 @@ export function useJourney() {
   return ctx;
 }
 
+/** The best wait we know for a keepsake: the guest's real wait, else the posted one. */
+export function waitedMinutes(k: Keepsake) {
+  return k.actualMinutes ?? k.waitMinutes;
+}
+
 /** Hashtag-friendly version of a name: "Peter Pan’s Flight" → "PeterPansFlight". */
 export function hashtag(name: string) {
   return (
@@ -158,7 +166,7 @@ export function keepsakeCaption(k: Keepsake) {
   const ride = ref?.attraction.name ?? 'a ride';
   const park = ref?.park.name ?? 'Walt Disney World';
   const line =
-    `I turned a ${k.waitMinutes}-minute wait for ${ride} into a storybook adventure! ` +
+    `I turned a ${waitedMinutes(k)}-minute wait for ${ride} into a storybook adventure! ` +
     `⭐ ${k.stars} stars earned in line.` +
     (k.note ? ` “${k.note}”` : '');
   const tags = ['#dislizney', '#LineTimeAdventures', hashtag(park), hashtag(ride), '#WaltDisneyWorld'];
@@ -166,7 +174,7 @@ export function keepsakeCaption(k: Keepsake) {
 }
 
 export function dayCaption(keepsakes: Keepsake[]) {
-  const minutes = keepsakes.reduce((n, k) => n + k.waitMinutes, 0);
+  const minutes = keepsakes.reduce((n, k) => n + waitedMinutes(k), 0);
   const stars = keepsakes.reduce((n, k) => n + k.stars, 0);
   const rides = keepsakes.map((k) => getAttraction(k.attractionId)?.attraction.name).filter(Boolean) as string[];
   const parks = [

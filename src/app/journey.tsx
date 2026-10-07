@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
-import { dayCaption, useJourney, type Keepsake } from '@/lib/journey';
+import { dayCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 export default function Journey() {
@@ -22,7 +22,7 @@ export default function Journey() {
     days.set(day, [...(days.get(day) ?? []), k]);
   }
 
-  const minutes = keepsakes.reduce((n, k) => n + k.waitMinutes, 0);
+  const minutes = keepsakes.reduce((n, k) => n + waitedMinutes(k), 0);
   const stars = keepsakes.reduce((n, k) => n + k.stars, 0);
   const inLine = session && getAttraction(session.attractionId);
 
@@ -147,7 +147,7 @@ function Polaroid({ k, tilt }: { k: Keepsake; tilt: number }) {
         {r.attraction.name}
       </Txt>
       <Txt size={12} color={colors.inkSoft}>
-        {time} · {k.waitMinutes} min · ⭐ {k.stars}
+        {time} · {waitedMinutes(k)} min · ⭐ {k.stars}
       </Txt>
     </Pressable>
   );
