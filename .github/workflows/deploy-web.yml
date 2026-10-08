@@ -1,7 +1,10 @@
-# Builds the web app and publishes it to GitHub Pages on every push to main.
-# Pull requests only run the build, so a broken web export is caught before merge.
+# Builds the web app on every push to main and pull request, so a broken web
+# export is caught early. Publishing to GitHub Pages stays off until you turn it on.
 #
-# One-time setup: repo Settings > Pages > Build and deployment > Source: "GitHub Actions".
+# To go live (one time):
+#   1. Settings > Pages > Build and deployment > Source: "GitHub Actions".
+#   2. Settings > Secrets and variables > Actions > Variables: PUBLISH_SITE = true.
+# To take the site down again, set PUBLISH_SITE to false and unpublish in Settings > Pages.
 name: Deploy web
 
 on:
@@ -34,7 +37,7 @@ jobs:
 
       - name: Find the site's base path
         id: pages
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && vars.PUBLISH_SITE == 'true'
         uses: actions/configure-pages@v5
 
       # GitHub Pages has no URL rewrites, so the deploy uses a single-page build
@@ -60,12 +63,12 @@ jobs:
       - run: cp dist/index.html dist/404.html
 
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && vars.PUBLISH_SITE == 'true'
         with:
           path: dist
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && vars.PUBLISH_SITE == 'true'
     needs: build
     runs-on: ubuntu-latest
     environment:
