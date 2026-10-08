@@ -1,9 +1,8 @@
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
-import * as Sharing from 'expo-sharing';
 import { useEffect, useRef, useState, type Ref } from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Modal, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
@@ -11,7 +10,9 @@ import { LandScene } from '@/components/land-scene';
 import { StarBurst } from '@/components/star-burst';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
+import { ShareCard, SHARE_IMAGE } from '@/components/share-card';
 import { saveToPhotos } from '@/lib/backup';
+import { shareImage } from '@/lib/share';
 import { boardNamesFor, canShareToBoard, shareToBoard } from '@/lib/board';
 import { hashtag, keepsakeCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
@@ -32,6 +33,7 @@ export default function KeepsakePage() {
   const [toast, setToast] = useState('');
   const [party, setParty] = useState(0);
   const [fixing, setFixing] = useState(false);
+  const [sharing, setSharing] = useState(false);
   // Right after boarding: a calm "phones away" page first, keepsake after the ride.
   const [riding, setRiding] = useState(!!fresh);
 
@@ -55,7 +57,7 @@ export default function KeepsakePage() {
   }
 
   const caption = keepsakeCaption({ ...k, note: note.trim() || undefined });
-  const tags = caption.split('\n\n')[1].split(' ');
+  const tags = caption.split('\n\n').at(-1)!.split(' ');
 
   const copy = (msg = 'Caption and hashtags copied! 📋') => {
     // Called straight from the tap, before any await, so Safari allows it.
@@ -78,30 +80,9 @@ export default function KeepsakePage() {
     }
   };
 
-  const share = async () => {
+  const share = () => {
     tap();
-    if (Platform.OS === 'web') {
-      const nav = globalThis.navigator as Navigator | undefined;
-      if (nav?.share) {
-        try {
-          await nav.share({ title: 'My dislizney keepsake', text: caption });
-          return;
-        } catch {
-          // Cancelled or blocked: fall back to copying.
-        }
-      }
-      copy('Caption copied! Paste it into your post 📋');
-      return;
-    }
-    copy('Caption copied! Paste it into your post 📋');
-    try {
-      const uri = await captureRef(card, { format: 'png', quality: 1 });
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri, { mimeType: 'image/png', UTI: 'public.png', dialogTitle: 'Share your keepsake' });
-      }
-    } catch {
-      setToast('Couldn’t make the picture, but your caption is copied 📋');
-    }
+    setSharing(true);
   };
 
   const saveNote = () => updateKeepsake(k.id, { note: note.trim() || undefined });
@@ -224,7 +205,8 @@ export default function KeepsakePage() {
             accessibilityLabel="Add a memory"
           />
 
-          <StoryButton label="📤 Share my keepsake" color={colors.berry} textColor={colors.white} onPress={share} />
+          <StoryButton label="📤 Share my ride" color={colors.berry} textColor={colors.white} onPress={share} />
+          <SharePanel k={{ ...k, note: note.trim() || undefined }} open={sharing} onClose={() => setSharing(false)} />
           <StoryButton
             small
             label={Platform.OS === 'web' ? '📥 Save my photos' : '📥 Save card and photos to my phone'}
@@ -365,6 +347,84 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
         </Txt>
       </View>
     </View>
+  );
+}
+
+/** Shows the post picture and caption, then opens the phone's share sheet to pick an app. */
+function SharePanel({ k, open, onClose }: { k: Keepsake; open: boolean; onClose: () => void }) {
+  const card = useRef<View>(null);
+  const [text, setText] = useState(() => keepsakeCaption(k));
+  const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setText(keepsakeCaption(k));
+      setMsg('');
+    }
+    // Refresh the caption each time the panel opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  const send = async () => {
+    tap();
+    setBusy(true);
+    try {
+      const uri = await captureRef(card, {
+        format: 'png',
+        quality: 1,
+        ...SHARE_IMAGE,
+        result: Platform.OS === 'web' ? 'data-uri' : 'tmpfile',
+      });
+      setMsg(await shareImage(uri, text));
+    } catch {
+      Clipboard.setStringAsync(text).catch(() => {});
+      setMsg('Couldn’t make the picture, but your caption is copied 📋');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Modal visible={open} animationType="slide" transparent onRequestClose={onClose}>
+      <View style={styles.sheetBackdrop}>
+        <ScrollView style={styles.sheet} contentContainerStyle={{ gap: 12, alignItems: 'center', padding: 18 }}>
+          <Txt weight="bold" size={20}>
+            Share your ride
+          </Txt>
+          <ShareCard k={k} ref={card} />
+          <TextInput
+            value={text}
+            onChangeText={setText}
+            multiline
+            accessibilityLabel="Caption"
+            style={[styles.note, { width: '100%', minHeight: 110 }]}
+          />
+          <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+            Pick Instagram, TikTok, Facebook, Messages or any app you like. Make the caption your own, and we’ll copy it
+            so you can paste it in.
+          </Txt>
+          <StoryButton
+            label={busy ? 'Making your picture…' : '📤 Share picture'}
+            disabled={busy}
+            color={colors.berry}
+            textColor={colors.white}
+            onPress={send}
+            style={{ alignSelf: 'stretch' }}
+          />
+          {!!msg && (
+            <Txt weight="medium" size={14} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+              {msg}
+            </Txt>
+          )}
+          <Pressable accessibilityRole="button" onPress={onClose} hitSlop={12}>
+            <Txt size={15} style={{ textDecorationLine: 'underline' }}>
+              Done
+            </Txt>
+          </Pressable>
+        </ScrollView>
+      </View>
+    </Modal>
   );
 }
 
@@ -581,6 +641,16 @@ const styles = StyleSheet.create({
   },
   teamRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   fact: { backgroundColor: colors.lemon, borderRadius: 16, borderWidth: 2, borderColor: colors.ink, padding: 12 },
+  sheetBackdrop: { flex: 1, backgroundColor: 'rgba(43,27,63,0.5)', justifyContent: 'flex-end' },
+  sheet: {
+    maxHeight: '92%',
+    width: '100%',
+    maxWidth: MAX_WIDTH,
+    alignSelf: 'center',
+    backgroundColor: colors.paper,
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+  },
   riding: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24, overflow: 'hidden' },
   missing: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24 },
 });
