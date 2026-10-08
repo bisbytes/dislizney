@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BisFooter } from '@/components/bis';
 import { RadarToggle } from '@/components/cards';
 import { LandBar } from '@/components/land-bar';
 import { LandScene } from '@/components/land-scene';
@@ -210,6 +211,9 @@ export default function PickYourRide() {
               Posted wait times powered by Queue-Times.com
             </Txt>
           )}
+          <View style={{ paddingHorizontal: 16 }}>
+            <BisFooter />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

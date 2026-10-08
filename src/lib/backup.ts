@@ -89,7 +89,7 @@ export async function saveToPhotos(uris: string[]): Promise<string> {
       const files = await Promise.all(
         uris.map(
           async (uri, i) =>
-            new globalThis.File([await (await fetch(uri)).blob()], `dislizney-${i + 1}.jpg`, { type: 'image/jpeg' }),
+            new globalThis.File([await (await fetch(uri)).blob()], `bisbytes-${i + 1}.jpg`, { type: 'image/jpeg' }),
         ),
       );
       if (nav?.canShare?.({ files })) {
@@ -102,12 +102,13 @@ export async function saveToPhotos(uris: string[]): Promise<string> {
     uris.forEach((uri, i) => {
       const a = document.createElement('a');
       a.href = uri;
-      a.download = `dislizney-${Date.now()}-${i + 1}.jpg`;
+      a.download = `bisbytes-${Date.now()}-${i + 1}.jpg`;
       a.click();
     });
     return uris.length === 1 ? 'Picture downloaded!' : `${uris.length} pictures downloaded!`;
   }
-  if (!(await addToPhotoLibrary(uris))) return 'To save pictures, allow dislizney to add to your photos in Settings.';
+  if (!(await addToPhotoLibrary(uris)))
+    return 'To save pictures, allow Once Upon a Line to add to your photos in Settings.';
   return uris.length === 1 ? 'Saved to your photos! 📸' : `${uris.length} pictures saved to your photos! 📸`;
 }
 

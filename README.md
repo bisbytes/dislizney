@@ -1,8 +1,8 @@
-# disLIZney
+# Once Upon a Line
 
-**Line-time storybook adventures for Walt Disney World.**
+**Line-time storybook adventures for Walt Disney World**, by Bis Bytes, with Bis the mascot popping up along the way.
 
-Standing in line? Open dislizney, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
+Standing in line? Open the app, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
 
 Built for kids, families and grown-ups who still feel like kids. Runs on iPhone, Android and the web from one codebase.
 
@@ -22,7 +22,7 @@ Built for kids, families and grown-ups who still feel like kids. Runs on iPhone,
 - **Today's public board (opt in)**: after a ride you can share its points to an anonymous park-wide board. The app makes up a name like "Brave Tiki 42" (the server only accepts names built from its word lists), sends only that name, an emoji and the points, and the board erases itself at 3am Orlando time. (It's a short-lived anonymous store, not a database of players.) Real nicknames, photos and locations never leave the phone.
 - **Phones away on the ride**: photo spots are all in the queue, and tapping "We're boarding!" shows a "Phones away, it's ride time!" screen until you're off the ride.
 - **Nine quest types**: Trivia, Fact or Fiction, Guess the Number, Put in Order, Emoji Riddles, I Spy, Would You Rather, Group Challenges and Photo Spots.
-- **Keepsakes and My Journey**: tap "We're boarding!" and the ride becomes a keepsake card with your wait, stars, a fact you learned, a rating and a memory. Share it as a picture with a caption and hashtags (#dislizney #LineTimeAdventures and the park and ride), or share your whole day from the My Journey scrapbook.
+- **Keepsakes and My Journey**: tap "We're boarding!" and the ride becomes a keepsake card with your wait, stars, a fact you learned, a rating and a memory. Share it as a ready-made picture through the phone's share sheet (Instagram, TikTok, Facebook, Messages…) with a caption written like you're telling friends about the ride, which you can edit first, or share your whole day from the My Journey scrapbook.
 - **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
 - **Facts you can check**: every fact and trivia answer links to its source, and each ride page pulls a live summary from Wikipedia.
 - **Fun Fact Radar**: turn it on and the app pops a fun fact (a notification on phones, a banner everywhere) when you're near a ride. Location never leaves your device.
@@ -87,4 +87,4 @@ All content lives in plain TypeScript files under `src/data/parks/`. See [CONTRI
 
 [MIT](LICENSE). Code and content contributions are welcome.
 
-dislizney is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.
+This app is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.

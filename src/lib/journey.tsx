@@ -1,3 +1,4 @@
+import { BRAND } from '@/lib/brand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
@@ -240,45 +241,79 @@ export function hashtag(name: string) {
   );
 }
 
+/** Picks the same variation every time for the same keepsake, so the caption doesn't jump around. */
+function pickFor<T>(seed: string, options: T[]): T {
+  let h = 0;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return options[Math.abs(h) % options.length];
+}
+
+/** A few hashtags people actually use, with the app's hashtag last. */
+function rideTags(ride: string, park: string) {
+  return [hashtag(ride), hashtag(park), '#WaltDisneyWorld', BRAND.hashtag].join(' ');
+}
+
+/** The post caption for one ride, written like the rider is telling friends about it. */
 export function keepsakeCaption(k: Keepsake) {
   const ref = getAttraction(k.attractionId);
   const ride = ref?.attraction.name ?? 'a ride';
+  const emoji = ref?.attraction.emoji ?? '🎢';
   const park = ref?.park.name ?? 'Walt Disney World';
-  const line =
-    `I turned a ${waitedMinutes(k)}-minute wait for ${ride} into a storybook adventure! ` +
-    `⭐ ${k.stars} stars earned in line.` +
-    (k.note ? ` “${k.note}”` : '');
-  const tags = ['#dislizney', '#LineTimeAdventures', hashtag(park), hashtag(ride), '#WaltDisneyWorld'];
-  return `${line}\n\n${tags.join(' ')}`;
+  const team = k.team && k.team.length > 1 ? k.team : undefined;
+  const we = team ? 'We' : 'I';
+  const mins = (n: number) => `${n} minute${n === 1 ? '' : 's'}`;
+
+  const opener =
+    {
+      '🤩': `Just rode ${ride} and it was pure magic! ${emoji}`,
+      '😄': `Just rode ${ride}. So much fun! ${emoji}`,
+      '😱': `Just survived ${ride}! ${emoji} Heart still racing.`,
+      '😴': `Checked ${ride} off the list today. ${emoji}`,
+    }[k.rating ?? ''] ??
+    pickFor(k.id, [`Just rode ${ride}! ${emoji}`, `${ride}: done! ${emoji}`, `${we} just got off ${ride}! ${emoji}`]);
+
+  const waited = waitedMinutes(k);
+  const wait =
+    k.actualMinutes !== undefined && k.actualMinutes !== k.waitMinutes
+      ? `The sign said ${mins(k.waitMinutes)}, ${team ? 'we' : 'I'} waited ${k.actualMinutes}.`
+      : `${mins(waited)} in line and it flew by.`;
+
+  let fun = '';
+  if (team) {
+    const [first, second] = team;
+    fun =
+      first.score > second.score
+        ? `${first.name} won our line trivia ${first.score} to ${second.score}! 👑`
+        : `Our line trivia ended in a tie! 🤝`;
+  } else if (k.stars > 0) {
+    fun = `Got ${k.stars} trivia question${k.stars === 1 ? '' : 's'} right while ${team ? 'we' : 'I'} waited ⭐`;
+  }
+
+  const story = [opener, wait, fun].filter(Boolean).join(' ');
+  return `${story}${k.note ? `\n\n${k.note}` : ''}\n\n${rideTags(ride, park)}`;
 }
 
+/** Caption for a photo taken at a photo spot in the line. */
 export function photoCaption(attractionId: string) {
   const ref = getAttraction(attractionId);
   const ride = ref?.attraction.name ?? 'the line';
   const park = ref?.park.name ?? 'Walt Disney World';
-  const tags = [
-    '#dislizney',
-    '#LineTimeAdventures',
-    '#DisneyPhotoSpot',
-    hashtag(park),
-    hashtag(ride),
-    '#WaltDisneyWorld',
-  ];
-  return `📸 Photo spot in line for ${ride}!\n\n${tags.join(' ')}`;
+  return `In line for ${ride} ${ref?.attraction.emoji ?? '📸'}\n\n${rideTags(ride, park)}`;
 }
 
 export const newPlayerId = () => Math.random().toString(36).slice(2, 9);
 
+/** Caption for a whole day of rides. */
 export function dayCaption(keepsakes: Keepsake[]) {
-  const minutes = keepsakes.reduce((n, k) => n + waitedMinutes(k), 0);
-  const stars = keepsakes.reduce((n, k) => n + k.stars, 0);
-  const rides = keepsakes.map((k) => getAttraction(k.attractionId)?.attraction.name).filter(Boolean) as string[];
-  const parks = [
-    ...new Set(keepsakes.map((k) => getAttraction(k.attractionId)?.park.name).filter(Boolean)),
-  ] as string[];
-  const tags = ['#dislizney', '#LineTimeAdventures', ...parks.map(hashtag), '#WaltDisneyWorld'];
+  const refs = keepsakes.map((k) => ({ k, ref: getAttraction(k.attractionId) })).filter((x) => x.ref);
+  const rides = refs.map((x) => `${x.ref!.attraction.emoji} ${x.ref!.attraction.name}`);
+  const parks = [...new Set(refs.map((x) => x.ref!.park.name))];
+  const fave = refs.find((x) => x.k.rating === '🤩')?.ref?.attraction.name;
+  const tags = [...parks.map(hashtag), '#WaltDisneyWorld', BRAND.hashtag].join(' ');
   return (
-    `My Disney day: ${rides.length} rides, ${minutes} minutes of lines turned into adventures, and ⭐ ${stars} stars! ` +
-    `${rides.join(' · ')}\n\n${tags.join(' ')}`
+    `What a day at ${parks.join(' and ') || 'Walt Disney World'}! ${rides.length} ride${rides.length === 1 ? '' : 's'}:\n` +
+    rides.join('\n') +
+    (fave ? `\n\nFavorite: ${fave} 🤩` : '') +
+    `\n\n${tags}`
   );
 }
