@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import { getAttraction } from '@/data/parks';
+import { keepBrowserData } from '@/lib/backup';
 import { deletePhotos } from '@/lib/photos';
 
 /** One line in progress. Only one at a time: you can only stand in one line! */
@@ -52,6 +53,8 @@ type JourneyValue = Stored & {
   cancelLine: () => void;
   updateKeepsake: (id: string, patch: Partial<Keepsake>) => void;
   deleteKeepsake: (id: string) => void;
+  /** Adds keepsakes from a backup, skipping any already in My Journey. Returns how many were new. */
+  importKeepsakes: (list: Keepsake[]) => number;
 };
 
 const JourneyContext = createContext<JourneyValue | null>(null);
@@ -63,6 +66,7 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    keepBrowserData();
     AsyncStorage.getItem(KEY)
       .then((raw) => raw && setState({ session: null, keepsakes: [], ...JSON.parse(raw) }))
       .catch(() => {})
@@ -145,9 +149,32 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
     [commit],
   );
 
+  const importKeepsakes = useCallback(
+    (list: Keepsake[]) => {
+      const have = new Set(state.keepsakes.map((k) => k.id));
+      const fresh = list.filter((k) => k.id && k.attractionId && !have.has(k.id));
+      commit((s) => ({
+        ...s,
+        keepsakes: [...s.keepsakes, ...fresh].sort((a, b) => b.date.localeCompare(a.date)),
+      }));
+      return fresh.length;
+    },
+    [state.keepsakes, commit],
+  );
+
   const value = useMemo(
-    () => ({ ...state, ready, startLine, updateSession, finishLine, cancelLine, updateKeepsake, deleteKeepsake }),
-    [state, ready, startLine, updateSession, finishLine, cancelLine, updateKeepsake, deleteKeepsake],
+    () => ({
+      ...state,
+      ready,
+      startLine,
+      updateSession,
+      finishLine,
+      cancelLine,
+      updateKeepsake,
+      deleteKeepsake,
+      importKeepsakes,
+    }),
+    [state, ready, startLine, updateSession, finishLine, cancelLine, updateKeepsake, deleteKeepsake, importKeepsakes],
   );
 
   return <JourneyContext.Provider value={value}>{children}</JourneyContext.Provider>;

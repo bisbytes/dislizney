@@ -60,6 +60,16 @@
           "photosPermission": "dislizney can use photos from your library for your line keepsakes.",
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "savePhotosPermission": "dislizney saves your keepsake cards and photo spots to your photos when you ask it to.",
+          "photosPermission": "dislizney saves your keepsake cards and photo spots to your photos when you ask it to.",
+          "granularPermissions": [
+            "photo"
+          ]
+        }
       ]
     ],
     "experiments": {

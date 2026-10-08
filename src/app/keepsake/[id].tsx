@@ -11,6 +11,7 @@ import { LandScene } from '@/components/land-scene';
 import { StarBurst } from '@/components/star-burst';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
+import { saveToPhotos } from '@/lib/backup';
 import { hashtag, keepsakeCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
 
@@ -61,6 +62,21 @@ export default function KeepsakePage() {
     // Called straight from the tap, before any await, so Safari allows it.
     Clipboard.setStringAsync(caption).catch(() => {});
     setToast(msg);
+  };
+
+  const save = async () => {
+    tap();
+    try {
+      const pictures = [...(k.photos ?? [])];
+      if (Platform.OS !== 'web') pictures.unshift(await captureRef(card, { format: 'png', quality: 1 }));
+      if (!pictures.length) {
+        setToast('Take a screenshot of your keepsake card to keep it in your photos 📸');
+        return;
+      }
+      setToast(await saveToPhotos(pictures));
+    } catch {
+      setToast('Couldn’t save the pictures. Please try again.');
+    }
   };
 
   const share = async () => {
@@ -181,6 +197,13 @@ export default function KeepsakePage() {
           />
 
           <StoryButton label="📤 Share my keepsake" color={colors.berry} textColor={colors.white} onPress={share} />
+          <StoryButton
+            small
+            label={Platform.OS === 'web' ? '📥 Save my photos' : '📥 Save card and photos to my phone'}
+            color={colors.white}
+            onPress={save}
+            style={{ alignSelf: 'center' }}
+          />
           {toast ? (
             <Txt weight="medium" size={15} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
               {toast}

@@ -7,12 +7,39 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
+import { exportJourney, importJourney } from '@/lib/backup';
 import { dayCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 export default function Journey() {
-  const { keepsakes, session, ready } = useJourney();
+  const { keepsakes, session, ready, importKeepsakes } = useJourney();
   const [toast, setToast] = useState<string | null>(null);
+  const [backupMsg, setBackupMsg] = useState('');
+
+  const backup = async () => {
+    tap();
+    try {
+      setBackupMsg(await exportJourney(keepsakes));
+    } catch {
+      setBackupMsg('Something went wrong making the backup. Please try again.');
+    }
+  };
+
+  const restore = async () => {
+    tap();
+    try {
+      const list = await importJourney();
+      if (!list) return;
+      const added = importKeepsakes(list);
+      setBackupMsg(
+        added
+          ? `Welcome back! ${added} keepsake${added === 1 ? '' : 's'} restored. ✨`
+          : 'Those keepsakes are already here.',
+      );
+    } catch {
+      setBackupMsg('That file isn’t a dislizney journey backup.');
+    }
+  };
 
   if (!ready) return null;
 
@@ -115,6 +142,25 @@ export default function Journey() {
               </View>
             ))
           )}
+          <View style={[styles.forever, pageShadow]}>
+            <Txt weight="bold" size={18} style={{ textAlign: 'center' }}>
+              💾 Keep your journey forever
+            </Txt>
+            <Txt size={14} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+              Your keepsakes live only on this {Platform.OS === 'web' ? 'browser' : 'phone'}. Save a backup file
+              somewhere you keep things, like iCloud Drive, Google Drive or an email to yourself, and restore it on any
+              phone or browser. dislizney never uploads anything.
+            </Txt>
+            <View style={styles.foreverButtons}>
+              {keepsakes.length > 0 && <StoryButton small label="💾 Back up my journey" onPress={backup} />}
+              <StoryButton small label="📂 Restore a backup" color={colors.white} onPress={restore} />
+            </View>
+            {!!backupMsg && (
+              <Txt weight="medium" size={14} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+                {backupMsg}
+              </Txt>
+            )}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -201,6 +247,16 @@ const styles = StyleSheet.create({
     padding: 18,
   },
   dayHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' },
+  forever: {
+    marginTop: 24,
+    gap: 10,
+    backgroundColor: colors.white,
+    borderWidth: 3,
+    borderColor: colors.ink,
+    borderRadius: 22,
+    padding: 16,
+  },
+  foreverButtons: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 16 },
   polaroid: {
     width: '47%',

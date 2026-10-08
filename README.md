@@ -23,7 +23,7 @@ Built for kids, families and grown-ups who still feel like kids. Runs on iPhone,
 - **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
 - **Facts you can check**: every fact and trivia answer links to its source, and each ride page pulls a live summary from Wikipedia.
 - **Fun Fact Radar**: turn it on and the app pops a fun fact (a notification on phones, a banner everywhere) when you're near a ride. Location never leaves your device.
-- **Stars, progress and keepsakes**: saved on your device.
+- **Stars, progress and keepsakes**: saved on your device, never uploaded. To keep your journey forever, My Journey can save a backup file (photos included) to iCloud Drive, Google Drive or anywhere you like, and restore it on any phone or browser. Keepsake cards and photos can also be saved to your photo library (or downloaded in a browser).
 
 Magic Kingdom is the first storybook (30 rides and shows across 6 lands). EPCOT, Hollywood Studios and Animal Kingdom are on the shelf as "coming soon."
 
