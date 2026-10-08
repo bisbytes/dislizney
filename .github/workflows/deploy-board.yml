@@ -1,0 +1,52 @@
+# Deploys today's anonymous public scoreboard (board/) to Cloudflare Workers
+# on every push to main that touches it. Skips quietly until the secrets exist.
+#
+# One-time setup (repo Settings > Secrets and variables > Actions):
+#   CLOUDFLARE_API_TOKEN   a Cloudflare API token from the "Edit Cloudflare Workers" template
+#   CLOUDFLARE_ACCOUNT_ID  your Cloudflare account ID
+name: Deploy board
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'board/**'
+      - 'src/lib/board-names.ts'
+      - 'src/data/**'
+      - '.github/workflows/deploy-board.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_TOKEN == 'true'
+
+      - uses: actions/setup-node@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          node-version: 22
+
+      - run: npm install --no-audit --no-fund
+        if: env.HAS_TOKEN == 'true'
+        working-directory: board
+
+      - run: npx tsc --noEmit
+        if: env.HAS_TOKEN == 'true'
+        working-directory: board
+
+      - run: npx wrangler deploy
+        if: env.HAS_TOKEN == 'true'
+        working-directory: board
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - if: env.HAS_TOKEN != 'true'
+        run: echo "No CLOUDFLARE_API_TOKEN secret yet, so the board isn't deployed."

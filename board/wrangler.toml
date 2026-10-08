@@ -1,0 +1,16 @@
+# Today's public scoreboard. Deploy with: cd board && npm install && npx wrangler deploy
+name = "dislizney-board"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+[[durable_objects.bindings]]
+name = "BOARD"
+class_name = "ParkBoard"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ParkBoard"]
+
+# No request logs are kept, so not even IP addresses are stored.
+[observability]
+enabled = false

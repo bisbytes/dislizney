@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 
 import { makeBoardName, MAX_RIDE_SCORE, parkDay, randomBoardEmoji } from '@/lib/board-names';
 import type { Keepsake } from '@/lib/journey';
@@ -13,10 +12,11 @@ import type { Keepsake } from '@/lib/journey';
 export type BoardRow = { name: string; emoji: string; score: number; rides: number };
 export type Board = { park: string; day: string; players: number; rows: BoardRow[]; resetsInSeconds: number };
 
-// On the web the board lives next to the app. Phone builds need the deployed address.
-const BASE = process.env.EXPO_PUBLIC_BOARD_URL ?? (Platform.OS === 'web' ? '' : undefined);
+// The board is a small separate service (see board/). Builds find it through
+// EXPO_PUBLIC_BOARD_URL; without it the public board is simply switched off.
+const BASE = process.env.EXPO_PUBLIC_BOARD_URL?.replace(/\/$/, '');
 
-export const boardAvailable = BASE !== undefined;
+export const boardAvailable = !!BASE;
 
 const KEY = 'dislizney-board-names';
 type Names = { day: string; names: Record<string, { name: string; emoji: string }> };
