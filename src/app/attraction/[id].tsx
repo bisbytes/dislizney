@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
+import { BisFooter } from '@/components/bis';
 import { FactCard, WikiCard } from '@/components/cards';
 import { CrewPicker } from '@/components/crew-picker';
 import { LandScene } from '@/components/land-scene';
@@ -127,8 +128,8 @@ export default function RideIntro() {
               </Txt>
               <Txt size={15} style={{ textAlign: 'center' }}>
                 {posted?.open && posted.minutes > 0 && !touched
-                  ? `📖 The posted wait is ${posted.minutes} minutes, so we’ll fill it with trivia, games and challenges.`
-                  : `📖 We’ll fill about ${label(wait)} with trivia, games and challenges, and keep going if the line is slower.`}
+                  ? `📖 The posted wait is ${posted.minutes} minutes, so we’ll fill it with ${a.name} secrets, trivia and things to spot in this line.`
+                  : `📖 We’ll fill about ${label(wait)} with ${a.name} secrets, trivia and things to spot in this line, and keep going if it’s slower.`}
               </Txt>
               {changing ? (
                 <View style={styles.chips}>
@@ -206,6 +207,7 @@ export default function RideIntro() {
             Opened {a.opened}
             {posted ? ' · Posted wait times powered by Queue-Times.com' : ''}
           </Txt>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>

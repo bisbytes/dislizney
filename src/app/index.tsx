@@ -26,7 +26,7 @@ export default function Cover() {
           </View>
 
           <Txt size={18} color={colors.inkSoft} style={[styles.center, { marginBottom: 8 }]}>
-            Waiting in line? Open a storybook, pick your ride, and play trivia, I Spy and silly challenges until it’s
+            Waiting in line? Open a storybook, pick your ride, and discover its secrets: trivia, hidden details to spot in the queue and more, until it’s
             your turn.
           </Txt>
 

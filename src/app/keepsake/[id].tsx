@@ -6,6 +6,7 @@ import { Modal, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } f
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
+import { BisFooter } from '@/components/bis';
 import { LandScene } from '@/components/land-scene';
 import { StarBurst } from '@/components/star-burst';
 import { StoryButton, tap, Txt } from '@/components/ui';
@@ -255,6 +256,7 @@ export default function KeepsakePage() {
               Delete this keepsake
             </Txt>
           </Pressable>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>

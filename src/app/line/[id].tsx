@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { bisAppearsAfter, BisPop } from '@/components/bis';
+import { BisFooter, bisAppearsAfter, BisPop } from '@/components/bis';
 import { FactCard } from '@/components/cards';
 import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
@@ -233,7 +233,7 @@ export default function LineStory() {
           {outOfQuests && (
             <View style={[styles.end, pageShadow]}>
               <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
-                You played every quest we have! You’re a true line legend. 🏆
+                You played every {a.name} quest we have! You’re a true line legend. 🏆
               </Txt>
             </View>
           )}
@@ -249,6 +249,7 @@ export default function LineStory() {
               Left the line? End without saving
             </Txt>
           </Pressable>
+          <BisFooter />
         </View>
       </ScrollView>
 

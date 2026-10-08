@@ -1,4 +1,3 @@
-import { anywhereQuests } from '@/data/pools/anywhere';
 import type { AttractionRef } from '@/data/parks';
 import type { Quest } from '@/data/types';
 
@@ -46,8 +45,9 @@ function unseenFirst(items: PlannedQuest[], seen: Set<string>) {
 /**
  * The full ordered list of activities for one line. Everything is about the
  * ride you're in line for: its trivia and facts, mixed with I Spy, challenges
- * and riddles themed to it, and its photo spots spread along the way. Only
- * if a very long wait uses all of that do play-anywhere games fill in.
+ * and riddles anchored in it, and its photo spots spread along the way.
+ * Nothing from other rides or general games: if a very long wait uses it
+ * all, the story simply ends.
  */
 export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>): PlannedQuest[] {
   const rand = seeded(seed);
@@ -61,7 +61,8 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
       seen,
     );
 
-  const own = attraction.quests.filter((q) => !isPhoto(q));
+  const isSpy = (q: Quest) => q.type === 'spy';
+  const own = attraction.quests.filter((q) => !isPhoto(q) && !isSpy(q));
   // The first few quests are hand-picked openers; the rest are shuffled per visit.
   const openers = own.slice(0, 3);
   const rest = shuffle(own.slice(3), rand);
@@ -77,26 +78,21 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
     if (p < play.length) mixed.push(play[p++]);
   }
 
-  // Photo spots: this ride's first, spread along the line as it moves.
-  const photos = [
-    ...plan(attraction.quests.filter(isPhoto)),
-    ...plan(shuffle(anywhereQuests.filter(isPhoto), rand)).slice(0, 3),
-  ];
-  for (let i = 0; i < photos.length; i++) {
-    const at = 2 + i * 7;
-    if (at > mixed.length) break;
-    mixed.splice(at, 0, photos[i]);
-  }
+  // Look-around moments follow the queue: they're listed in the order you
+  // walk past things, so they stay in that order, spread evenly along the line,
+  // with the ride's photo spots tucked in between.
+  const lookAround: PlannedQuest[] = [];
+  const spies = attraction.quests.filter(isSpy);
+  const photos = plan(attraction.quests.filter(isPhoto));
+  const gap = Math.max(1, Math.round(spies.length / Math.max(1, photos.length)));
+  spies.forEach((quest, i) => {
+    lookAround.push({ quest });
+    if ((i + 1) % gap === 0 && photos.length) lookAround.push(photos.shift()!);
+  });
+  lookAround.push(...photos);
 
-  // Extra-long waits: play-anywhere games after the ride's own content.
-  mixed.push(
-    ...plan(
-      shuffle(
-        anywhereQuests.filter((q) => !isPhoto(q)),
-        rand,
-      ),
-    ),
-  );
+  const every = (mixed.length + lookAround.length) / Math.max(1, lookAround.length);
+  lookAround.forEach((pq, i) => mixed.splice(Math.min(mixed.length, Math.round(1 + i * every)), 0, pq));
 
   const used = new Set<string>();
   return mixed.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));

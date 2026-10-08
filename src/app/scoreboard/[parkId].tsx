@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BisFooter } from '@/components/bis';
 import { StoryButton, Txt } from '@/components/ui';
 import { getPark } from '@/data/parks';
 import { boardAvailable, fetchBoard, myBoardNames, type Board } from '@/lib/board';
@@ -113,6 +114,7 @@ export default function Scoreboard() {
             Only the made-up name, emoji and points are sent, and only when you choose to share. No accounts, no real
             names, no photos.
           </Txt>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>

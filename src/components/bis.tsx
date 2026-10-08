@@ -5,28 +5,41 @@ import { Txt } from '@/components/ui';
 import { BRAND } from '@/lib/brand';
 import { colors } from '@/theme';
 
-/** Bis, the Bis Bytes mascot, with her ear headband. Same drawing as assets/images/bis.svg. */
+/** Bis, the Bis Bytes mascot: red polka-dot bandana, blonde bangs, green shirt and a thumbs up. Same drawing as assets/images/bis.svg. */
 export const BIS_XML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <path d="M30 40 Q60 14 90 40" fill="none" stroke="#6E6E6E" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="27" cy="27" r="17" fill="#BDBDBD" stroke="#2B1B3F" stroke-width="3"/>
-  <circle cx="93" cy="27" r="17" fill="#BDBDBD" stroke="#2B1B3F" stroke-width="3"/>
-  <rect x="21" y="21" width="5" height="5" rx="1" fill="#FFFD54"/>
-  <rect x="28" y="27" width="4" height="4" rx="1" fill="#FFFFFF" opacity="0.8"/>
-  <rect x="94" y="21" width="5" height="5" rx="1" fill="#FFFD54"/>
-  <rect x="88" y="27" width="4" height="4" rx="1" fill="#FFFFFF" opacity="0.8"/>
-  <path d="M24 70 Q22 34 60 32 Q98 34 96 70 L96 92 Q90 98 84 92 L84 70 L36 70 L36 92 Q30 98 24 92 Z" fill="#4A2C2A"/>
-  <circle cx="60" cy="68" r="31" fill="#F2C29B" stroke="#2B1B3F" stroke-width="3"/>
-  <path d="M29 62 Q32 38 60 37 Q88 38 91 62 Q78 52 70 44 Q62 54 46 52 Q38 58 29 62 Z" fill="#4A2C2A"/>
-  <path d="M60 38 L46 30 Q42 38 46 46 Z" fill="#FFFD54" stroke="#2B1B3F" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M60 38 L74 30 Q78 38 74 46 Z" fill="#FFFD54" stroke="#2B1B3F" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="60" cy="38" r="4.5" fill="#E0457B" stroke="#2B1B3F" stroke-width="2.5"/>
-  <ellipse cx="48" cy="70" rx="4.2" ry="5.5" fill="#2B1B3F"/>
-  <ellipse cx="72" cy="70" rx="4.2" ry="5.5" fill="#2B1B3F"/>
-  <circle cx="49.5" cy="68" r="1.6" fill="#FFFFFF"/>
-  <circle cx="73.5" cy="68" r="1.6" fill="#FFFFFF"/>
-  <ellipse cx="40" cy="80" rx="5" ry="3" fill="#E0457B" opacity="0.35"/>
-  <ellipse cx="80" cy="80" rx="5" ry="3" fill="#E0457B" opacity="0.35"/>
-  <path d="M51 82 Q60 91 69 82" fill="none" stroke="#2B1B3F" stroke-width="3" stroke-linecap="round"/>
+  <g stroke="#1E1A1A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M18 118 Q20 92 42 88 L74 88 Q96 92 98 118 Z" fill="#2E9B4B"/>
+    <path d="M46 86 L58 98 L70 86" fill="#257F3D"/>
+    <path d="M46 86 L40 98 L56 97 Z M70 86 L76 98 L60 97 Z" fill="#2E9B4B"/>
+    <path d="M58 98 L58 118" fill="none" stroke-width="2.4"/>
+    <path d="M50 78 L50 88 Q58 93 66 88 L66 78 Z" fill="#F4C09A"/>
+    <circle cx="29" cy="58" r="6.5" fill="#F4C09A"/>
+    <circle cx="87" cy="58" r="6.5" fill="#F4C09A"/>
+    <path d="M30 52 Q30 84 58 84 Q86 84 86 52 Q86 30 58 30 Q30 30 30 52 Z" fill="#F4C09A"/>
+    <path d="M30 50 Q30 26 58 25 Q86 26 86 50 Q82 40 74 37 Q60 34 44 46 Q38 50 33 56 Z" fill="#F7CF4A"/>
+    <path d="M44 46 Q58 32 74 37 Q66 42 60 50 Q54 47 44 46 Z" fill="#F7CF4A"/>
+    <path d="M27 46 Q30 20 58 18 Q86 20 89 46 Q84 30 58 28 Q32 30 27 46 Z" fill="#D9342B"/>
+    <g transform="rotate(12 64 21) translate(4 0)"><path d="M60 20 Q50 6 38 10 Q36 20 52 24 Z" fill="#D9342B"/>
+    <path d="M62 20 Q74 4 86 10 Q88 20 70 24 Z" fill="#D9342B"/>
+    <circle cx="61" cy="21" r="5" fill="#C42A22"/></g>
+  </g>
+  <g fill="#FFFFFF">
+    <circle cx="40" cy="27" r="2"/><circle cx="52" cy="22" r="1.7"/><circle cx="74" cy="24" r="1.8"/><circle cx="83" cy="33" r="1.7"/>
+    <circle cx="33" cy="38" r="1.6"/><circle cx="49" cy="13" r="1.6"/><circle cx="82" cy="18" r="1.6"/>
+  </g>
+  <g stroke="#1E1A1A" stroke-width="2.6" stroke-linecap="round" fill="none">
+    <path d="M42 52 Q46 49 50 51"/><path d="M66 51 Q70 49 74 52"/>
+    <path d="M57 62 Q59 65 57 66"/>
+  </g>
+  <ellipse cx="46" cy="58" rx="3" ry="4" fill="#1E1A1A"/>
+  <ellipse cx="70" cy="58" rx="3" ry="4" fill="#1E1A1A"/>
+  <path d="M45 69 Q58 70 71 69 Q68 81 58 81 Q48 81 45 69 Z" fill="#B3262B" stroke="#1E1A1A" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M47 70 Q58 71.5 69 70 L68 73 Q58 75 48 73 Z" fill="#FFFFFF"/>
+  <path d="M52 78 Q58 75 64 78 Q61 80.5 58 80.5 Q55 80.5 52 78 Z" fill="#E86A6A"/>
+  <g stroke="#1E1A1A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="#F4C09A">
+    <path d="M86 118 L84 98 Q84 92 90 92 L94 92 L95 80 Q96 74 100 75 Q104 76 103 82 L102 92 L110 93 Q115 94 114 99 L112 112 Q111 118 105 118 Z"/>
+    <path d="M102 99 L113 100 M101 105 L112 106 M101 111 L110 112" fill="none" stroke-width="2.4"/>
+  </g>
 </svg>`;
 
 export function Bis({ size = 64 }: { size?: number }) {
