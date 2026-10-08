@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BisFooter } from '@/components/bis';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { exportJourney, importJourney } from '@/lib/backup';
@@ -37,7 +38,7 @@ export default function Journey() {
           : 'Those keepsakes are already here.',
       );
     } catch {
-      setBackupMsg('That file isn’t a dislizney journey backup.');
+      setBackupMsg('That file isn’t a Bis Bytes journey backup.');
     }
   };
 
@@ -62,7 +63,7 @@ export default function Journey() {
     const nav = Platform.OS === 'web' ? (globalThis.navigator as Navigator | undefined) : undefined;
     if (nav?.share) {
       try {
-        await nav.share({ title: 'My dislizney day', text });
+        await nav.share({ title: 'My Disney day', text });
       } catch {
         // Cancelled or blocked: the caption is already copied.
       }
@@ -150,7 +151,7 @@ export default function Journey() {
             <Txt size={14} color={colors.inkSoft} style={{ textAlign: 'center' }}>
               Your keepsakes live only on this {Platform.OS === 'web' ? 'browser' : 'phone'}. Save a backup file
               somewhere you keep things, like iCloud Drive, Google Drive or an email to yourself, and restore it on any
-              phone or browser. dislizney never uploads anything.
+              phone or browser. This app never uploads anything.
             </Txt>
             <View style={styles.foreverButtons}>
               {keepsakes.length > 0 && <StoryButton small label="💾 Back up my journey" onPress={backup} />}
@@ -162,6 +163,7 @@ export default function Journey() {
               </Txt>
             )}
           </View>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>

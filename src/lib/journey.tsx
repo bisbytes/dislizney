@@ -1,3 +1,4 @@
+import { BRAND } from '@/lib/brand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
@@ -247,9 +248,9 @@ function pickFor<T>(seed: string, options: T[]): T {
   return options[Math.abs(h) % options.length];
 }
 
-/** A few hashtags people actually use, with dislizney last. */
+/** A few hashtags people actually use, with #BisBytes last. */
 function rideTags(ride: string, park: string) {
-  return [hashtag(ride), hashtag(park), '#WaltDisneyWorld', '#dislizney'].join(' ');
+  return [hashtag(ride), hashtag(park), '#WaltDisneyWorld', BRAND.hashtag].join(' ');
 }
 
 /** The post caption for one ride, written like the rider is telling friends about it. */
@@ -308,7 +309,7 @@ export function dayCaption(keepsakes: Keepsake[]) {
   const rides = refs.map((x) => `${x.ref!.attraction.emoji} ${x.ref!.attraction.name}`);
   const parks = [...new Set(refs.map((x) => x.ref!.park.name))];
   const fave = refs.find((x) => x.k.rating === '🤩')?.ref?.attraction.name;
-  const tags = [...parks.map(hashtag), '#WaltDisneyWorld', '#dislizney'].join(' ');
+  const tags = [...parks.map(hashtag), '#WaltDisneyWorld', BRAND.hashtag].join(' ');
   return (
     `What a day at ${parks.join(' and ') || 'Walt Disney World'}! ${rides.length} ride${rides.length === 1 ? '' : 's'}:\n` +
     rides.join('\n') +

@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BisFooter } from '@/components/bis';
 import { Card, StoryButton, Txt } from '@/components/ui';
 import { useProgress } from '@/lib/progress';
 import { colors, MAX_WIDTH } from '@/theme';
@@ -21,11 +22,11 @@ export default function About() {
             </Txt>
           </Pressable>
           <Txt weight="bold" size={32}>
-            About dislizney
+            About Bis Bytes
           </Txt>
           <Card>
             <Txt size={17}>
-              dislizney turns waiting in line at Walt Disney World into a storybook adventure. Every ride has trivia, I
+              Bis Bytes turns waiting in line at Walt Disney World into a storybook adventure. Every ride has trivia, I
               Spy hunts, would-you-rathers and group challenges for kids and grown-ups alike.
             </Txt>
           </Card>
@@ -69,9 +70,9 @@ export default function About() {
             />
           )}
           <Txt size={12} color={colors.inkSoft} style={{ textAlign: 'center' }}>
-            An unofficial fan project. Not affiliated with or endorsed by The Walt Disney Company. All attraction names
-            are trademarks of their respective owners.
+            All attraction names are trademarks of their respective owners.
           </Txt>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>

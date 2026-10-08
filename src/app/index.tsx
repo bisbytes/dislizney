@@ -1,8 +1,8 @@
-import { Image } from 'expo-image';
 import { Link, router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BisFooter, BisLogo } from '@/components/bis';
 import { Twinkles } from '@/components/twinkles';
 import { Card, StoryButton, tap, Txt } from '@/components/ui';
 import { parks } from '@/data/parks';
@@ -22,17 +22,9 @@ export default function Cover() {
         <Twinkles />
         <View style={styles.inner}>
           <View style={[styles.book, pageShadow]}>
-            <Image
-              source={require('@/assets/images/logo.png')}
-              style={styles.logo}
-              contentFit="contain"
-              accessibilityLabel="disLIZney logo"
-            />
+            <BisLogo />
           </View>
 
-          <Txt weight="bold" size={30} style={styles.center}>
-            Line-time adventures
-          </Txt>
           <Txt size={18} color={colors.inkSoft} style={[styles.center, { marginBottom: 8 }]}>
             Waiting in line? Open a storybook, pick your ride, and play trivia, I Spy and silly challenges until it’s
             your turn.
@@ -99,12 +91,10 @@ export default function Cover() {
           />
           <Link href="/about" style={styles.about}>
             <Txt size={15} color={colors.inkSoft} style={{ textDecorationLine: 'underline' }}>
-              About dislizney · open source
+              About this app · open source
             </Txt>
           </Link>
-          <Txt size={12} color={colors.inkSoft} style={styles.center}>
-            An unofficial fan project. Not affiliated with or endorsed by The Walt Disney Company.
-          </Txt>
+          <BisFooter />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -125,7 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lemon,
     marginVertical: 12,
   },
-  logo: { width: '100%', height: '100%' },
   center: { textAlign: 'center' },
   shelfLabel: { letterSpacing: 2, marginTop: 14, textAlign: 'center' },
   parkCard: { flexDirection: 'row', alignItems: 'center', gap: 14 },

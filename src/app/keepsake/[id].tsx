@@ -343,7 +343,7 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
           </View>
         ) : null}
         <Txt weight="bold" size={13} color={c.ink} style={{ textAlign: 'center' }}>
-          #dislizney {hashtag(r.attraction.name)}
+          {hashtag(r.attraction.name)} #BisBytes
         </Txt>
       </View>
     </View>
