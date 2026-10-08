@@ -1,8 +1,8 @@
-# disLIZney
+# Bis Bytes
 
-**Line-time storybook adventures for Walt Disney World.**
+**Line-time storybook adventures for Walt Disney World.** Made by Bis Bytes, with Bis the mascot popping up along the way.
 
-Standing in line? Open dislizney, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
+Standing in line? Open the app, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
 
 Built for kids, families and grown-ups who still feel like kids. Runs on iPhone, Android and the web from one codebase.
 
@@ -87,4 +87,4 @@ All content lives in plain TypeScript files under `src/data/parks/`. See [CONTRI
 
 [MIT](LICENSE). Code and content contributions are welcome.
 
-dislizney is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.
+This app is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.

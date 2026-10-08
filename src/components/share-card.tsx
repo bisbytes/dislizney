@@ -73,7 +73,7 @@ export function ShareCard({ k, ref }: { k: Keepsake; ref?: Ref<View> }) {
         {r.park.name} · {date}
       </Txt>
       <Txt size={11} color={colors.paper} style={[styles.center, { opacity: 0.8 }]}>
-        disLIZney
+        Bis Bytes
       </Txt>
     </View>
   );

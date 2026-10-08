@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { bisAppearsAfter, BisPop } from '@/components/bis';
 import { FactCard } from '@/components/cards';
 import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
@@ -224,6 +225,7 @@ export default function LineStory() {
                   }
                 />
                 {i % 6 === 5 && fact && active.done[pq.quest.id] && <FactCard fact={fact} />}
+                {bisAppearsAfter(active.id, i) && <BisPop seed={`${active.id}:${i}`} />}
               </Fragment>
             );
           })}

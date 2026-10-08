@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- ear headband -->
+  <path d="M30 40 Q60 14 90 40" fill="none" stroke="#6E6E6E" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="27" cy="27" r="17" fill="#BDBDBD" stroke="#2B1B3F" stroke-width="3"/>
+  <circle cx="93" cy="27" r="17" fill="#BDBDBD" stroke="#2B1B3F" stroke-width="3"/>
+  <rect x="21" y="21" width="5" height="5" rx="1" fill="#FFFD54"/>
+  <rect x="28" y="27" width="4" height="4" rx="1" fill="#FFFFFF" opacity="0.8"/>
+  <rect x="94" y="21" width="5" height="5" rx="1" fill="#FFFD54"/>
+  <rect x="88" y="27" width="4" height="4" rx="1" fill="#FFFFFF" opacity="0.8"/>
+  <!-- hair back -->
+  <path d="M24 70 Q22 34 60 32 Q98 34 96 70 L96 92 Q90 98 84 92 L84 70 L36 70 L36 92 Q30 98 24 92 Z" fill="#4A2C2A"/>
+  <!-- face -->
+  <circle cx="60" cy="68" r="31" fill="#F2C29B" stroke="#2B1B3F" stroke-width="3"/>
+  <!-- bangs -->
+  <path d="M29 62 Q32 38 60 37 Q88 38 91 62 Q78 52 70 44 Q62 54 46 52 Q38 58 29 62 Z" fill="#4A2C2A"/>
+  <!-- bow -->
+  <path d="M60 38 L46 30 Q42 38 46 46 Z" fill="#FFFD54" stroke="#2B1B3F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M60 38 L74 30 Q78 38 74 46 Z" fill="#FFFD54" stroke="#2B1B3F" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="60" cy="38" r="4.5" fill="#E0457B" stroke="#2B1B3F" stroke-width="2.5"/>
+  <!-- eyes -->
+  <ellipse cx="48" cy="70" rx="4.2" ry="5.5" fill="#2B1B3F"/>
+  <ellipse cx="72" cy="70" rx="4.2" ry="5.5" fill="#2B1B3F"/>
+  <circle cx="49.5" cy="68" r="1.6" fill="#FFFFFF"/>
+  <circle cx="73.5" cy="68" r="1.6" fill="#FFFFFF"/>
+  <!-- cheeks -->
+  <ellipse cx="40" cy="80" rx="5" ry="3" fill="#E0457B" opacity="0.35"/>
+  <ellipse cx="80" cy="80" rx="5" ry="3" fill="#E0457B" opacity="0.35"/>
+  <!-- smile -->
+  <path d="M51 82 Q60 91 69 82" fill="none" stroke="#2B1B3F" stroke-width="3" stroke-linecap="round"/>
+</svg>
