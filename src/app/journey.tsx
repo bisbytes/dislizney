@@ -134,6 +134,7 @@ export default function Journey() {
                     Day caption and hashtags copied! 📋
                   </Txt>
                 )}
+                <CrewDay list={list} />
                 <View style={styles.grid}>
                   {list.map((k, i) => (
                     <Polaroid key={k.id} k={k} tilt={i % 2 ? 2 : -2} />
@@ -204,6 +205,40 @@ function Polaroid({ k, tilt }: { k: Keepsake; tilt: number }) {
   );
 }
 
+/** The day's team totals across every ride the crew played together. */
+function CrewDay({ list }: { list: Keepsake[] }) {
+  const totals = new Map<string, { name: string; emoji: string; score: number; rides: number }>();
+  for (const k of list) {
+    for (const p of k.team ?? []) {
+      const key = `${p.emoji}${p.name}`;
+      const t = totals.get(key) ?? { name: p.name, emoji: p.emoji, score: 0, rides: 0 };
+      totals.set(key, { ...t, score: t.score + p.score, rides: t.rides + 1 });
+    }
+  }
+  if (!totals.size) return null;
+  const rows = [...totals.values()].sort((a, b) => b.score - a.score);
+  return (
+    <View style={[styles.crewDay, pageShadow]} accessibilityLabel="Crew scorecard for the day">
+      <Txt weight="bold" size={16} style={{ textAlign: 'center' }}>
+        🏆 Today’s crew scorecard
+      </Txt>
+      {rows.map((p, i) => (
+        <View key={`${p.emoji}${p.name}`} style={styles.crewRow}>
+          <Txt weight={i === 0 ? 'bold' : 'medium'} size={16}>
+            {i === 0 && p.score > 0 ? '👑' : `${i + 1}.`} {p.emoji} {p.name}
+          </Txt>
+          <Txt size={14} color={colors.inkSoft}>
+            {p.rides} ride{p.rides === 1 ? '' : 's'} ·{' '}
+            <Txt weight="bold" size={16}>
+              {p.score}
+            </Txt>
+          </Txt>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 function Total({ big, small }: { big: string; small: string }) {
   return (
     <View style={{ alignItems: 'center', flex: 1 }}>
@@ -247,6 +282,15 @@ const styles = StyleSheet.create({
     padding: 18,
   },
   dayHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' },
+  crewDay: {
+    backgroundColor: colors.lemon,
+    borderWidth: 3,
+    borderColor: colors.ink,
+    borderRadius: 18,
+    padding: 12,
+    gap: 4,
+  },
+  crewRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   forever: {
     marginTop: 24,
     gap: 10,

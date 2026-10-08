@@ -12,6 +12,7 @@ import { StarBurst } from '@/components/star-burst';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { saveToPhotos } from '@/lib/backup';
+import { boardNamesFor, canShareToBoard, shareToBoard } from '@/lib/board';
 import { hashtag, keepsakeCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
 
@@ -31,10 +32,8 @@ export default function KeepsakePage() {
   const [toast, setToast] = useState('');
   const [party, setParty] = useState(0);
   const [fixing, setFixing] = useState(false);
-
-  useEffect(() => {
-    if (fresh) setParty(Date.now());
-  }, [fresh]);
+  // Right after boarding: a calm "phones away" page first, keepsake after the ride.
+  const [riding, setRiding] = useState(!!fresh);
 
   useEffect(() => {
     if (!toast) return;
@@ -106,6 +105,35 @@ export default function KeepsakePage() {
   };
 
   const saveNote = () => updateKeepsake(k.id, { note: note.trim() || undefined });
+
+  if (riding) {
+    const c = ref.land.colors;
+    return (
+      <SafeAreaView style={[styles.riding, { backgroundColor: c.ground }]}>
+        <View style={StyleSheet.absoluteFill} pointerEvents="none">
+          <LandScene landId={ref.land.id} opacity={0.15} />
+        </View>
+        <Txt size={84} style={{ lineHeight: 100 }}>
+          📵
+        </Txt>
+        <Txt weight="bold" size={30} color={colors.white} style={{ textAlign: 'center' }}>
+          Phones away, it’s ride time!
+        </Txt>
+        <Txt size={18} color={colors.paper} style={{ textAlign: 'center', maxWidth: 360 }}>
+          Tuck your phone in a pocket or bag, hold on, and keep your hands and feet inside. Enjoy every second of{' '}
+          {ref.attraction.name}! Your keepsake is saved and will be right here when you get off.
+        </Txt>
+        <StoryButton
+          label="🎉 We’re off the ride! Show my keepsake"
+          onPress={() => {
+            setRiding(false);
+            setParty(Date.now());
+          }}
+          style={{ marginTop: 12 }}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.paper }}>
@@ -204,6 +232,7 @@ export default function KeepsakePage() {
             onPress={save}
             style={{ alignSelf: 'center' }}
           />
+          <BoardShare k={k} onShared={() => updateKeepsake(k.id, { boardShared: true })} />
           {toast ? (
             <Txt weight="medium" size={15} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
               {toast}
@@ -296,6 +325,23 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
             {k.actualMinutes < k.waitMinutes ? ' · Faster than posted!' : ''}
           </Txt>
         )}
+        {!!k.team?.length && (
+          <View style={styles.team} accessibilityLabel="Team scoreboard">
+            <Txt weight="bold" size={12} color={colors.inkSoft} style={{ letterSpacing: 1, textAlign: 'center' }}>
+              🏆 TEAM SCOREBOARD
+            </Txt>
+            {k.team.map((p, i) => (
+              <View key={`${p.name}-${i}`} style={styles.teamRow}>
+                <Txt weight={i === 0 ? 'bold' : 'medium'} size={16}>
+                  {i === 0 && p.score > 0 ? '👑' : `${i + 1}.`} {p.emoji} {p.name}
+                </Txt>
+                <Txt weight="bold" size={16}>
+                  {p.score}
+                </Txt>
+              </View>
+            ))}
+          </View>
+        )}
         {note ? (
           <Txt weight="medium" size={18} color={c.ink} style={{ textAlign: 'center' }}>
             “{note}”
@@ -318,6 +364,80 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
           #dislizney {hashtag(r.attraction.name)}
         </Txt>
       </View>
+    </View>
+  );
+}
+
+/** Opt-in: puts this ride's points on today's public board under made-up names. */
+function BoardShare({ k, onShared }: { k: Keepsake; onShared: () => void }) {
+  const [names, setNames] = useState<{ name: string; emoji: string; nickname?: string; score: number }[]>();
+  const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
+  const r = getAttraction(k.attractionId)!;
+
+  if (k.boardShared) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => router.push({ pathname: '/scoreboard/[parkId]', params: { parkId: r.park.id } })}
+        style={{ alignSelf: 'center' }}>
+        <Txt weight="medium" size={14} style={{ textDecorationLine: 'underline' }}>
+          🏆 On today’s public board. See the scores →
+        </Txt>
+      </Pressable>
+    );
+  }
+  if (!canShareToBoard(k)) return null;
+
+  const send = async () => {
+    setBusy(true);
+    try {
+      await shareToBoard(k);
+      onShared();
+      setMsg('');
+    } catch {
+      setMsg('We couldn’t reach the board. Check your connection and try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <View style={styles.board}>
+      {!names ? (
+        <StoryButton
+          small
+          label="🏆 Share to today’s public board"
+          color={colors.lemon}
+          onPress={async () => setNames(await boardNamesFor(k))}
+          style={{ alignSelf: 'center' }}
+        />
+      ) : (
+        <>
+          <Txt weight="bold" size={16} style={{ textAlign: 'center' }}>
+            🏆 Today’s public board
+          </Txt>
+          <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center' }}>
+            Everyone at the park can see the board, so you’ll show up with a made-up name. Only the name, emoji and
+            points are sent. It all erases tonight.
+          </Txt>
+          {names.map((n) => (
+            <Txt key={n.name} weight="medium" size={15} style={{ textAlign: 'center' }}>
+              {n.nickname ? `${n.nickname} → ` : 'You → '}
+              {n.emoji} {n.name} · {n.score} pts
+            </Txt>
+          ))}
+          <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center' }}>
+            <StoryButton small label={busy ? 'Sharing…' : 'Share it'} disabled={busy} onPress={send} />
+            <StoryButton small label="Not now" color={colors.white} onPress={() => setNames(undefined)} />
+          </View>
+        </>
+      )}
+      {!!msg && (
+        <Txt size={14} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+          {msg}
+        </Txt>
+      )}
     </View>
   );
 }
@@ -443,6 +563,24 @@ const styles = StyleSheet.create({
     borderColor: colors.ink,
     paddingVertical: 8,
   },
+  board: {
+    gap: 8,
+    backgroundColor: colors.white,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: colors.ink,
+    padding: 12,
+  },
+  team: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.ink,
+    padding: 12,
+    gap: 4,
+  },
+  teamRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   fact: { backgroundColor: colors.lemon, borderRadius: 16, borderWidth: 2, borderColor: colors.ink, padding: 12 },
+  riding: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24, overflow: 'hidden' },
   missing: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24 },
 });

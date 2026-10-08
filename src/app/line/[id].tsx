@@ -15,7 +15,7 @@ import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
 import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
-import { photoCaption, useJourney } from '@/lib/journey';
+import { photoCaption, useJourney, type Player } from '@/lib/journey';
 import { buildQueue, countForMinutes } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
@@ -79,6 +79,19 @@ export default function LineStory() {
   const stars = Object.values(active.done).filter((d) => d.star).length;
   const outOfQuests = total >= queue.length;
 
+  // Team mode: fact questions go around the group one player at a time;
+  // look-around games and photo spots are for everyone.
+  const players = active.players ?? [];
+  const team = players.length > 1;
+  let turnNo = 0;
+  const turns = list.map((pq): Player[] => {
+    if (!team) return [];
+    if (TEAM_QUESTS.has(pq.quest.type)) return players;
+    return [players[turnNo++ % players.length]];
+  });
+  const scores = active.scores ?? {};
+  const best = Math.max(0, ...players.map((p) => scores[p.id] ?? 0));
+
   // Everything is open to play in any order. Scrolling near the bottom adds
   // more, so the story never runs out while you're still in line.
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -119,6 +132,24 @@ export default function LineStory() {
             ⭐ {stars}
           </Txt>
         </View>
+        {team && (
+          <View style={styles.topInner} accessibilityLabel="Scoreboard">
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scores}>
+              {players.map((p) => {
+                const n = scores[p.id] ?? 0;
+                const lead = n > 0 && n === best;
+                return (
+                  <View key={p.id} style={[styles.score, lead && { backgroundColor: colors.lemon }]}>
+                    <Txt weight="bold" size={14}>
+                      {lead ? '👑 ' : ''}
+                      {p.emoji} {p.name} {n}
+                    </Txt>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
         <View style={styles.topInner}>
           <View style={styles.timerTrack}>
             <View style={[styles.timerFill, { width: `${pct * 100}%`, backgroundColor: c.accent }]} />
@@ -140,8 +171,14 @@ export default function LineStory() {
               <LandScene landId={land.id} color={c.ground} opacity={0.12} />
             </View>
             <Txt weight="medium" size={19} style={{ textAlign: 'center' }}>
-              Once upon a time, a brave group joined the line for {a.name}. Their adventure begins now! Scroll down and
-              play your way to the front.
+              Once upon a time,{' '}
+              {team
+                ? players
+                    .map((p) => p.name)
+                    .join(', ')
+                    .replace(/, ([^,]*)$/, ' and $1')
+                : 'a brave group'}{' '}
+              joined the line for {a.name}. Their adventure begins now! Scroll down and play your way to the front.
             </Txt>
           </View>
 
@@ -166,12 +203,24 @@ export default function LineStory() {
                     updateSession((s) => ({ ...s, photos: { ...(s.photos ?? {}), [pq.quest.id]: uri } }))
                   }
                   shareCaption={photoCaption(a.id)}
+                  turnLabel={
+                    team
+                      ? turns[i].length > 1
+                        ? '🎉 Everyone!'
+                        : `${turns[i][0].emoji} ${turns[i][0].name}’s turn!`
+                      : undefined
+                  }
                   onFinish={(star, pick) =>
-                    updateSession((s) => ({
-                      ...s,
-                      done: { ...s.done, [pq.quest.id]: { star } },
-                      picks: pick ? [...s.picks, pick] : s.picks,
-                    }))
+                    updateSession((s) => {
+                      const sc = { ...(s.scores ?? {}) };
+                      if (star && !s.done[pq.quest.id]) for (const p of turns[i]) sc[p.id] = (sc[p.id] ?? 0) + 1;
+                      return {
+                        ...s,
+                        done: { ...s.done, [pq.quest.id]: { star } },
+                        picks: pick ? [...s.picks, pick] : s.picks,
+                        scores: team ? sc : s.scores,
+                      };
+                    })
                   }
                 />
                 {i % 6 === 5 && fact && active.done[pq.quest.id] && <FactCard fact={fact} />}
@@ -214,7 +263,19 @@ export default function LineStory() {
   );
 }
 
+/** Quests the whole group does together, so everyone scores. */
+const TEAM_QUESTS = new Set(['spy', 'challenge', 'photo', 'wyr']);
+
 const styles = StyleSheet.create({
+  scores: { gap: 6, paddingRight: 8 },
+  score: {
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    borderColor: colors.ink,
+    borderRadius: 999,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+  },
   topBar: { paddingHorizontal: 16, paddingBottom: 10, gap: 8, alignItems: 'center' },
   topInner: { width: '100%', maxWidth: MAX_WIDTH, flexDirection: 'row', alignItems: 'center', gap: 10 },
   timerTrack: {

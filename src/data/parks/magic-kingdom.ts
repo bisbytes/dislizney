@@ -55,6 +55,12 @@ export const magicKingdom: Park = {
       attractions: [
         {
           id: 'wdw-railroad',
+          closure: {
+            from: '2026-09-28',
+            until: '2026-10-30',
+            note: 'Closed for refurbishment, back October 30, 2026.',
+            source: 'https://mickeyvisit.com/disney-world-closing-magic-kingdom-rides-refurbishment-august-31-2026/',
+          },
           name: 'Walt Disney World Railroad',
           emoji: '🚂',
           opened: 'October 1, 1971',
@@ -639,6 +645,11 @@ export const magicKingdom: Park = {
         },
         {
           id: 'tianas-bayou',
+          closure: {
+            from: '2026-11-02',
+            note: 'Closed for refurbishment from November 2, 2026. No reopening date yet.',
+            source: 'https://mickeyvisit.com/disney-world-closing-magic-kingdom-rides-refurbishment-august-31-2026/',
+          },
           name: 'Tiana’s Bayou Adventure',
           emoji: '🐸',
           opened: 'June 28, 2024',
@@ -1313,7 +1324,7 @@ export const magicKingdom: Park = {
             {
               type: 'photo',
               id: 'mad-tea-party-photo-1',
-              prompt: 'Spot the sleepy Dormouse popping out of the giant teapot and snap a photo!',
+              prompt: 'From the line, spot the sleepy Dormouse popping out of the giant teapot and snap a photo!',
               tip: 'Look at the middle of the ride while you wait.',
               source: SRC.teacups,
             },
@@ -1373,14 +1384,15 @@ export const magicKingdom: Park = {
             {
               type: 'photo',
               id: 'carrousel-photo-1',
-              prompt: 'Try to spot the one horse with a golden bow on its tail and snap it!',
+              prompt: 'From the line, try to spot the one horse with a golden bow on its tail and snap it!',
               tip: 'It’s in the second row of horses. Watch as they go around.',
               source: SRC.carrousel,
             },
             {
               type: 'photo',
               id: 'carrousel-photo-2',
-              prompt: 'Look up and snap a photo of a painted Cinderella scene at the top of the carrousel!',
+              prompt:
+                'From the line, look up and snap a photo of a painted Cinderella scene at the top of the carrousel!',
               source: SRC.carrousel,
             },
             {
@@ -1546,10 +1558,10 @@ export const magicKingdom: Park = {
               prompt: 'Bounce like Tigger five times without stopping. Hoo-hoo-hoo-hoo!',
             },
             {
-              type: 'spy',
+              type: 'challenge',
               id: 'wp-spy',
-              prompt: 'On the ride, find a honey pot that has eyes and a mouth.',
-              hint: 'They show up in the heffalumps and woozles room.',
+              prompt:
+                'Pick secret jobs for the ride: one person looks for Tigger, one for Piglet, one for Eeyore. Phones away, eyes only, and report back after!',
             },
           ],
         },
@@ -1854,7 +1866,7 @@ export const magicKingdom: Park = {
             {
               type: 'photo',
               id: 'buzz-lightyear-photo-1',
-              prompt: 'Salute Buzz Lightyear and snap a photo of him during your mission briefing!',
+              prompt: 'Salute Buzz Lightyear and snap a photo of him during your mission briefing in the line!',
               tip: 'He briefs recruits near the end of the queue.',
               source: SRC.buzz,
             },
@@ -1920,7 +1932,8 @@ export const magicKingdom: Park = {
             {
               type: 'photo',
               id: 'peoplemover-photo-1',
-              prompt: 'Snap a photo of the moving ramp that carries you up to the trains!',
+              prompt:
+                'From the line, before you step on, snap a photo of the moving ramp that carries you up to the trains. Then phones away and hold the handrail!',
               tip: 'Right after the queue, before boarding.',
               source: SRC.peoplemover,
             },
@@ -1981,7 +1994,7 @@ export const magicKingdom: Park = {
             {
               type: 'photo',
               id: 'astro-orbiter-photo-1',
-              prompt: 'Snap a photo of the planets as the rockets zoom between them!',
+              prompt: 'While you wait, snap a photo of the planets as the rockets zoom between them!',
               source: SRC.orbiter,
             },
             {
@@ -2024,6 +2037,12 @@ export const magicKingdom: Park = {
         },
         {
           id: 'carousel-of-progress',
+          closure: {
+            from: '2026-07-06',
+            note: 'Closed for a big update, expected back in late spring 2027.',
+            source:
+              'https://blogmickey.com/2026/08/voice-actors-announced-for-new-carousel-of-progress-opening-late-spring-2027/',
+          },
           name: 'Walt Disney’s Carousel of Progress',
           emoji: '🏡',
           opened: 'January 15, 1975',

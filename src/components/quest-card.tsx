@@ -47,6 +47,7 @@ export function QuestCard({
   photo,
   onPhoto,
   shareCaption,
+  turnLabel,
 }: {
   quest: Quest;
   step: number;
@@ -60,6 +61,8 @@ export function QuestCard({
   photo?: string;
   onPhoto?: (uri: string) => void;
   shareCaption?: string;
+  /** Team mode: whose turn it is, e.g. "🦁 Leo's turn!" or "Everyone!". */
+  turnLabel?: string;
 }) {
   const { complete } = useProgress();
   const { play } = useSound();
@@ -91,6 +94,13 @@ export function QuestCard({
             </Txt>
           )}
         </View>
+        {turnLabel && !finished && (
+          <View style={[styles.turn, { borderColor: accent }]} accessibilityLiveRegion="polite">
+            <Txt weight="bold" size={14} numberOfLines={1}>
+              {turnLabel}
+            </Txt>
+          </View>
+        )}
       </View>
 
       {locked ? (
@@ -552,6 +562,9 @@ function PhotoBody({
           📍 {quest.tip}
         </Txt>
       )}
+      <Txt size={13} color={colors.inkSoft} style={{ marginTop: 4 }}>
+        📵 Photos in the line only. Phones away once you board!
+      </Txt>
       {photo ? (
         <View style={styles.polaroid}>
           <Image source={{ uri: photo }} style={styles.photo} contentFit="cover" accessibilityLabel="Your photo" />
@@ -611,6 +624,14 @@ const styles = StyleSheet.create({
   photoActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12, justifyContent: 'center' },
   card: { overflow: 'visible' },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+  turn: {
+    backgroundColor: colors.lemon,
+    borderWidth: 2,
+    borderRadius: 999,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    maxWidth: '55%',
+  },
   step: {
     width: 32,
     height: 32,

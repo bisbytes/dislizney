@@ -5,10 +5,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { FactCard, WikiCard } from '@/components/cards';
+import { CrewPicker } from '@/components/crew-picker';
 import { LandScene } from '@/components/land-scene';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { WaitBadge } from '@/components/wait-badge';
-import { getAttraction } from '@/data/parks';
+import { getAttraction, isClosedForRefurb } from '@/data/parks';
 import { useJourney } from '@/lib/journey';
 import { fetchPostedWaits, findWait, type PostedWait } from '@/lib/waits';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -18,7 +19,8 @@ const WAIT_CHOICES = [15, 30, 45, 60, 75, 90, 120];
 export default function RideIntro() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const ref = getAttraction(id);
-  const { session, keepsakes, startLine, cancelLine } = useJourney();
+  const { session, keepsakes, crew = [], startLine, cancelLine, saveCrew } = useJourney();
+  const [playing, setPlaying] = useState<string[]>(() => crew.map((p) => p.id));
   const [posted, setPosted] = useState<PostedWait>();
   const [wait, setWait] = useState(30);
   const [touched, setTouched] = useState(false);
@@ -55,7 +57,8 @@ export default function RideIntro() {
 
   const start = () => {
     if (session && !here) cancelLine();
-    startLine(a.id, wait);
+    const players = crew.filter((p) => playing.includes(p.id));
+    startLine(a.id, wait, players.length > 1 ? players : undefined);
     router.replace({ pathname: '/line/[id]', params: { id: a.id } });
   };
 
@@ -100,6 +103,13 @@ export default function RideIntro() {
         </Svg>
 
         <View style={[styles.page, { paddingHorizontal: 16, gap: 14 }]}>
+          {isClosedForRefurb(a) && a.closure && (
+            <View style={[styles.box, pageShadow, { backgroundColor: colors.lemon }]}>
+              <Txt weight="bold" size={17} style={{ textAlign: 'center' }}>
+                🚧 {a.closure.note}
+              </Txt>
+            </View>
+          )}
           {here ? (
             <View style={[styles.box, pageShadow, { backgroundColor: colors.lemon }]}>
               <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
@@ -156,7 +166,22 @@ export default function RideIntro() {
                   This ends your line story for {elsewhere.name}.
                 </Txt>
               )}
-              <StoryButton label="✨ Start my line story" onPress={start} />
+              <CrewPicker
+                crew={crew}
+                playing={playing}
+                onChange={(next, on) => {
+                  saveCrew(next);
+                  setPlaying(on);
+                }}
+              />
+              <StoryButton
+                label={
+                  crew.filter((p) => playing.includes(p.id)).length > 1
+                    ? '✨ Start our team story'
+                    : '✨ Start my line story'
+                }
+                onPress={start}
+              />
             </View>
           )}
 

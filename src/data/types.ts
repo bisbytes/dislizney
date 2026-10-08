@@ -136,6 +136,12 @@ export type Attraction = {
   blurb: string;
   facts: Fact[];
   quests: Quest[];
+  /**
+   * A long, announced closure (refurbishment). The ride is hidden from the
+   * picker between these dates (YYYY-MM-DD; no `until` means no reopening
+   * date yet). Day-to-day breakdowns come from the live wait feed instead.
+   */
+  closure?: { from?: string; until?: string; note: string; source: string };
 };
 
 export type Land = {

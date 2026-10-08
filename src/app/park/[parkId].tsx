@@ -16,7 +16,7 @@ import { LandBar } from '@/components/land-bar';
 import { LandScene } from '@/components/land-scene';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { WaitBadge } from '@/components/wait-badge';
-import { getPark } from '@/data/parks';
+import { getPark, isClosedForRefurb } from '@/data/parks';
 import type { Attraction, Land } from '@/data/types';
 import { useJourney } from '@/lib/journey';
 import { useRadar } from '@/lib/radar';
@@ -52,8 +52,16 @@ export default function PickYourRide() {
   }
 
   const visited = new Set(keepsakes.map((k) => k.attractionId));
+  // While the park is open, rides the live feed says aren't running are hidden.
+  // Before opening and after close everything shows, so families can plan ahead.
+  const parkOpen = [...waits.values()].some((w) => w.open);
+  const isRunning = (a: Attraction) => !isClosedForRefurb(a) && (!parkOpen || findWait(waits, a.name)?.open !== false);
+  const running: Land[] = park.lands
+    .map((l) => ({ ...l, attractions: l.attractions.filter(isRunning) }))
+    .filter((l) => l.attractions.length > 0);
+  const hidden = park.lands.flatMap((l) => l.attractions).filter((a) => !isRunning(a));
   const q = query.trim().toLowerCase();
-  const lands: Land[] = park.lands.map((l) => ({
+  const lands: Land[] = running.map((l) => ({
     ...l,
     attractions: q ? l.attractions.filter((a) => a.name.toLowerCase().includes(q)) : l.attractions,
   }));
@@ -90,11 +98,21 @@ export default function PickYourRide() {
                 ← Shelf
               </Txt>
             </Pressable>
-            <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.push('/journey')}>
-              <Txt weight="bold" size={16}>
-                📖 My Journey
-              </Txt>
-            </Pressable>
+            <View style={{ flexDirection: 'row', gap: 14 }}>
+              <Pressable
+                accessibilityRole="button"
+                hitSlop={12}
+                onPress={() => router.push({ pathname: '/scoreboard/[parkId]', params: { parkId: park.id } })}>
+                <Txt weight="bold" size={16}>
+                  🏆 Today
+                </Txt>
+              </Pressable>
+              <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.push('/journey')}>
+                <Txt weight="bold" size={16}>
+                  📖 My Journey
+                </Txt>
+              </Pressable>
+            </View>
           </View>
 
           <View style={styles.title}>
@@ -141,7 +159,7 @@ export default function PickYourRide() {
 
         <View style={{ width: '100%' }} onLayout={(e) => (barHeight.current = e.nativeEvent.layout.height)}>
           <LandBar
-            lands={park.lands}
+            lands={running}
             active={active}
             onPick={jumpTo}
             subtitle={(land) => {
@@ -182,6 +200,11 @@ export default function PickYourRide() {
               </View>
             </View>
           ))}
+          {hidden.length > 0 && (
+            <Txt size={13} color={colors.inkSoft} style={{ textAlign: 'center', marginTop: 12 }}>
+              🚧 Not running right now, so hidden for today: {hidden.map((a) => a.name).join(', ')}.
+            </Txt>
+          )}
           {waits.size > 0 && (
             <Txt size={12} color={colors.inkSoft} style={{ textAlign: 'center', marginTop: 12 }}>
               Posted wait times powered by Queue-Times.com

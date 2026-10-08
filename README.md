@@ -15,9 +15,12 @@ Built for kids, families and grown-ups who still feel like kids. Runs on iPhone,
 
 ## What's inside
 
-- **Pick your ride**: every ride in the park, grouped by land, with the posted wait time in big colored badges (green for short, gold for medium, pink for long). Waits come from [Queue-Times.com](https://queue-times.com).
-- **Stories sized to your wait**: the app uses the posted wait (or one you pick if the sign says something different) and fills it with one continuous scroll of quests. It starts with quests about your ride, then mixes in trivia about nearby rides and the park with play-anywhere games. Every quest is open to play in any order, and more keep appearing as you scroll.
+- **Pick your ride**: every ride in the park, grouped by land, with the posted wait time in big colored badges (green for short, gold for medium, pink for long). Waits come from [Queue-Times.com](https://queue-times.com). While the park is open, rides the live feed says aren't running are hidden, and so are rides closed for an announced refurbishment (`closure` in the park data).
+- **Stories sized to your wait**: the app uses the posted wait (or one you pick if the sign says something different) and fills it with one continuous scroll of quests. Every quest is about the ride you're in line for (about 30 per ride); play-anywhere games only appear after a very long wait uses them all up. Every quest is open to play in any order, and more keep appearing as you scroll.
 - **Photo spots**: as the line moves, the story points you to real things in the queue worth a picture (the Haunted Mansion's musical crypt, the Darling house in Peter Pan's queue, TRON's color-changing canopy and more, each with a source). Photos are saved on your device, added to the ride's keepsake, and can be shared straight from the line with hashtags.
+- **Team play and scoreboards**: add your crew on the ride page (a nickname and an emoji, kept on the phone) and take turns. Trivia goes around the group one player at a time, while I Spy, challenges and photo spots are for everyone. A live scoreboard sits at the top of the line story, the winner gets a 👑 on the keepsake, and My Journey adds up the crew's scores for the whole day.
+- **Today's public board (opt in)**: after a ride you can share its points to an anonymous park-wide board. The app makes up a name like "Brave Tiki 42" (the server only accepts names built from its word lists), sends only that name, an emoji and the points, and the board erases itself at 3am Orlando time. Real nicknames, photos and locations never leave the phone.
+- **Phones away on the ride**: photo spots are all in the queue, and tapping "We're boarding!" shows a "Phones away, it's ride time!" screen until you're off the ride.
 - **Nine quest types**: Trivia, Fact or Fiction, Guess the Number, Put in Order, Emoji Riddles, I Spy, Would You Rather, Group Challenges and Photo Spots.
 - **Keepsakes and My Journey**: tap "We're boarding!" and the ride becomes a keepsake card with your wait, stars, a fact you learned, a rating and a memory. Share it as a picture with a caption and hashtags (#dislizney #LineTimeAdventures and the park and ride), or share your whole day from the My Journey scrapbook.
 - **Storybook flair**: each land has its own illustrated skyline, with sound effects, star bursts and a fanfare when you finish a ride. Sounds can be muted from the cover and respect the phone's silent switch.
@@ -44,6 +47,17 @@ To build a web version you can host anywhere:
 npx expo export --platform web   # outputs to dist/
 ```
 
+### Hosting the public board
+
+The board is an Expo Router API route (`src/app/api/board+api.ts`), so the web build uses `web.output: "server"` and deploys to [EAS Hosting](https://docs.expo.dev/eas/hosting/get-started/):
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy
+```
+
+Scores are kept in an [Upstash Redis](https://upstash.com) database with keys that expire each night. Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` as EAS Hosting environment variables. Without them the board runs in memory, which is fine for local testing. Phone builds find the board through `EXPO_PUBLIC_BOARD_URL` (your deployed address); without it the board is simply switched off in the app.
+
 ## Project layout
 
 ```
@@ -55,10 +69,13 @@ src/
     line/[id].tsx      the line story, sized to the wait
     keepsake/[id].tsx  a shareable keepsake for one ride
     journey.tsx        the My Journey scrapbook
+    scoreboard/        today's anonymous public board
+    api/board+api.ts   the board's server route
     about.tsx
   data/
     types.ts           the content model (Park → Land → Attraction → Quest)
     parks/             one file per park, registered in parks/index.ts
+      mk-extra/        more sourced facts and quests for each Magic Kingdom ride
     pools/             park-wide and play-anywhere quests for long waits
   components/          storybook UI pieces
   lib/                 story planner, journey, wait times, progress, radar, Wikipedia

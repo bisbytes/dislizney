@@ -236,6 +236,6 @@ export const anywhereQuests: Quest[] = [
   {
     type: 'photo',
     id: 'any-photo-10',
-    prompt: 'Snap one last photo right before you board. Big smiles!',
+    prompt: 'Snap one last line photo before you reach the front. Big smiles! Then phones away, it’s almost ride time.',
   },
 ];

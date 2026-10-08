@@ -38,72 +38,38 @@ function shuffle<T>(items: T[], rand: () => number): T[] {
   return out;
 }
 
-/** Takes one item from each list in turn, so neighboring rides alternate. */
-function roundRobin<T>(lists: T[][]): T[] {
-  const out: T[] = [];
-  const max = Math.max(0, ...lists.map((l) => l.length));
-  for (let i = 0; i < max; i++) for (const l of lists) if (l[i]) out.push(l[i]);
-  return out;
-}
-
 /** Unseen quests first, keeping relative order otherwise. */
 function unseenFirst(items: PlannedQuest[], seen: Set<string>) {
   return [...items.filter((p) => !seen.has(p.quest.id)), ...items.filter((p) => seen.has(p.quest.id))];
 }
 
 /**
- * The full ordered list of activities for one line: this ride's quests first,
- * then trivia about neighboring rides in the same land and the rest of the
- * park, mixed with play-anywhere games so it never feels like a quiz.
+ * The full ordered list of activities for one line. Everything is about the
+ * ride you're in line for: its trivia and facts, mixed with I Spy, challenges
+ * and riddles themed to it, and its photo spots spread along the way. Only
+ * if a very long wait uses all of that do play-anywhere games fill in.
  */
 export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>): PlannedQuest[] {
   const rand = seeded(seed);
-  const { park, land, attraction } = ref;
-
-  // Photo spots are pulled out and spread along the line, so there's a new
-  // one to look for every few minutes as the queue moves.
+  const { attraction } = ref;
   const isPhoto = (q: Quest) => q.type === 'photo';
-  const own: PlannedQuest[] = attraction.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest }));
-  const photos: PlannedQuest[] = [
-    ...attraction.quests.filter(isPhoto).map((quest) => ({ quest })),
-    ...unseenFirst(
-      shuffle(anywhereQuests.filter(isPhoto), rand).map((quest) => ({ quest })),
+  const isFact = (q: Quest) =>
+    q.type === 'trivia' || q.type === 'truefalse' || q.type === 'guess' || q.type === 'order';
+  const plan = (qs: Quest[]) =>
+    unseenFirst(
+      qs.map((quest) => ({ quest })),
       seen,
-    ),
-  ];
+    );
 
-  const neighbors = unseenFirst(
-    roundRobin(
-      shuffle(
-        land.attractions.filter((a) => a.id !== attraction.id),
-        rand,
-      ).map((a) => a.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest, from: a.name }))),
-    ),
-    seen,
-  );
+  const own = attraction.quests.filter((q) => !isPhoto(q));
+  // The first few quests are hand-picked openers; the rest are shuffled per visit.
+  const openers = own.slice(0, 3);
+  const rest = shuffle(own.slice(3), rand);
+  const facts = plan(rest.filter(isFact));
+  const play = plan(rest.filter((q) => !isFact(q)));
 
-  const elsewhere = unseenFirst(
-    roundRobin([
-      ...shuffle(
-        park.lands.filter((l) => l.id !== land.id).flatMap((l) => l.attractions),
-        rand,
-      ).map((a) => a.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest, from: a.name }))),
-      (park.parkQuests ?? []).map((quest) => ({ quest, from: park.name })),
-    ]),
-    seen,
-  );
-
-  const facts = [...neighbors, ...elsewhere];
-  const play = unseenFirst(
-    shuffle(
-      anywhereQuests.filter((q) => !isPhoto(q)),
-      rand,
-    ).map((quest) => ({ quest })),
-    seen,
-  );
-
-  // After the ride's own quests: two facts, then one game, repeating.
-  const mixed: PlannedQuest[] = [...own];
+  // Two facts, then one game, repeating.
+  const mixed: PlannedQuest[] = openers.map((quest) => ({ quest }));
   let f = 0;
   let p = 0;
   while (f < facts.length || p < play.length) {
@@ -111,12 +77,26 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
     if (p < play.length) mixed.push(play[p++]);
   }
 
-  // A photo spot early on, then one every six activities.
+  // Photo spots: this ride's first, spread along the line as it moves.
+  const photos = [
+    ...plan(attraction.quests.filter(isPhoto)),
+    ...plan(shuffle(anywhereQuests.filter(isPhoto), rand)).slice(0, 3),
+  ];
   for (let i = 0; i < photos.length; i++) {
     const at = 2 + i * 7;
     if (at > mixed.length) break;
     mixed.splice(at, 0, photos[i]);
   }
+
+  // Extra-long waits: play-anywhere games after the ride's own content.
+  mixed.push(
+    ...plan(
+      shuffle(
+        anywhereQuests.filter((q) => !isPhoto(q)),
+        rand,
+      ),
+    ),
+  );
 
   const used = new Set<string>();
   return mixed.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));

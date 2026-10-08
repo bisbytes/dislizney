@@ -5,6 +5,9 @@ import { getAttraction } from '@/data/parks';
 import { keepBrowserData } from '@/lib/backup';
 import { deletePhotos } from '@/lib/photos';
 
+/** Someone playing in team mode. Just a nickname and an emoji, kept on this device only. */
+export type Player = { id: string; name: string; emoji: string };
+
 /** One line in progress. Only one at a time: you can only stand in one line! */
 export type LineSession = {
   id: string;
@@ -18,6 +21,9 @@ export type LineSession = {
   picks: string[];
   /** Photo spots taken in this line, by quest id. */
   photos?: Record<string, string>;
+  /** Team mode: who's playing, and their points so far. */
+  players?: Player[];
+  scores?: Record<string, number>;
 };
 
 /** A saved memory of one ride, made when you reach the front of the line. */
@@ -39,15 +45,25 @@ export type Keepsake = {
   photos?: string[];
   rating?: string;
   note?: string;
+  /** Final scoreboard when played in team mode. */
+  team?: { name: string; emoji: string; score: number }[];
+  /** Shared to today's anonymous public scoreboard. */
+  boardShared?: boolean;
 };
 
 const KEY = 'dislizney.journey.v1';
 
-type Stored = { session: LineSession | null; keepsakes: Keepsake[] };
+type Stored = {
+  session: LineSession | null;
+  keepsakes: Keepsake[];
+  /** Players remembered for next time, so the family doesn't retype names. */
+  crew?: Player[];
+};
 
 type JourneyValue = Stored & {
   ready: boolean;
-  startLine: (attractionId: string, waitMinutes: number) => LineSession;
+  startLine: (attractionId: string, waitMinutes: number, players?: Player[]) => LineSession;
+  saveCrew: (crew: Player[]) => void;
   updateSession: (fn: (s: LineSession) => LineSession) => void;
   finishLine: () => Keepsake | null;
   cancelLine: () => void;
@@ -82,8 +98,10 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const startLine = useCallback(
-    (attractionId: string, waitMinutes: number) => {
+    (attractionId: string, waitMinutes: number, players?: Player[]) => {
       const session: LineSession = {
+        players: players?.length ? players : undefined,
+        scores: players?.length ? Object.fromEntries(players.map((p) => [p.id, 0])) : undefined,
         id: newId(),
         attractionId,
         waitMinutes,
@@ -119,9 +137,12 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       quests: Object.keys(session.done).length,
       picks: session.picks.slice(0, 3),
       photos: Object.values(session.photos ?? {}),
+      team: session.players
+        ?.map((p) => ({ name: p.name, emoji: p.emoji, score: session.scores?.[p.id] ?? 0 }))
+        .sort((a, b) => b.score - a.score),
       fact: facts.length ? facts[Math.floor(Math.random() * facts.length)].text : '',
     };
-    commit((s) => ({ session: null, keepsakes: [keepsake, ...s.keepsakes] }));
+    commit((s) => ({ ...s, session: null, keepsakes: [keepsake, ...s.keepsakes] }));
     return keepsake;
   }, [state.session, commit]);
 
@@ -149,6 +170,8 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
     [commit],
   );
 
+  const saveCrew = useCallback((crew: Player[]) => commit((s) => ({ ...s, crew })), [commit]);
+
   const importKeepsakes = useCallback(
     (list: Keepsake[]) => {
       const have = new Set(state.keepsakes.map((k) => k.id));
@@ -173,8 +196,20 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       updateKeepsake,
       deleteKeepsake,
       importKeepsakes,
+      saveCrew,
     }),
-    [state, ready, startLine, updateSession, finishLine, cancelLine, updateKeepsake, deleteKeepsake, importKeepsakes],
+    [
+      state,
+      ready,
+      startLine,
+      updateSession,
+      finishLine,
+      cancelLine,
+      updateKeepsake,
+      deleteKeepsake,
+      importKeepsakes,
+      saveCrew,
+    ],
   );
 
   return <JourneyContext.Provider value={value}>{children}</JourneyContext.Provider>;
@@ -231,6 +266,8 @@ export function photoCaption(attractionId: string) {
   ];
   return `📸 Photo spot in line for ${ride}!\n\n${tags.join(' ')}`;
 }
+
+export const newPlayerId = () => Math.random().toString(36).slice(2, 9);
 
 export function dayCaption(keepsakes: Keepsake[]) {
   const minutes = keepsakes.reduce((n, k) => n + waitedMinutes(k), 0);
