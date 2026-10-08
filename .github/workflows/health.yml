@@ -1,6 +1,6 @@
 # Checks every 15 minutes that the live site, the wait-times feed and the public
-# board answer, and prints one DISLIZNEY_STATUS line the admin dashboard reads.
-# Stores nothing and sees no visitor data: it only makes its own requests.
+# board answer, reads the anonymous visit counts, and prints one DISLIZNEY_STATUS
+# line the admin dashboard reads. Stores nothing; it only makes its own requests.
 name: Health check
 
 on:
@@ -67,5 +67,14 @@ jobs:
             board='{"state":"off"}'
           fi
 
-          echo "DISLIZNEY_STATUS $(jq -nc --arg at "$(date -u +%FT%TZ)" --argjson site "$site" --argjson waits "$waits" --argjson board "$board" '{checkedAt:$at,site:$site,waits:$waits,board:$board}')"
+          # Anonymous visit counts (lives in the board service, so only once it's set up).
+          stats='null'
+          if [ -n "$BOARD_URL" ]; then
+            get "${BOARD_URL%/}/api/stats" stats.json
+            if [ "$code" = 200 ] && jq -e '.today' stats.json > /dev/null 2>&1; then
+              stats=$(jq -c '{activeNow, today: (.today | {visits, peak, web, ios, android}), days: [.days[] | {day, visits, peak}]}' stats.json)
+            fi
+          fi
+
+          echo "DISLIZNEY_STATUS $(jq -nc --arg at "$(date -u +%FT%TZ)" --argjson site "$site" --argjson waits "$waits" --argjson board "$board" --argjson stats "$stats" '{checkedAt:$at,site:$site,waits:$waits,board:$board,stats:$stats}')"
           exit $down
