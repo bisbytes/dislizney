@@ -54,6 +54,8 @@ jobs:
         run: npx expo export --platform web
         env:
           EXPO_OFFLINE: 1
+          # Address of the public board Worker (repo variable). Unset hides the board.
+          EXPO_PUBLIC_BOARD_URL: ${{ vars.BOARD_URL }}
 
       - run: cp dist/index.html dist/404.html
 
