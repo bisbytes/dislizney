@@ -1,0 +1,74 @@
+# Builds the web app and publishes it to GitHub Pages on every push to main.
+# Pull requests only run the build, so a broken web export is caught before merge.
+#
+# One-time setup: repo Settings > Pages > Build and deployment > Source: "GitHub Actions".
+name: Deploy web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Find the site's base path
+        id: pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
+      # GitHub Pages has no URL rewrites, so the deploy uses a single-page build
+      # (404.html serves the app for deep links like /park/magic-kingdom) under the
+      # repo's sub-path. The base path is empty once a custom domain is set.
+      # app.json itself is left alone, so local dev is unchanged.
+      - name: Configure web build for GitHub Pages
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path || format('/{0}', github.event.repository.name) }}
+        run: |
+          jq --arg base "$BASE_PATH" \
+            '.expo.web.output = "single" | .expo.experiments.baseUrl = $base' \
+            app.json > app.pages.json
+          mv app.pages.json app.json
+
+      - name: Export web
+        run: npx expo export --platform web
+        env:
+          EXPO_OFFLINE: 1
+
+      - run: cp dist/index.html dist/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
