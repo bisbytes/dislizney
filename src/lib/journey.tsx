@@ -248,7 +248,7 @@ function pickFor<T>(seed: string, options: T[]): T {
   return options[Math.abs(h) % options.length];
 }
 
-/** A few hashtags people actually use, with #BisBytes last. */
+/** A few hashtags people actually use, with the app's hashtag last. */
 function rideTags(ride: string, park: string) {
   return [hashtag(ride), hashtag(park), '#WaltDisneyWorld', BRAND.hashtag].join(' ');
 }

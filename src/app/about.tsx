@@ -22,12 +22,12 @@ export default function About() {
             </Txt>
           </Pressable>
           <Txt weight="bold" size={32}>
-            About Bis Bytes
+            About Once Upon a Line
           </Txt>
           <Card>
             <Txt size={17}>
-              Bis Bytes turns waiting in line at Walt Disney World into a storybook adventure. Every ride has trivia, I
-              Spy hunts, would-you-rathers and group challenges for kids and grown-ups alike.
+              Once Upon a Line turns waiting in line at Walt Disney World into a storybook adventure. Every ride has
+              trivia, I Spy hunts, would-you-rathers and group challenges for kids and grown-ups alike.
             </Txt>
           </Card>
           <Card>

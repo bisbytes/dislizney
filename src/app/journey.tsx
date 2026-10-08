@@ -38,7 +38,7 @@ export default function Journey() {
           : 'Those keepsakes are already here.',
       );
     } catch {
-      setBackupMsg('That file isn’t a Bis Bytes journey backup.');
+      setBackupMsg('That file isn’t a Once Upon a Line journey backup.');
     }
   };
 

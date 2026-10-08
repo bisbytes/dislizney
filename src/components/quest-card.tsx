@@ -574,7 +574,7 @@ function PhotoBody({
               label="📤 Share"
               color={colors.berry}
               textColor={colors.white}
-              onPress={async () => setMsg(await sharePhoto(photo, shareCaption ?? '#BisBytes'))}
+              onPress={async () => setMsg(await sharePhoto(photo, shareCaption ?? '#OnceUponALine'))}
             />
             <StoryButton small label="🔄 Retake" color={colors.white} onPress={() => snap('camera')} />
           </View>

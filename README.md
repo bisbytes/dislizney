@@ -1,6 +1,6 @@
-# Bis Bytes
+# Once Upon a Line
 
-**Line-time storybook adventures for Walt Disney World.** Made by Bis Bytes, with Bis the mascot popping up along the way.
+**Line-time storybook adventures for Walt Disney World**, by Bis Bytes, with Bis the mascot popping up along the way.
 
 Standing in line? Open the app, pick the ride you're waiting for, and get one long scroll of trivia, I Spy hunts, would-you-rathers and group challenges that lasts as long as your wait. When you reach the front, the ride is saved as a keepsake in your own journey, ready to share with your hashtags.
 

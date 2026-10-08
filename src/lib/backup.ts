@@ -107,7 +107,8 @@ export async function saveToPhotos(uris: string[]): Promise<string> {
     });
     return uris.length === 1 ? 'Picture downloaded!' : `${uris.length} pictures downloaded!`;
   }
-  if (!(await addToPhotoLibrary(uris))) return 'To save pictures, allow Bis Bytes to add to your photos in Settings.';
+  if (!(await addToPhotoLibrary(uris)))
+    return 'To save pictures, allow Once Upon a Line to add to your photos in Settings.';
   return uris.length === 1 ? 'Saved to your photos! 📸' : `${uris.length} pictures saved to your photos! 📸`;
 }
 

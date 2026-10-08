@@ -36,13 +36,13 @@ export function Bis({ size = 64 }: { size?: number }) {
 /** The cover logo: Bis and the name. */
 export function BisLogo() {
   return (
-    <View style={styles.logo} accessibilityRole="header" accessibilityLabel={`${BRAND.name}, ${BRAND.tagline}`}>
-      <Bis size={150} />
-      <Txt weight="bold" size={40} style={{ lineHeight: 46 }}>
-        {BRAND.name}
+    <View style={styles.logo} accessibilityRole="header" accessibilityLabel={`${BRAND.app}, by ${BRAND.name}`}>
+      <Bis size={130} />
+      <Txt weight="bold" size={34} style={{ lineHeight: 40, textAlign: 'center' }}>
+        {BRAND.app}
       </Txt>
-      <Txt weight="medium" size={16} color={colors.inkSoft} style={{ letterSpacing: 1.5 }}>
-        {BRAND.tagline.toUpperCase()}
+      <Txt weight="medium" size={15} color={colors.inkSoft} style={{ letterSpacing: 1.5 }}>
+        BY {BRAND.name.toUpperCase()}
       </Txt>
     </View>
   );

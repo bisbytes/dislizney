@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Bis Bytes",
+    "name": "Once Upon a Line",
     "slug": "dislizney",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png",
-      "name": "Bis Bytes",
+      "name": "Once Upon a Line",
       "themeColor": "#FFFD54",
       "backgroundColor": "#FFF8E7"
     },
@@ -40,7 +40,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Bis Bytes uses your location while the app is open to pop up fun facts when you are near a ride."
+          "locationWhenInUsePermission": "Once Upon a Line uses your location while the app is open to pop up fun facts when you are near a ride."
         }
       ],
       [
@@ -56,16 +56,16 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "Bis Bytes uses your camera to snap photo spots while you wait in line. Photos stay on your device unless you share them.",
-          "photosPermission": "Bis Bytes can use photos from your library for your line keepsakes.",
+          "cameraPermission": "Once Upon a Line uses your camera to snap photo spots while you wait in line. Photos stay on your device unless you share them.",
+          "photosPermission": "Once Upon a Line can use photos from your library for your line keepsakes.",
           "microphonePermission": false
         }
       ],
       [
         "expo-media-library",
         {
-          "savePhotosPermission": "Bis Bytes saves your keepsake cards and photo spots to your photos when you ask it to.",
-          "photosPermission": "Bis Bytes saves your keepsake cards and photo spots to your photos when you ask it to.",
+          "savePhotosPermission": "Once Upon a Line saves your keepsake cards and photo spots to your photos when you ask it to.",
+          "photosPermission": "Once Upon a Line saves your keepsake cards and photo spots to your photos when you ask it to.",
           "granularPermissions": [
             "photo"
           ]
