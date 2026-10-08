@@ -15,6 +15,7 @@ export const MINUTES: Record<Quest['type'], number> = {
   spy: 3,
   challenge: 3,
   wyr: 2,
+  photo: 2,
 };
 
 export type PlannedQuest = { quest: Quest; from?: string };
@@ -59,14 +60,24 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
   const rand = seeded(seed);
   const { park, land, attraction } = ref;
 
-  const own: PlannedQuest[] = attraction.quests.map((quest) => ({ quest }));
+  // Photo spots are pulled out and spread along the line, so there's a new
+  // one to look for every few minutes as the queue moves.
+  const isPhoto = (q: Quest) => q.type === 'photo';
+  const own: PlannedQuest[] = attraction.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest }));
+  const photos: PlannedQuest[] = [
+    ...attraction.quests.filter(isPhoto).map((quest) => ({ quest })),
+    ...unseenFirst(
+      shuffle(anywhereQuests.filter(isPhoto), rand).map((quest) => ({ quest })),
+      seen,
+    ),
+  ];
 
   const neighbors = unseenFirst(
     roundRobin(
       shuffle(
         land.attractions.filter((a) => a.id !== attraction.id),
         rand,
-      ).map((a) => a.quests.map((quest) => ({ quest, from: a.name }))),
+      ).map((a) => a.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest, from: a.name }))),
     ),
     seen,
   );
@@ -76,7 +87,7 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
       ...shuffle(
         park.lands.filter((l) => l.id !== land.id).flatMap((l) => l.attractions),
         rand,
-      ).map((a) => a.quests.map((quest) => ({ quest, from: a.name }))),
+      ).map((a) => a.quests.filter((q) => !isPhoto(q)).map((quest) => ({ quest, from: a.name }))),
       (park.parkQuests ?? []).map((quest) => ({ quest, from: park.name })),
     ]),
     seen,
@@ -84,7 +95,10 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
 
   const facts = [...neighbors, ...elsewhere];
   const play = unseenFirst(
-    shuffle(anywhereQuests, rand).map((quest) => ({ quest })),
+    shuffle(
+      anywhereQuests.filter((q) => !isPhoto(q)),
+      rand,
+    ).map((quest) => ({ quest })),
     seen,
   );
 
@@ -95,6 +109,13 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
   while (f < facts.length || p < play.length) {
     for (let k = 0; k < 2 && f < facts.length; k++) mixed.push(facts[f++]);
     if (p < play.length) mixed.push(play[p++]);
+  }
+
+  // A photo spot early on, then one every six activities.
+  for (let i = 0; i < photos.length; i++) {
+    const at = 2 + i * 7;
+    if (at > mixed.length) break;
+    mixed.splice(at, 0, photos[i]);
   }
 
   const used = new Set<string>();

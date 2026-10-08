@@ -1,4 +1,5 @@
 import * as Clipboard from 'expo-clipboard';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -138,9 +139,13 @@ function Polaroid({ k, tilt }: { k: Keepsake; tilt: number }) {
         { transform: [{ rotate: `${tilt}deg` }, { scale: pressed ? 0.97 : 1 }] },
       ]}>
       <View style={[styles.photo, { backgroundColor: r.land.colors.ground }]}>
-        <Txt size={44} style={{ lineHeight: 54 }}>
-          {r.attraction.emoji}
-        </Txt>
+        {k.photos?.[0] ? (
+          <Image source={{ uri: k.photos[0] }} style={StyleSheet.absoluteFill} contentFit="cover" />
+        ) : (
+          <Txt size={44} style={{ lineHeight: 54 }}>
+            {r.attraction.emoji}
+          </Txt>
+        )}
         {k.rating && <Txt style={styles.rating}>{k.rating}</Txt>}
       </View>
       <Txt weight="bold" size={14} numberOfLines={2} style={{ textAlign: 'center' }}>
@@ -208,6 +213,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  photo: { width: '100%', aspectRatio: 1, borderRadius: 4, alignItems: 'center', justifyContent: 'center' },
+  photo: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
   rating: { position: 'absolute', right: 6, bottom: 4, fontSize: 24 },
 });

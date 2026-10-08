@@ -15,7 +15,7 @@ import { LandScene } from '@/components/land-scene';
 import { QuestCard } from '@/components/quest-card';
 import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
-import { useJourney } from '@/lib/journey';
+import { photoCaption, useJourney } from '@/lib/journey';
 import { buildQueue, countForMinutes } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
@@ -161,6 +161,11 @@ export default function LineStory() {
                   accent={c.accent}
                   from={pq.from}
                   finished={active.done[pq.quest.id]}
+                  photo={active.photos?.[pq.quest.id]}
+                  onPhoto={(uri) =>
+                    updateSession((s) => ({ ...s, photos: { ...(s.photos ?? {}), [pq.quest.id]: uri } }))
+                  }
+                  shareCaption={photoCaption(a.id)}
                   onFinish={(star, pick) =>
                     updateSession((s) => ({
                       ...s,

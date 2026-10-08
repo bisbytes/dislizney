@@ -52,7 +52,15 @@
       "expo-font",
       "expo-web-browser",
       "expo-audio",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "dislizney uses your camera to snap photo spots while you wait in line. Photos stay on your device unless you share them.",
+          "photosPermission": "dislizney can use photos from your library for your line keepsakes.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

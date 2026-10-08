@@ -34,6 +34,7 @@ Quest types:
 | `guess`     | question, answer, min, max, step, unit, tolerance, explain, source | guess a number; a star if within `tolerance` |
 | `order`     | prompt, items (in the correct order), explain, source | tap items in order; the app shuffles them |
 | `emoji`     | emojis, hint, choices, answer            | Emoji Riddle; guess what the emojis spell    |
+| `photo`     | prompt, tip?, source?                    | Photo Spot; snap a picture in the queue. If it names something in the queue, add a `source` showing it's there |
 
 Keep the wording kid friendly and short enough to read in line.
 

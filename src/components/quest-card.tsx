@@ -1,8 +1,10 @@
+import { Image } from 'expo-image';
 import * as WebBrowser from 'expo-web-browser';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import type { GuessQuest, OrderQuest, Quest } from '@/data/types';
+import type { GuessQuest, OrderQuest, PhotoQuest, Quest } from '@/data/types';
+import { pickPhoto, sharePhoto, takePhoto } from '@/lib/photos';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors } from '@/theme';
@@ -18,6 +20,7 @@ const KIND: Record<Quest['type'], { label: string; emoji: string; color: string 
   order: { label: 'Put in Order', emoji: '🔢', color: '#FFEBD9' },
   guess: { label: 'Guess the Number', emoji: '🎯', color: '#E0F7F4' },
   emoji: { label: 'Emoji Riddle', emoji: '🧩', color: '#FFF0F6' },
+  photo: { label: 'Photo Spot', emoji: '📸', color: '#E3F0FF' },
 };
 
 export function SourceLink({ url }: { url: string }) {
@@ -41,6 +44,9 @@ export function QuestCard({
   finished,
   onFinish,
   from,
+  photo,
+  onPhoto,
+  shareCaption,
 }: {
   quest: Quest;
   step: number;
@@ -50,6 +56,10 @@ export function QuestCard({
   onFinish: (star: boolean, pick?: string) => void;
   /** Where a borrowed quest comes from, e.g. a neighboring ride. */
   from?: string;
+  /** Photo spots: the photo taken here, a callback to save one, and the share caption. */
+  photo?: string;
+  onPhoto?: (uri: string) => void;
+  shareCaption?: string;
 }) {
   const { complete } = useProgress();
   const { play } = useSound();
@@ -88,14 +98,28 @@ export function QuestCard({
           🔒 Finish the quest above to unlock this one.
         </Txt>
       ) : (
-        <QuestBody quest={quest} finished={finished} finish={finish} />
+        <QuestBody
+          quest={quest}
+          finished={finished}
+          finish={finish}
+          photo={photo}
+          onPhoto={onPhoto}
+          shareCaption={shareCaption}
+        />
       )}
       <StarBurst trigger={burst} />
     </Card>
   );
 }
 
-function QuestBody({ quest, finished, finish }: { quest: Quest; finished: Done; finish: Finish }) {
+type PhotoProps = { photo?: string; onPhoto?: (uri: string) => void; shareCaption?: string };
+
+function QuestBody({
+  quest,
+  finished,
+  finish,
+  ...photoProps
+}: { quest: Quest; finished: Done; finish: Finish } & PhotoProps) {
   const [picked, setPicked] = useState<number | null>(null);
   const [showHint, setShowHint] = useState(false);
 
@@ -207,6 +231,8 @@ function QuestBody({ quest, finished, finish }: { quest: Quest; finished: Done; 
           )}
         </View>
       );
+    case 'photo':
+      return <PhotoBody quest={quest} finished={finished} finish={finish} {...photoProps} />;
     case 'wyr':
       return (
         <View>
@@ -489,7 +515,100 @@ function StepBtn({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
+function PhotoBody({
+  quest,
+  finished,
+  finish,
+  photo,
+  onPhoto,
+  shareCaption,
+}: { quest: PhotoQuest; finished: Done; finish: Finish } & PhotoProps) {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const snap = async (from: 'camera' | 'library') => {
+    tap();
+    setBusy(true);
+    try {
+      const uri = from === 'camera' ? await takePhoto() : await pickPhoto();
+      if (uri) {
+        onPhoto?.(uri);
+        if (!finished) finish(true);
+      }
+    } catch {
+      setMsg('The camera didn’t open. You can pick a photo instead.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <View>
+      <Txt weight="medium" size={20}>
+        {quest.prompt}
+      </Txt>
+      {quest.tip && (
+        <Txt size={15} color={colors.inkSoft} style={{ marginTop: 4 }}>
+          📍 {quest.tip}
+        </Txt>
+      )}
+      {photo ? (
+        <View style={styles.polaroid}>
+          <Image source={{ uri: photo }} style={styles.photo} contentFit="cover" accessibilityLabel="Your photo" />
+          <View style={styles.photoActions}>
+            <StoryButton
+              small
+              label="📤 Share"
+              color={colors.berry}
+              textColor={colors.white}
+              onPress={async () => setMsg(await sharePhoto(photo, shareCaption ?? '#dislizney'))}
+            />
+            <StoryButton small label="🔄 Retake" color={colors.white} onPress={() => snap('camera')} />
+          </View>
+        </View>
+      ) : (
+        <View style={styles.photoActions}>
+          <StoryButton
+            small
+            label={busy ? 'Opening…' : '📸 Take the photo'}
+            color={colors.sky}
+            disabled={busy}
+            onPress={() => snap('camera')}
+          />
+          <StoryButton small label="🖼️ Pick one" color={colors.white} disabled={busy} onPress={() => snap('library')} />
+        </View>
+      )}
+      {!photo && !finished && (
+        <Pressable accessibilityRole="button" onPress={() => finish(true)}>
+          <Txt size={14} color={colors.inkSoft} style={{ marginTop: 10, textDecorationLine: 'underline' }}>
+            We took it with our own camera
+          </Txt>
+        </Pressable>
+      )}
+      {!!msg && (
+        <Txt weight="medium" size={14} style={{ marginTop: 8 }} accessibilityLiveRegion="polite">
+          {msg}
+        </Txt>
+      )}
+      {quest.source && <SourceLink url={quest.source} />}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  polaroid: {
+    marginTop: 12,
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    borderColor: colors.ink,
+    borderRadius: 6,
+    padding: 8,
+    paddingBottom: 12,
+    gap: 10,
+    transform: [{ rotate: '-1.5deg' }],
+  },
+  photo: { width: '100%', aspectRatio: 4 / 3, borderRadius: 4, backgroundColor: colors.paperEdge },
+  photoActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12, justifyContent: 'center' },
   card: { overflow: 'visible' },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
   step: {

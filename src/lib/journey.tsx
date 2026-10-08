@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import { getAttraction } from '@/data/parks';
+import { deletePhotos } from '@/lib/photos';
 
 /** One line in progress. Only one at a time: you can only stand in one line! */
 export type LineSession = {
@@ -14,6 +15,8 @@ export type LineSession = {
   done: Record<string, { star: boolean }>;
   /** What was picked in Would You Rather quests, kept for the keepsake. */
   picks: string[];
+  /** Photo spots taken in this line, by quest id. */
+  photos?: Record<string, string>;
 };
 
 /** A saved memory of one ride, made when you reach the front of the line. */
@@ -31,6 +34,8 @@ export type Keepsake = {
   quests: number;
   picks: string[];
   fact: string;
+  /** Photos taken at photo spots in the line, in the order they were taken. */
+  photos?: string[];
   rating?: string;
   note?: string;
 };
@@ -109,13 +114,21 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       stars: Object.values(session.done).filter((d) => d.star).length,
       quests: Object.keys(session.done).length,
       picks: session.picks.slice(0, 3),
+      photos: Object.values(session.photos ?? {}),
       fact: facts.length ? facts[Math.floor(Math.random() * facts.length)].text : '',
     };
     commit((s) => ({ session: null, keepsakes: [keepsake, ...s.keepsakes] }));
     return keepsake;
   }, [state.session, commit]);
 
-  const cancelLine = useCallback(() => commit((s) => ({ ...s, session: null })), [commit]);
+  const cancelLine = useCallback(
+    () =>
+      commit((s) => {
+        deletePhotos(Object.values(s.session?.photos ?? {}));
+        return { ...s, session: null };
+      }),
+    [commit],
+  );
 
   const updateKeepsake = useCallback(
     (id: string, patch: Partial<Keepsake>) =>
@@ -124,7 +137,11 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
   );
 
   const deleteKeepsake = useCallback(
-    (id: string) => commit((s) => ({ ...s, keepsakes: s.keepsakes.filter((k) => k.id !== id) })),
+    (id: string) =>
+      commit((s) => {
+        deletePhotos(s.keepsakes.find((k) => k.id === id)?.photos ?? []);
+        return { ...s, keepsakes: s.keepsakes.filter((k) => k.id !== id) };
+      }),
     [commit],
   );
 
@@ -171,6 +188,21 @@ export function keepsakeCaption(k: Keepsake) {
     (k.note ? ` “${k.note}”` : '');
   const tags = ['#dislizney', '#LineTimeAdventures', hashtag(park), hashtag(ride), '#WaltDisneyWorld'];
   return `${line}\n\n${tags.join(' ')}`;
+}
+
+export function photoCaption(attractionId: string) {
+  const ref = getAttraction(attractionId);
+  const ride = ref?.attraction.name ?? 'the line';
+  const park = ref?.park.name ?? 'Walt Disney World';
+  const tags = [
+    '#dislizney',
+    '#LineTimeAdventures',
+    '#DisneyPhotoSpot',
+    hashtag(park),
+    hashtag(ride),
+    '#WaltDisneyWorld',
+  ];
+  return `📸 Photo spot in line for ${ride}!\n\n${tags.join(' ')}`;
 }
 
 export function dayCaption(keepsakes: Keepsake[]) {

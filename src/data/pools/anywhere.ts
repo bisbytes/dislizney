@@ -188,4 +188,54 @@ export const anywhereQuests: Quest[] = [
     choices: ['Coco', 'Encanto', 'Wish', 'Luca'],
     answer: 1,
   },
+  {
+    type: 'photo',
+    id: 'any-photo-1',
+    prompt: 'Snap a group selfie making your best “we’re almost there!” face.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-2',
+    prompt: 'Find the ride’s name on a sign and pose next to it like you just won a prize.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-3',
+    prompt: 'Take a picture of the coolest detail you can spot in this line. Zoom in close!',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-4',
+    prompt: 'Everyone strike a superhero pose for a group photo.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-5',
+    prompt: 'Photo of your crew’s shoes in a circle. Matching socks get bonus points!',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-6',
+    prompt: 'Snap a ‘before’ photo: show how excited (or nervous!) you are for this ride.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-7',
+    prompt: 'Find something in the queue that’s your favorite color and take its picture.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-8',
+    prompt: 'Take a silly photo where everyone is looking a different direction.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-9',
+    prompt: 'Make a heart with your hands and frame something magical inside it.',
+  },
+  {
+    type: 'photo',
+    id: 'any-photo-10',
+    prompt: 'Snap one last photo right before you board. Big smiles!',
+  },
 ];

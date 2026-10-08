@@ -96,6 +96,20 @@ export type EmojiQuest = {
   answer: number;
 };
 
+/**
+ * Photo spot: snap a picture in the queue. Saved to the ride's keepsake so it
+ * can be shared. If `prompt` names something specific in the queue, give a
+ * `source` that shows it's really there.
+ */
+export type PhotoQuest = {
+  type: 'photo';
+  id: string;
+  prompt: string;
+  /** Where to look in the line. */
+  tip?: string;
+  source?: string;
+};
+
 export type Quest =
   | TriviaQuest
   | SpyQuest
@@ -104,7 +118,8 @@ export type Quest =
   | TrueFalseQuest
   | OrderQuest
   | GuessQuest
-  | EmojiQuest;
+  | EmojiQuest
+  | PhotoQuest;
 
 export type Attraction = {
   id: string;

@@ -77,6 +77,20 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'wdw-railroad-photo-1',
+              prompt: 'Find an old-timey arcade machine in the train station and snap a photo of it!',
+              tip: 'Look around the Main Street, U.S.A. Station waiting area.',
+              source: SRC.railroad,
+            },
+            {
+              type: 'photo',
+              id: 'wdw-railroad-photo-2',
+              prompt: 'Spot a shiny plaque about one of the steam trains and take a picture of it!',
+              tip: 'Look on the first floor of Main Street, U.S.A. Station.',
+              source: SRC.railroad,
+            },
+            {
               type: 'trivia',
               id: 'rr-1',
               question: 'How many stations does the Walt Disney World Railroad stop at?',
@@ -147,6 +161,13 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'cinderella-castle-photo-1',
+              prompt: 'Find the sparkly glass mosaic of Cinderella’s story and snap your favorite panel!',
+              tip: 'Look at the walls inside the castle’s archway.',
+              source: SRC.castle,
+            },
             {
               type: 'trivia',
               id: 'castle-1',
@@ -306,6 +327,19 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'pirates-photo-1',
+              prompt: 'Arrr! Sneak a photo of the two skeleton pirates playing chess. Who’s winning?',
+              tip: 'Watch for them as the line winds through the fort.',
+              source: SRC.pirates,
+            },
+            {
+              type: 'photo',
+              id: 'pirates-photo-2',
+              prompt: 'Find a cannon in the fort and take a photo with your best pirate face!',
+              source: SRC.pirates,
+            },
+            {
               type: 'trivia',
               id: 'pi-1',
               question: 'How many drops does the Magic Kingdom version of Pirates have?',
@@ -431,6 +465,13 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'swiss-family-treehouse-photo-1',
+              prompt: 'Find something that looks rescued from a shipwreck and snap a photo of it!',
+              tip: 'Look in the rooms as you climb the stairs up the tree.',
+              source: SRC.treehouse,
+            },
+            {
               type: 'trivia',
               id: 'sft-1',
               question: 'What is the Swiss Family tree made of?',
@@ -484,6 +525,13 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'magic-carpets-photo-1',
+              prompt: 'Watch out for the spitting camel! Snap a photo of it, and try to stay dry!',
+              tip: 'It’s right at the entrance.',
+              source: SRC.carpets,
+            },
             {
               type: 'trivia',
               id: 'mc-1',
@@ -609,6 +657,19 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'tianas-bayou-photo-1',
+              prompt: 'Find the colorful mural in the line and snap a picture of your favorite part!',
+              source: SRC.tiana,
+            },
+            {
+              type: 'photo',
+              id: 'tianas-bayou-photo-2',
+              prompt: 'Look up high for the weathervane on the building and snap it!',
+              tip: 'Look at the outside of the building before you go in.',
+              source: SRC.tiana,
+            },
             {
               type: 'trivia',
               id: 'ti-1',
@@ -750,6 +811,20 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'haunted-mansion-photo-1',
+              prompt: 'Strike a spooky pose next to the Composer’s crypt. Touch the instruments to make music!',
+              tip: 'It’s in the interactive graveyard queue.',
+              source: SRC.mansion,
+            },
+            {
+              type: 'photo',
+              id: 'haunted-mansion-photo-2',
+              prompt: 'Find the sea captain’s tomb (the ghost sneezes!) and snap a photo. Bless you!',
+              tip: 'It’s in the interactive queue, with the other crypts.',
+              source: SRC.mansion,
+            },
+            {
               type: 'trivia',
               id: 'hm-1',
               question: 'What are the Haunted Mansion ride vehicles called?',
@@ -879,6 +954,21 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'peter-pan-photo-1',
+              prompt:
+                'Snap a photo inside the Darling family’s house, then find the nursery where Wendy’s story starts!',
+              tip: 'The indoor queue leads into the Darling home.',
+              source: SRC.peterpan,
+            },
+            {
+              type: 'photo',
+              id: 'peter-pan-photo-2',
+              prompt: 'Play with the magic murals in the hallway and take a picture of what happens!',
+              tip: 'They’re in the corridor at the start of the indoor queue.',
+              source: SRC.peterpan,
+            },
+            {
               type: 'trivia',
               id: 'pp-1',
               question: 'Peter Pan’s Flight opened just after the park. How many days after?',
@@ -940,6 +1030,12 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'small-world-photo-1',
+              prompt: 'Snap a photo of the super colorful building front. How many colors can you count?',
+              source: SRC.smallworld,
+            },
             {
               type: 'trivia',
               id: 'sw-1',
@@ -1005,6 +1101,18 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'seven-dwarfs-photo-1',
+              prompt: 'Spin a barrel full of gems and snap a photo of the sparkly pictures it makes!',
+              source: SRC.mine,
+            },
+            {
+              type: 'photo',
+              id: 'seven-dwarfs-photo-2',
+              prompt: 'Find the animal-shaped water taps at the gem washing station. Snap a photo of your favorite!',
+              source: SRC.mine,
+            },
             {
               type: 'trivia',
               id: 'sd-1',
@@ -1078,6 +1186,19 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'little-mermaid-photo-1',
+              prompt: 'Strike a mermaid pose with Prince Eric’s castle behind you!',
+              tip: 'Look up at the castle and cliffs before you enter.',
+              source: SRC.mermaid,
+            },
+            {
+              type: 'photo',
+              id: 'little-mermaid-photo-2',
+              prompt: 'Join Scuttle’s scavenger hunt and snap a photo of the first thing you find!',
+              source: SRC.mermaid,
+            },
+            {
               type: 'trivia',
               id: 'lm-1',
               question: 'What are the ride vehicles shaped like?',
@@ -1131,6 +1252,13 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'dumbo-photo-1',
+              prompt: 'Take an action photo in the fire rescue play area, just like Dumbo’s big stunt!',
+              tip: 'The play area is inside the big top tent.',
+              source: SRC.dumbo,
+            },
+            {
               type: 'trivia',
               id: 'du-1',
               question: 'Who spins on top of the Dumbo ride holding a magic feather?',
@@ -1182,6 +1310,13 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'mad-tea-party-photo-1',
+              prompt: 'Spot the sleepy Dormouse popping out of the giant teapot and snap a photo!',
+              tip: 'Look at the middle of the ride while you wait.',
+              source: SRC.teacups,
+            },
             {
               type: 'trivia',
               id: 'mt-1',
@@ -1235,6 +1370,19 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'carrousel-photo-1',
+              prompt: 'Try to spot the one horse with a golden bow on its tail and snap it!',
+              tip: 'It’s in the second row of horses. Watch as they go around.',
+              source: SRC.carrousel,
+            },
+            {
+              type: 'photo',
+              id: 'carrousel-photo-2',
+              prompt: 'Look up and snap a photo of a painted Cinderella scene at the top of the carrousel!',
+              source: SRC.carrousel,
+            },
             {
               type: 'trivia',
               id: 'pc-1',
@@ -1294,6 +1442,13 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'philharmagic-photo-1',
+              prompt: 'Find a funny old concert poster in the lobby and copy its pose for a photo!',
+              tip: 'Look at the walls in the theater lobby.',
+              source: SRC.philharmagic,
+            },
+            {
               type: 'trivia',
               id: 'ph-1',
               question: 'Who causes all the trouble in the show?',
@@ -1351,6 +1506,19 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'winnie-the-pooh-photo-1',
+              prompt: 'Snap a photo under the carved wooden sign at the entrance. Say “hunny”!',
+              tip: 'You walk under it as you enter.',
+              source: SRC.pooh,
+            },
+            {
+              type: 'photo',
+              id: 'winnie-the-pooh-photo-2',
+              prompt: 'Take a photo playing a game in the Hundred Acre Wood queue!',
+              source: SRC.pooh,
+            },
+            {
               type: 'trivia',
               id: 'wp-1',
               question: 'Which ride was here before Winnie the Pooh?',
@@ -1406,6 +1574,13 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'enchanted-tales-belle-photo-1',
+              prompt: 'Snap a picture of the magic mirror in Maurice’s workshop!',
+              tip: 'It’s in Maurice’s workshop, inside the cottage.',
+              source: SRC.belle,
+            },
+            {
               type: 'trivia',
               id: 'eb-1',
               question: 'Whose cottage does the adventure start in?',
@@ -1456,6 +1631,14 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'barnstormer-photo-1',
+              prompt:
+                'Find the jumbled red letters on the back of the entrance sign and snap them! Can you unscramble them?',
+              tip: 'Check the back of the entrance sign.',
+              source: SRC.barnstormer,
+            },
             {
               type: 'trivia',
               id: 'bs-1',
@@ -1519,6 +1702,13 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'space-mountain-photo-1',
+              prompt: 'Find the star map and take a photo of it, space cadet!',
+              tip: 'It’s in the big room just after you enter the building.',
+              source: SRC.space,
+            },
             {
               type: 'trivia',
               id: 'sm-1',
@@ -1591,6 +1781,20 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'tron-photo-1',
+              prompt: 'Snap a photo of the giant color-changing canopy. What color is it right now?',
+              tip: 'Look up at the canopy as you get close to the entrance.',
+              source: SRC.tron,
+            },
+            {
+              type: 'photo',
+              id: 'tron-photo-2',
+              prompt: 'Take a photo of the glowing blue circuit lines in the hallway!',
+              tip: 'In the corridor at the start of the line.',
+              source: SRC.tron,
+            },
+            {
               type: 'trivia',
               id: 'tr-1',
               question: 'How tall do you need to be to ride TRON?',
@@ -1648,6 +1852,19 @@ export const magicKingdom: Park = {
           ],
           quests: [
             {
+              type: 'photo',
+              id: 'buzz-lightyear-photo-1',
+              prompt: 'Salute Buzz Lightyear and snap a photo of him during your mission briefing!',
+              tip: 'He briefs recruits near the end of the queue.',
+              source: SRC.buzz,
+            },
+            {
+              type: 'photo',
+              id: 'buzz-lightyear-photo-2',
+              prompt: 'Find a picture of the Little Green Men and make your best “Ooooh!” face for a photo!',
+              source: SRC.buzz,
+            },
+            {
               type: 'trivia',
               id: 'bz-1',
               question: 'Who is the villain Buzz is trying to stop?',
@@ -1700,6 +1917,13 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'peoplemover-photo-1',
+              prompt: 'Snap a photo of the moving ramp that carries you up to the trains!',
+              tip: 'Right after the queue, before boarding.',
+              source: SRC.peoplemover,
+            },
             {
               type: 'trivia',
               id: 'pm-1',
@@ -1754,6 +1978,12 @@ export const magicKingdom: Park = {
             },
           ],
           quests: [
+            {
+              type: 'photo',
+              id: 'astro-orbiter-photo-1',
+              prompt: 'Snap a photo of the planets as the rockets zoom between them!',
+              source: SRC.orbiter,
+            },
             {
               type: 'trivia',
               id: 'ao-1',

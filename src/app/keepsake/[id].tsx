@@ -1,4 +1,5 @@
 import * as Clipboard from 'expo-clipboard';
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useRef, useState, type Ref } from 'react';
@@ -247,6 +248,18 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
           {r.park.name} · {date}
         </Txt>
       </View>
+      {!!k.photos?.length && (
+        <View style={styles.photos}>
+          <Image source={{ uri: k.photos[0] }} style={styles.mainPhoto} contentFit="cover" accessibilityLabel="Photo" />
+          {k.photos.length > 1 && (
+            <View style={styles.thumbs}>
+              {k.photos.slice(1, 4).map((uri) => (
+                <Image key={uri} source={{ uri }} style={styles.thumb} contentFit="cover" />
+              ))}
+            </View>
+          )}
+        </View>
+      )}
       <View style={styles.cardBody}>
         <View style={styles.statRow}>
           <Stat big={`${waitedMinutes(k)}`} small="min wait" />
@@ -394,6 +407,10 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     backgroundColor: colors.white,
   },
+  photos: { padding: 12, paddingBottom: 0, gap: 8 },
+  mainPhoto: { width: '100%', aspectRatio: 4 / 3, borderRadius: 14, borderWidth: 3, borderColor: colors.ink },
+  thumbs: { flexDirection: 'row', gap: 8 },
+  thumb: { flex: 1, aspectRatio: 1, borderRadius: 10, borderWidth: 2, borderColor: colors.ink, maxWidth: '32%' },
   statRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
