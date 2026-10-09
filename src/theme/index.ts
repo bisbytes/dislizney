@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import { seasonFor } from './seasons';
+
 export const colors = {
   paper: '#FFF8E7',
   paperEdge: '#F1E3C2',
@@ -14,6 +16,12 @@ export const colors = {
   wrong: '#E4572E',
   white: '#FFFFFF',
 };
+
+/** Set once when the app opens: the current season, if it has a look of its own. */
+export const season = seasonFor(new Date());
+
+// Halloween: the storybook's lemon yellow turns pumpkin orange everywhere it's used.
+if (season === 'halloween') colors.lemon = '#FF9F45';
 
 export const fonts = {
   regular: 'Fredoka_400Regular',

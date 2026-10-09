@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { AccessibilityInfo, Animated, Easing, StyleSheet, View } from 'react-native';
 
+import { season } from '@/theme';
+import { SEASON_SPARKLES } from '@/theme/seasons';
+
 const SPOTS = [
   { left: '8%', top: '6%', size: 18, delay: 0 },
   { left: '86%', top: '4%', size: 22, delay: 400 },
@@ -10,6 +13,8 @@ const SPOTS = [
   { left: '90%', top: '48%', size: 14, delay: 200 },
   { left: '50%', top: '2%', size: 12, delay: 1100 },
 ] as const;
+
+const GLYPHS = SEASON_SPARKLES[season ?? 'none'];
 
 /** Gently twinkling stars for the cover. Sits still when Reduce Motion is on. */
 export function Twinkles() {
@@ -58,7 +63,7 @@ export function Twinkles() {
             opacity: values[i],
             transform: [{ scale: values[i] }],
           }}>
-          ✨
+          {GLYPHS[i % GLYPHS.length]}
         </Animated.Text>
       ))}
     </View>

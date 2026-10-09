@@ -9,7 +9,7 @@ import { parks } from '@/data/parks';
 import { useJourney } from '@/lib/journey';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
-import { colors, MAX_WIDTH, pageShadow } from '@/theme';
+import { colors, MAX_WIDTH, pageShadow, season } from '@/theme';
 
 export default function Cover() {
   const { totalStars } = useProgress();
@@ -29,6 +29,12 @@ export default function Cover() {
             Waiting in line? Open a storybook, pick your ride, and discover its secrets: trivia, hidden details to spot in the queue and more, until it’s
             your turn.
           </Txt>
+
+          {season === 'halloween' && (
+            <Txt weight="bold" size={16} style={styles.center}>
+              🎃 Happy Halloween season! 🦇
+            </Txt>
+          )}
 
           {totalStars > 0 && (
             <Txt weight="medium" size={18} style={styles.center}>
