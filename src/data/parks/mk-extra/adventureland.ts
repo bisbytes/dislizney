@@ -20,6 +20,8 @@ const TIKI = "https://en.wikipedia.org/wiki/Walt_Disney's_Enchanted_Tiki_Room";
 const TIKI_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/enchanted-tiki-room/';
 const TIKI_WM = 'https://www.wdwmagic.com/attractions/the-enchanted-tiki-room.htm';
 const TIKI_PS = 'https://www.parksavers.com/walt-disneys-enchanted-tiki-room-ride-review-disney-world/';
+const TIKI_TP = 'https://touringplans.com/blog/five-things-to-know-about-walt-disneys-enchanted-tiki-room/';
+const TIKI_AE = 'https://allears.net/?p=240054';
 const SFT = 'https://en.wikipedia.org/wiki/Swiss_Family_Treehouse';
 const SFT_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/swiss-family-treehouse/';
 const SFT_CO = 'https://www.clickorlando.com/features/2021/08/16/swiss-family-treehouse-an-overlooked-icon/';
@@ -358,6 +360,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the Crew Shift board. Who is off on a trip?',
         hint: 'Col. Brody went to “Placid Palms,” a wink to the story of Typhoon Lagoon water park.',
       },
+      // source: JC_AE25. evidence: "Inside, we could see hats, drink glasses, a bottle of some unknown beverage, and a tiara."
+      {
+        type: 'spy',
+        id: 'jungle-cruise-r-spy14',
+        prompt: 'Find the glass case labeled “break in case of party.” What is inside?',
+        hint: 'Hats, drink glasses, a mystery bottle and a tiara. Time to celebrate!',
+      },
       // source: JC_AE25. evidence: "One side is labeled "First Aid," the other "Last Aid.""
       {
         type: 'spy',
@@ -371,6 +380,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'jungle-cruise-r-spy10',
         prompt: 'Read the menu board near the boats. What does everything taste like?',
         hint: 'Chicken! And on Fridays? Real chicken. The Skipper Canteen restaurant tells the same joke.',
+      },
+      // source: JC_AE25. evidence: "Who’s the employee of the month at Jungle Navigation Co.? E. L. O’Fevre!"
+      {
+        type: 'spy',
+        id: 'jungle-cruise-r-spy15',
+        prompt: 'Find the employee of the month board. Read the name out loud, fast.',
+        hint: 'E. L. O’Fevre. Say it quickly and it sounds like “yellow fever.” Skipper humor!',
       },
       // source: JC_AE25. evidence: "A rock near the boarding area references Casablanca."
       {
@@ -408,6 +424,38 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of a boat at the dock so you can read its funny name later.',
         tip: 'Wait for one to pull in near the loading area.',
         source: JC_AE,
+      },
+      // evidence: "One side is labeled "First Aid," the other "Last Aid.""
+      {
+        type: 'photo',
+        id: 'jungle-cruise-r-photo3',
+        prompt: 'From the line, take a photo of the cabinet with “First Aid” on one side and “Last Aid” on the other.',
+        tip: 'Make a worried face next to the “Last Aid” side!',
+        source: JC_AE25,
+      },
+      // evidence: "Shaun won first place for "A Bigger Bote," a Jaws nod."
+      {
+        type: 'photo',
+        id: 'jungle-cruise-r-photo4',
+        prompt: 'From the line, snap the trophy case and Skipper Shaun’s “A Bigger Bote” award.',
+        tip: 'It’s in the outpost office area of the line.',
+        source: JC_AE25,
+      },
+      // evidence: "They reference the S.S. Columbia, Harambe, Bakersfield (Marc Davis's birthplace)"
+      {
+        type: 'photo',
+        id: 'jungle-cruise-r-photo5',
+        prompt: 'From the line, take a photo of the flags above the “Banana Troop 5571” door.',
+        tip: 'Each flag is a secret shout-out to a Disney place.',
+        source: JC_AE25,
+      },
+      // evidence: "Each of the items listed is compared to chicken, and then on Friday, they actually get to eat chicken!"
+      {
+        type: 'photo',
+        id: 'jungle-cruise-r-photo6',
+        prompt: 'From the line, snap the funny menu board near the boats. Everything tastes like chicken!',
+        tip: 'Try to get it in your picture before you board.',
+        source: JC_AE25,
       },
       {
         type: 'challenge',
@@ -746,6 +794,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find a heavy chain or a super thick door.',
         hint: 'Modern buildings don’t need walls this thick. Imagineers built them anyway to feel like a real old fort.',
       },
+      // source: PI_MP. evidence: "The curved ceilings, the vaulted casements, the narrow stairs, the cutouts in the thick walls."
+      {
+        type: 'spy',
+        id: 'pirates-r-spy13',
+        prompt: 'Look up at the curved ceilings and look for narrow stairs.',
+        hint: 'Real Spanish forts had arched rooms and tight stairways like these.',
+      },
+      // source: PI_MP. evidence: "dark hallways dimly lit with flickering candlelight"
+      {
+        type: 'spy',
+        id: 'pirates-r-spy14',
+        prompt: 'Look for the flickering candlelight in the dark hallways.',
+        hint: 'The dim glow makes the old fort feel spooky and cool.',
+      },
       // source: PI_MP. evidence: "Several of these rooms feature windows with thick, black bars stretching across their windows"
       {
         type: 'spy',
@@ -809,6 +871,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'pirates-r-photo2',
         prompt: 'From the line, take a photo with a fort cannon behind you and your best pirate face!',
         source: PI,
+      },
+      // evidence: "A large drawbridge, the only way in or out of the Castillo, is found at the entry to the attraction"
+      {
+        type: 'photo',
+        id: 'pirates-r-photo3',
+        prompt: 'From the line, snap the big drawbridge at the fort entrance.',
+        tip: 'It is also where the line splits in two.',
+        source: PI_MP,
+      },
+      // evidence: "windows with thick, black bars stretching across their windows"
+      {
+        type: 'photo',
+        id: 'pirates-r-photo4',
+        prompt: 'From the line, take a photo of a window with thick black bars. Who was locked up in there?',
+        source: PI_MP,
+      },
+      // evidence: "piles of cannonballs, batteries of cannons, and kegs filled with gunpowder"
+      {
+        type: 'photo',
+        id: 'pirates-r-photo5',
+        prompt: 'From the line, snap a pile of cannonballs or a keg of gunpowder.',
+        tip: 'Look in the storage rooms as the line winds through the fort.',
+        source: PI_MP,
+      },
+      // evidence: "guarded by the Caribbean watchtower Torre del Sol"
+      {
+        type: 'photo',
+        id: 'pirates-r-photo6',
+        prompt: 'From the line outside, take a photo looking up at the Torre del Sol watchtower.',
+        tip: 'Do it before you step inside the fort.',
+        source: PI_FAN,
       },
       {
         type: 'challenge',
@@ -1056,6 +1149,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Spot the tropical plants around the waiting area. Which has the biggest leaves?',
         hint: 'The plants help the Sunshine Pavilion feel like a Polynesian hideaway.',
       },
+      // source: TIKI_TP. evidence: "The waterfall parts to reveal a tiki statue with two birds perched on its horns."
+      {
+        type: 'spy',
+        id: 'tiki-room-r-spy12',
+        prompt: 'Watch the waterfall in the waiting area. What shows up when it parts?',
+        hint: 'A tiki statue with two toucans on its horns. They are the pre-show stars.',
+      },
+      // source: TIKI_AE. evidence: "a tiki idol that represents a fictional God of Health"
+      {
+        type: 'spy',
+        id: 'tiki-room-r-spy13',
+        prompt: 'Look at the tiki idol the toucans sit on. Who is it supposed to be?',
+        hint: 'It is a make-believe tiki god of health. The toucans are Clyde and Claude.',
+      },
       // source: TIKI_WM / TIKI_PS: both list a two-bird queue show
       {
         type: 'spy',
@@ -1119,6 +1226,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a group photo with a tiki statue in the background. Everyone copy its face!',
         tip: 'Look around the covered waiting area.',
         source: TIKI_PS,
+      },
+      // evidence: "The waterfall parts to reveal a tiki statue with two birds perched on its horns."
+      {
+        type: 'photo',
+        id: 'tiki-room-r-photo2',
+        prompt: 'From the line, take a photo of the waterfall in the pre-show area.',
+        tip: 'Be ready before the drums start.',
+        source: TIKI_TP,
+      },
+      // evidence: "a toucan comedy duo called Clyde and Claude" / "a tiki idol that represents a fictional God of Health"
+      {
+        type: 'photo',
+        id: 'tiki-room-r-photo3',
+        prompt: 'From the line, snap the tiki idol with the two toucans, Clyde and Claude, on top.',
+        tip: 'They show up during the pre-show.',
+        source: TIKI_AE,
+      },
+      // evidence: "adorned with tropical foliage and tiki statues"
+      {
+        type: 'photo',
+        id: 'tiki-room-r-photo4',
+        prompt: 'From the line, take a photo of the biggest tropical leaf or flower you can find.',
+        tip: 'The waiting area is covered but open to the air.',
+        source: TIKI_PS,
+      },
+      // evidence: "The Sunshine Pavilion, featuring a show variously known as “Tropical Serenade”"
+      {
+        type: 'photo',
+        id: 'tiki-room-r-photo5',
+        prompt: 'From the line outside, snap the front of the Sunshine Pavilion, home of the Tiki Room.',
+        source: TIKI_WM,
       },
       {
         type: 'challenge',
@@ -1337,6 +1475,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look at the giant roots at the bottom of the tree.',
         hint: 'They look like wood, but they’re concrete, and they go 42 feet underground to hold the tree steady.',
       },
+      // source: SFT_DVC. evidence: "1,400 limbs and 300,000 plastic leaves"
+      {
+        type: 'spy',
+        id: 'swiss-family-treehouse-r-spy10',
+        prompt: 'Look at the leaves on the branches. Can you tell they are not real?',
+        hint: 'The tree has about 300,000 plastic leaves!',
+      },
       // source: SFT_DVC. evidence: "a really cool water pulley system that moves water from the ground up to all the rooms"
       {
         type: 'spy',
@@ -1364,6 +1509,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'swiss-family-treehouse-r-spy5',
         prompt: 'Find the kitchen. What would the family cook up here?',
         hint: 'Everything in it was salvaged from the shipwreck and carried up the tree.',
+      },
+      // source: SFT_DVC. evidence: "place settings like the family is going to come and sit down for a meal"
+      {
+        type: 'spy',
+        id: 'swiss-family-treehouse-r-spy11',
+        prompt: 'Look at the table in the kitchen. What is set out for dinner?',
+        hint: 'Place settings are ready, as if the family is about to sit down for a meal.',
       },
       // source: SFT_DVC. evidence: "There is even an organ that was rescued from the ship"
       {
@@ -1415,6 +1567,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of the water wheel in action.',
         tip: 'It’s at the base of the tree.',
         source: SFT_DIS,
+      },
+      // evidence: "The only part of the tree that is real is the Spanish moss that is draped over the branches."
+      {
+        type: 'photo',
+        id: 'swiss-family-treehouse-r-photo3',
+        prompt: 'From the stairs, take a photo of the Spanish moss hanging from the branches.',
+        tip: 'It is the only real part of the tree.',
+        source: SFT_DVC,
+      },
+      // evidence: "Keep your eyes open for water troughs and pipes"
+      {
+        type: 'photo',
+        id: 'swiss-family-treehouse-r-photo4',
+        prompt: 'From the stairs, snap a water trough or pipe that carries water up the tree.',
+        tip: 'They run all the way up to the family kitchen.',
+        source: SFT_DVC,
+      },
+      // evidence: "place settings like the family is going to come and sit down for a meal"
+      {
+        type: 'photo',
+        id: 'swiss-family-treehouse-r-photo5',
+        prompt: 'From the walkway, take a photo of the kitchen table, all set for dinner.',
+        source: SFT_DVC,
+      },
+      // evidence: "Views from the top include Cinderella Castle and Space Mountain"
+      {
+        type: 'photo',
+        id: 'swiss-family-treehouse-r-photo6',
+        prompt: 'From the top of the stairs, snap the view of Cinderella Castle or Space Mountain.',
+        tip: 'You are about 6 stories up.',
+        source: SFT_DVC,
       },
       {
         type: 'challenge',
@@ -1754,6 +1937,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Spot the giant golden Genie lamp on top of the ride.',
         hint: 'Imagineers put it there so it would shine and pull guests deeper into Adventureland.',
       },
+      // source: MC_MW. evidence: "decorated with characters from Disney's Aladdin"
+      {
+        type: 'spy',
+        id: 'magic-carpets-r-spy9',
+        prompt: 'Look closely at the lamp. Which Aladdin characters can you find on it?',
+        hint: 'It is covered with characters from the movie.',
+      },
       // source: MC_MW. evidence: "the Genie bottle that serves as the centerpiece of the attraction was discovered"
       {
         type: 'spy',
@@ -1810,6 +2000,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'magic-carpets-r-photo2',
         prompt: 'From the line, take a photo of the golden Genie lamp with carpets flying around it.',
         source: MC_MW,
+      },
+      // evidence: "featuring different versions of Genie"
+      {
+        type: 'photo',
+        id: 'magic-carpets-r-photo3',
+        prompt: 'From the line, snap the ride’s center pole and its Genie pattern.',
+        tip: 'Count how many Genies you can find.',
+        source: MC_MW,
+      },
+      // evidence: "Gems are set into the pavement along the queue and boarding area."
+      {
+        type: 'photo',
+        id: 'magic-carpets-r-photo4',
+        prompt: 'From the line, take a close-up photo of a jewel set into the ground.',
+        tip: 'Look down. They sparkle along the whole line.',
+        source: MC_AE,
+      },
+      // evidence: "the Genie bottle that serves as the centerpiece of the attraction"
+      {
+        type: 'photo',
+        id: 'magic-carpets-r-photo5',
+        prompt: 'From the line, snap the big Genie bottle in the middle of the ride.',
+        source: MC_MW,
+      },
+      // evidence: "Climb aboard a colorful, 4-passenger flying “rug”"
+      {
+        type: 'photo',
+        id: 'magic-carpets-r-photo6',
+        prompt: 'From the line, take a photo of the carpet you hope to ride. Pick your favorite colors!',
+        tip: 'Take it while the carpets are stopped, before you board.',
+        source: MC_DIS,
       },
       {
         type: 'challenge',
