@@ -15,7 +15,7 @@ import { QuestCard } from '@/components/quest-card';
 import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { photoCaption, useJourney, type Player } from '@/lib/journey';
-import { buildQueue } from '@/lib/plan';
+import { buildQueue, matchWaitMinutes } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -37,7 +37,11 @@ export default function LineStory() {
 
   const active = session && session.attractionId === id ? session : null;
   const [view, setView] = useState<number | null>(null);
-  const dripMin = active?.dripEvery ?? 3;
+  // dripEvery 0 means "match my wait": spread the activities over the whole posted wait.
+  const dripMin =
+    active?.dripEvery === 0 && ref
+      ? matchWaitMinutes(active.waitMinutes, ref.attraction.quests.length)
+      : (active?.dripEvery ?? 3);
   const dripMs = dripMin * 60_000;
   const lastAt = active ? (active.lastAt ?? active.startedAt) : 0;
   const due = active ? Math.floor(Math.max(0, now - lastAt) / dripMs) : 0;
@@ -91,6 +95,7 @@ export default function LineStory() {
   // One activity at a time. A new one arrives on a timer the guest sets (default 3
   // minutes); earlier ones stay reachable, and "next now" skips the wait.
   const drip = active.dripEvery ?? 3;
+  const matching = drip === 0;
   const total = Math.min(queue.length, Math.max(active.shown ?? 1, 1));
   const list = queue.slice(0, total);
   const outOfQuests = total >= queue.length;
@@ -257,7 +262,7 @@ export default function LineStory() {
           {!outOfQuests && (
             <View style={[styles.next, { borderColor: c.ink }]}>
               <Txt weight="bold" size={16} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
-                ✨ Something new in {countdown}
+                ✨ Something new in {countdown}{matching ? ' (matching your wait)' : ''}
               </Txt>
               <Pressable
                 accessibilityRole="button"
@@ -271,7 +276,7 @@ export default function LineStory() {
               </Pressable>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Txt size={13}>New activity every</Txt>
-                {[1, 2, 3, 5, 10].map((m) => (
+                {[0, 1, 2, 3, 5, 10].map((m) => (
                   <Pressable
                     key={m}
                     accessibilityRole="button"
@@ -279,7 +284,7 @@ export default function LineStory() {
                     onPress={() => updateSession((s) => ({ ...s, dripEvery: m }))}
                     style={[styles.pace, drip === m && { backgroundColor: colors.lemon }]}>
                     <Txt weight="bold" size={13}>
-                      {m} min
+                      {m === 0 ? 'Match my wait' : `${m} min`}
                     </Txt>
                   </Pressable>
                 ))}

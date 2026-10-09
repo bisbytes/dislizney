@@ -113,3 +113,12 @@ export function countForMinutes(queue: PlannedQuest[], minutes: number) {
   while (n < queue.length && total < minutes) total += MINUTES[queue[n++].quest.type];
   return Math.max(1, n);
 }
+
+/**
+ * Minutes between new activities when the pace matches the line: spread what we have
+ * across the whole posted wait, about one every 2 minutes at most, never faster than 1.
+ */
+export function matchWaitMinutes(waitMinutes: number, available: number) {
+  const n = Math.max(1, Math.min(available, Math.ceil(waitMinutes / 2)));
+  return Math.max(1, waitMinutes / n);
+}
