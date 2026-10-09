@@ -45,7 +45,6 @@ const MT = 'https://en.wikipedia.org/wiki/Mad_Tea_Party';
 const MT_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/mad-tea-party/';
 const MT_AE = 'https://allearsnet.com/tp/mk/tea.htm';
 const MT_MB = 'https://mickeyblog.com/2024/04/15/step-in-time-the-history-of-magic-kingdoms-mad-tea-party';
-const MT_SIGN = 'https://mickeyblog.com/?p=429291';
 const MT_DF = 'https://www.disneyfanatic.com/10-wonderful-facts-about-the-mad-tea-party-ride/';
 
 /**
@@ -2389,35 +2388,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       },
     ],
     quests: [
-      // ---- Look around the queue, in walking order ----
-      // source: MT_SIGN. evidence: "designed to look like they are made up of Tulgey Wood." / "Previously, the signs had a floral look to them."
-      {
-        type: 'spy',
-        id: 'mad-tea-party-r-spy1',
-        prompt: 'At the entrance, look at the queue signs. What are they made to look like?',
-        hint: 'Since 2024 they look like they’re carved from Tulgey Wood, the forest of Wonderland. They used to look floral.',
-      },
-      // source: MT_SIGN. evidence: the Lightning Lane sign is pink, and the stand-by sign is purple
-      {
-        type: 'spy',
-        id: 'mad-tea-party-r-spy2',
-        prompt: 'Which entrance sign is pink, and which one is purple?',
-        hint: 'The Lightning Lane sign is pink and the standby sign is purple.',
-      },
-      // source: MT_SIGN. evidence: tulips hang above the stand-by entrance sign
-      {
-        type: 'spy',
-        id: 'mad-tea-party-r-spy3',
-        prompt: 'Find the tulips hanging above the standby entrance sign.',
-        hint: 'They arrived with the new Wonderland signs in 2024. Flowers in Wonderland are never ordinary!',
-      },
-      // source: MT_SIGN. evidence: "this new clock clearly belongs to the White Rabbit."
-      {
-        type: 'spy',
-        id: 'mad-tea-party-r-spy4',
-        prompt: 'Find the clock at the ride. Whose clock do you think it is?',
-        hint: 'In 2024 the old clock was swapped for one that clearly belongs to the White Rabbit. Don’t be late!',
-      },
       // source: MT. evidence: "opened without a roof." / "It was eventually added in 1973 (along with the central teapot) due to extreme weather conditions."
       {
         type: 'spy',
@@ -2466,29 +2436,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'mad-tea-party-r-spy8',
         prompt: 'Watch the ride spin. Can you see the three smaller circles turning inside the big one?',
         hint: 'Three small turntables spin one way while the big turntable spins the other. That’s the secret to the dizzy fun.',
-      },
-      // source: MT_SIGN. evidence: "this new clock clearly belongs to the White Rabbit."
-      {
-        type: 'photo',
-        id: 'mad-tea-party-r-photo1',
-        prompt: 'From the line, snap a photo of the White Rabbit’s clock.',
-        tip: 'Look near the entrance.',
-        source: MT_SIGN,
-      },
-      // source: MT_SIGN. evidence: "designed to look like they are made up of Tulgey Wood."
-      {
-        type: 'photo',
-        id: 'mad-tea-party-r-photo2',
-        prompt: 'From the line, snap a photo of the queue sign that looks carved from Tulgey Wood.',
-        tip: 'These signs were new in April 2024.',
-        source: MT_SIGN,
-      },
-      // source: MT_SIGN. evidence: "a pair of tulips hangs from atop the 'stand by' entrance sign."
-      {
-        type: 'photo',
-        id: 'mad-tea-party-r-photo3',
-        prompt: 'From the line, snap a photo of the tulips hanging above the standby entrance sign.',
-        source: MT_SIGN,
       },
       // source: MT_MB. evidence: "the central teapot (housing the Dormouse from Alice in Wonderland) was also added."
       {
@@ -2785,7 +2732,7 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         type: 'emoji',
         id: 'mad-tea-party-x24',
         emojis: '🐰 ⏰ 🏃',
-        hint: 'His clock hangs at this ride’s entrance.',
+        hint: 'He is always worried about being late.',
         choices: ['The White Rabbit', 'The March Hare', 'Thumper', 'Rabbit'],
         answer: 0,
       },

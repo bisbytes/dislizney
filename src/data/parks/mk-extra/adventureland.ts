@@ -11,10 +11,9 @@ const JC_CO =
 const PI = 'https://en.wikipedia.org/wiki/Pirates_of_the_Caribbean_(attraction)';
 const PI_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/pirates-of-the-caribbean/';
 const PI_FAN = 'https://disneyparks.fandom.com/wiki/Pirates_of_the_Caribbean_(Magic_Kingdom)';
-const PI_MP =
-  'https://mouseplanet.com/the-vacation-kingdom-of-the-world-extending-the-magic-of-the-pirates-of-the-caribbean/4433/';
 const PI_N4J =
   'https://www.news4jax.com/theme-parks/2020/06/19/dont-miss-these-4-hidden-treasures-the-next-time-youre-on-pirates-of-the-caribbean-at-walt-disney-world/';
+const PI_AE = 'https://allears.net/magic-kingdom/pirates-of-the-caribbean-adventureland-magic-kingdom/';
 const PI_TP = 'https://touringplans.com/blog/five-things-to-know-about-pirates-of-the-caribbean/';
 const TIKI = "https://en.wikipedia.org/wiki/Walt_Disney's_Enchanted_Tiki_Room";
 const TIKI_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/enchanted-tiki-room/';
@@ -346,26 +345,12 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find “Banana Troop 5571.” What could that number mean?',
         hint: '55 and 71: the years the Jungle Cruise opened at Disneyland and Magic Kingdom.',
       },
-      // source: JC_AE25. evidence: "A sign shows Skipper Winston's joke, a likely tribute to Winston Hibler"
-      {
-        type: 'spy',
-        id: 'jungle-cruise-r-spy7',
-        prompt: 'Look for the sign with the skippers’ first-ever joke. Does it make you groan?',
-        hint: 'It’s credited to Skipper Winston, a nod to Winston Hibler, who worked on Walt’s True-Life Adventure films.',
-      },
       // source: JC_AE25. evidence: "Col. Brody's trip to "Placid Palms" links to the Typhoon Lagoon storyline."
       {
         type: 'spy',
         id: 'jungle-cruise-r-spy8',
         prompt: 'Find the Crew Shift board. Who is off on a trip?',
         hint: 'Col. Brody went to “Placid Palms,” a wink to the story of Typhoon Lagoon water park.',
-      },
-      // source: JC_AE25. evidence: "Inside, we could see hats, drink glasses, a bottle of some unknown beverage, and a tiara."
-      {
-        type: 'spy',
-        id: 'jungle-cruise-r-spy14',
-        prompt: 'Find the glass case labeled “break in case of party.” What is inside?',
-        hint: 'Hats, drink glasses, a mystery bottle and a tiara. Time to celebrate!',
       },
       // source: JC_AE25. evidence: "One side is labeled "First Aid," the other "Last Aid.""
       {
@@ -380,13 +365,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'jungle-cruise-r-spy10',
         prompt: 'Read the menu board near the boats. What does everything taste like?',
         hint: 'Chicken! And on Fridays? Real chicken. The Skipper Canteen restaurant tells the same joke.',
-      },
-      // source: JC_AE25. evidence: "Who’s the employee of the month at Jungle Navigation Co.? E. L. O’Fevre!"
-      {
-        type: 'spy',
-        id: 'jungle-cruise-r-spy15',
-        prompt: 'Find the employee of the month board. Read the name out loud, fast.',
-        hint: 'E. L. O’Fevre. Say it quickly and it sounds like “yellow fever.” Skipper humor!',
       },
       // source: JC_AE25. evidence: "A rock near the boarding area references Casablanca."
       {
@@ -758,69 +736,26 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         explain: 'Fact! Since 2018 she’s joined the pirate crew.',
         source: PI,
       },
-      // ----- Look around the queue, in walking order -----
-      // source: PI_FAN. evidence: "guarded by the Caribbean watchtower Torre del Sol"
-      {
-        type: 'spy',
-        id: 'pirates-r-spy1',
-        prompt: 'Before you go in, look up for the fort’s tall watchtower.',
-        hint: 'It’s the Torre del Sol, the “Tower of the Sun,” keeping watch over the fort.',
-      },
-      // source: PI_MP. evidence: "the Magic Kingdom's fort reflects the original's bastion design and sentry boxes"
-      {
-        type: 'spy',
-        id: 'pirates-r-spy2',
-        prompt: 'Find a little lookout box on the corner of the fort walls.',
-        hint: 'Real Spanish forts had sentry boxes like these. Imagineers copied the fort in San Juan, Puerto Rico.',
-      },
-      // source: PI_MP. evidence: "A large drawbridge, the only way in or out of the Castillo, is found at the entry to the attraction"
+      // source: PI_AE. evidence: "The drawbridge at the attraction's entrance is non-operational." (AllEars guide; Disney World Pirates page)
       {
         type: 'spy',
         id: 'pirates-r-spy3',
         prompt: 'Spot the drawbridge at the entrance.',
-        hint: 'In a real fort it was the only way in or out. Here it splits guests into two lines.',
+        hint: 'In a real fort it was the only way in or out. This one stays put, so it is just for show.',
       },
-      // source: PI. evidence: "There are two queues designed to evoke a different atmosphere"
+      // source: PI, PI_TP. evidence: "There are two queues designed to evoke a different atmosphere" / longer lines extend into a covered area
       {
         type: 'spy',
         id: 'pirates-r-spy4',
-        prompt: 'Which side of the fort are you on: the soldiers’ side or the pirates’ side?',
-        hint: 'The left line feels like the soldiers’ fort. The right line feels like pirates took over. They meet at Pirate’s Cove.',
+        prompt: 'Notice which part of the fort queue you are in. Does it feel dark and cool inside?',
+        hint: 'There are two queues, each with its own mood. Both meet at the boats in Pirate’s Cove.',
       },
-      // source: PI_MP. evidence: "The heavy chains, incredibly thick doors, and the dark, damp feeling of this area are very convincing."
-      {
-        type: 'spy',
-        id: 'pirates-r-spy5',
-        prompt: 'Find a heavy chain or a super thick door.',
-        hint: 'Modern buildings don’t need walls this thick. Imagineers built them anyway to feel like a real old fort.',
-      },
-      // source: PI_MP. evidence: "The curved ceilings, the vaulted casements, the narrow stairs, the cutouts in the thick walls."
-      {
-        type: 'spy',
-        id: 'pirates-r-spy13',
-        prompt: 'Look up at the curved ceilings and look for narrow stairs.',
-        hint: 'Real Spanish forts had arched rooms and tight stairways like these.',
-      },
-      // source: PI_MP. evidence: "dark hallways dimly lit with flickering candlelight"
-      {
-        type: 'spy',
-        id: 'pirates-r-spy14',
-        prompt: 'Look for the flickering candlelight in the dark hallways.',
-        hint: 'The dim glow makes the old fort feel spooky and cool.',
-      },
-      // source: PI_MP. evidence: "Several of these rooms feature windows with thick, black bars stretching across their windows"
+      // source: PI_TP. evidence: queue passes through a dark Spanish fort with "barred windows" (updated May 2025)
       {
         type: 'spy',
         id: 'pirates-r-spy6',
-        prompt: 'Peek at a window with thick black bars. Who might have been locked in there?',
+        prompt: 'Peek at a barred window. Who might have been locked in there?',
         hint: 'These rooms copy the guardrooms of real forts.',
-      },
-      // source: PI_MP. evidence: "the piles of cannonballs, batteries of cannons, and kegs filled with gunpowder"
-      {
-        type: 'spy',
-        id: 'pirates-r-spy7',
-        prompt: 'Count a pile of cannonballs. How many can you see?',
-        hint: 'Real forts stored cannonballs and gunpowder in rooms just like these.',
       },
       // source: PI. evidence: "The queue winds through the fort, passing supplies and cannons"
       {
@@ -829,19 +764,12 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find a cannon guarding the fort.',
         hint: 'This fort is ready for the pirate battle you’ll sail through later.',
       },
-      // source: PI_MP. evidence: "kegs filled with gunpowder"
-      {
-        type: 'spy',
-        id: 'pirates-r-spy9',
-        prompt: 'Spot a keg that might be full of gunpowder.',
-        hint: 'Kegs like these held the gunpowder that fired the fort’s cannons. Ka-boom!',
-      },
-      // source: PI_FAN. evidence: "The pieces were accidentally moved during a minor refurbishment."
+      // source: PI_FAN, PI_TP. evidence: "any move will result in a never-ending game" / a prison cell where "two skeletons play chess"
       {
         type: 'spy',
         id: 'pirates-r-spy10',
         prompt: 'Find the two skeletons playing chess in a cell. Who do you think is winning?',
-        hint: 'Nobody! Marc Davis set the board so the game never ends. Once the pieces got moved, and they were fixed using his old sketches.',
+        hint: 'Nobody! Marc Davis set the board so the game never ends.',
       },
       // source: PI. evidence: "a pirate ship is visible in the distance from the loading area"
       {
@@ -872,36 +800,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo with a fort cannon behind you and your best pirate face!',
         source: PI,
       },
-      // evidence: "A large drawbridge, the only way in or out of the Castillo, is found at the entry to the attraction"
+      // evidence: "The drawbridge at the attraction's entrance is non-operational."
       {
         type: 'photo',
         id: 'pirates-r-photo3',
         prompt: 'From the line, snap the big drawbridge at the fort entrance.',
-        tip: 'It is also where the line splits in two.',
-        source: PI_MP,
+        tip: 'Take it before you step into the fort.',
+        source: PI_AE,
       },
-      // evidence: "windows with thick, black bars stretching across their windows"
+      // evidence: "barred windows" (Touring Plans, updated May 2025)
       {
         type: 'photo',
         id: 'pirates-r-photo4',
-        prompt: 'From the line, take a photo of a window with thick black bars. Who was locked up in there?',
-        source: PI_MP,
-      },
-      // evidence: "piles of cannonballs, batteries of cannons, and kegs filled with gunpowder"
-      {
-        type: 'photo',
-        id: 'pirates-r-photo5',
-        prompt: 'From the line, snap a pile of cannonballs or a keg of gunpowder.',
-        tip: 'Look in the storage rooms as the line winds through the fort.',
-        source: PI_MP,
-      },
-      // evidence: "guarded by the Caribbean watchtower Torre del Sol"
-      {
-        type: 'photo',
-        id: 'pirates-r-photo6',
-        prompt: 'From the line outside, take a photo looking up at the Torre del Sol watchtower.',
-        tip: 'Do it before you step inside the fort.',
-        source: PI_FAN,
+        prompt: 'From the line, take a photo of a barred window. Who was locked up in there?',
+        source: PI_TP,
       },
       {
         type: 'challenge',
@@ -932,12 +844,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'pirates-r-wyr1',
         a: 'Sit in the very front row (you might get sprinkled on the drop)',
         b: 'Sit in the back row and stay dry',
-      },
-      {
-        type: 'wyr',
-        id: 'pirates-r-wyr2',
-        a: 'Wait in line on the soldiers’ side of the fort',
-        b: 'Wait in line on the pirates’ side of the fort',
       },
       {
         type: 'emoji',

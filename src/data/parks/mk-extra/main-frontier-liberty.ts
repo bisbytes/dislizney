@@ -9,10 +9,10 @@ const CASTLE_RG = 'https://www.resortsgal.com/parks/magic-kingdom/cinderella-cas
 const BT = 'https://en.wikipedia.org/wiki/Big_Thunder_Mountain_Railroad';
 const BT_MV = 'https://mickeyvisit.com/disney-big-thunder-mountain-railroad-secrets/';
 const BT_MB = 'https://mickeyblog.com/2026/05/03/big-thunder-mountain-railroad-reopens-in-magic-kingdom/';
-const BT_KTP =
-  'https://kennythepirate.com/2013/02/22/a-look-inside-big-thunder-mountain-railroads-new-interactive-queue-with-concept-art-and-video';
-const BT_NT =
-  'https://wdwnt.com/2021/08/photos-interactive-queue-turned-on-at-big-thunder-mountain-railroad-in-magic-kingdom/';
+const BT_WM =
+  'https://www.wdwmagic.com/attractions/big-thunder-mountain-railroad/news/01may2026-big-thunder-mountain-railroad-backstory-the-full-legend-of-barnabas-t-bullion-and-tumbleweed.htm';
+const BT_NTQ = 'https://wdwnt.com/2026/05/photos-video-big-thunder-mountain-railroad-reopens-upgrades-changes/';
+const BT_DD = 'https://www.disneydining.com/10-facts-and-secrets-about-big-thunder-mountain-in-the-magic-kingdom/';
 const BT_NT26 =
   'https://wdwnt.com/2026/04/walt-disney-world-ambassadors-share-sneak-preview-of-big-thunder-mountain-ahead-of-reopening/';
 const BT_WKMG =
@@ -27,12 +27,14 @@ const TI_BM =
   'https://blogmickey.com/2024/06/200-photos-scene-by-scene-breakdown-of-tianas-bayou-adventure-ride-tour-of-queue/';
 const BEARS = 'https://en.wikipedia.org/wiki/Country_Bear_Jamboree';
 const CB_NT = 'https://wdwnt.com/2024/07/first-look-grizzly-hall-country-bear-musical-jamboree';
+const CB_TP = 'https://touringplans.com/blog/five-things-to-know-about-country-bear-musical-jamboree/';
+const CB_BM = 'https://blogmickey.com/country-bear-musical-jamboree-review/';
+const CB_IM = 'https://www.imaginerding.com/?p=14430';
 const HM = 'https://en.wikipedia.org/wiki/The_Haunted_Mansion';
 const HM_ITM =
   'https://insidethemagic.net/2011/03/preview-haunted-mansion-queue-enhancements-add-effects-tributes-and-include-unofficial-story-in-disney-world-lore/';
 const HM_AE = 'https://allearsnet.com/tp/mk/haunted-mansion.htm';
 const HM_RG = 'https://www.resortsgal.com/blog/haunted-mansion/';
-const HM_DREAD = 'https://blogmickey.com/2014/09/haunted-mansion-queue-details-murder-mystery/';
 const HOP = 'https://en.wikipedia.org/wiki/The_Hall_of_Presidents';
 const HOP_NT =
   'https://wdwnt.com/2025/06/lobby-of-the-hall-of-presidents-reopens-at-magic-kingdom-show-remains-closed-following-trump-update/';
@@ -756,13 +758,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the entrance, look up at the mountain. Can you spot a smokestack puffing away?',
         hint: 'Two working smokestacks came back in the 2026 makeover after sitting quiet for years.',
       },
-      // source: BT_MB. evidence: "Keep your eye out for goats."
-      {
-        type: 'spy',
-        id: 'big-thunder-s12',
-        prompt: 'Scan the rocky mountain slopes. Can you spot a goat?',
-        hint: 'Goats like to climb high rocks, just like the ones around Big Thunder.',
-      },
       // source: BT_MB. evidence: one sign notes that "this mining job is dangerous" / "fire is prohibited!"
       {
         type: 'spy',
@@ -770,22 +765,22 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find a warning sign for the miners. What is NOT allowed here?',
         hint: 'Fire is prohibited! The Big Thunder Mining Company keeps lots of explosives around, and this mining job is dangerous.',
       },
-      // source: BT_KTP, BT_NT. evidence: "Plunger to activate explosions" / "Explosives Magazine Room"
+      // source: BT_DD, BT_WM. evidence: guests can set off "explosives" in the queue's "Explosives Magazine room" (2024); queue has "blasting machines" (May 2026)
       {
         type: 'spy',
         id: 'big-thunder-s3',
-        prompt: 'Find the explosives room and its big blasting plunger.',
-        hint: 'The plunger is tied to blasts out on the ride. Miners used plungers like this to set off dynamite.',
+        prompt: 'Find the explosives room and its blasting machines.',
+        hint: 'The Big Thunder Mining Company keeps lots of explosives around. Follow the posted instructions to set off a blast!',
       },
-      // source: BT_NT. evidence: instructions for the machines are posted throughout the explosives area
+      // source: BT_DD. evidence: guests set off explosives "by following instructions posted there"
       {
         type: 'spy',
         id: 'big-thunder-s4',
         prompt:
           'Read the operating instructions posted near the blasting machines. Who can explain them in one sentence?',
-        hint: 'Every machine has its own old-time instructions, written like a real 1800s mining company.',
+        hint: 'The queue tells you how to set off a blast, written like a real 1800s mining company.',
       },
-      // source: BT_KTP. evidence: guests can explore the "Mining Office"
+      // source: BT_WM. evidence: "Big Thunder Mining Offices"
       {
         type: 'spy',
         id: 'big-thunder-s5',
@@ -799,35 +794,21 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look for the Assay Report sign.',
         hint: 'An assay tests rock to see how much gold is inside. Good reports kept the miners digging deeper and deeper.',
       },
-      // source: BT_KTP, BT_NT. evidence: "High tech ventilation equipment" / "large fan-like machines"
-      {
-        type: 'spy',
-        id: 'big-thunder-s7',
-        prompt: 'Find the big fan-like ventilation machines.',
-        hint: 'Fans pushed fresh air down into the mine. The mining company called them “high tech” in their day.',
-      },
-      // source: BT_MV, BT_NT. evidence: a birdcage labeled "Rosita" / a "canary in a coal mine"
+      // source: BT_DD. evidence: "A birdcage hangs overhead in the second queue room, labeled "Rosita."" (page modified July 2024)
       {
         type: 'spy',
         id: 'big-thunder-s8',
         prompt: 'Find a birdcage. What name is on it?',
         hint: 'It says Rosita, a wink to a bird from the Enchanted Tiki Room. Miners once took canaries underground to check the air.',
       },
-      // source: BT_KTP. evidence: a view finder looks into the mine shaft, where guests "will see the workers above"
-      {
-        type: 'spy',
-        id: 'big-thunder-s9',
-        prompt: 'Find a viewer that looks up into the mine shaft. Can you spot the miners at work?',
-        hint: 'The queue tells the story of the miners digging under Big Thunder for Barnabas T. Bullion.',
-      },
-      // source: BT_MV. evidence: portrait "nestled in the center behind the winding ramp that leads to the trains" and "modeled after none other than Tony Baxter himself"
+      // source: BT_NTQ, BT_DD. evidence: "an ornate framed portrait of Barnabas T. Bullion can be seen situated on top of some rafters" in the upstairs queue (May 2026); portrait "a nod to Imagineer Tony Baxter"
       {
         type: 'spy',
         id: 'big-thunder-s10',
-        prompt: 'Near the winding ramp to the trains, find the portrait of mine boss Barnabas T. Bullion.',
+        prompt: 'Upstairs in the queue, look up on the rafters for the portrait of mine boss Barnabas T. Bullion.',
         hint: 'Look closely: his face is modeled on Tony Baxter, the Imagineer who created Big Thunder!',
       },
-      // source: BT_MV. evidence: "U.R. Daring, U.B. Bold, I.M. Brave, I.B. Hearty, U.R. Courageous, and I.M. Fearless"
+      // source: BT_DD, BT_WM. evidence: "I.M Brave, I.B Hearty, I.M Fearless, U.B Bold, U.R Courageous, and U.R Daring" / trains "U.R. Daring" and "I.M. Fearless" (May 2026)
       {
         type: 'spy',
         id: 'big-thunder-s11',
@@ -850,37 +831,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'Wait for a puff of smoke for a great picture.',
         source: BT_WKMG,
       },
-      // evidence: "Plunger to activate explosions" / "Explosives Magazine Room"
+      // evidence: guests can set off "explosives" in the queue's "Explosives Magazine room"
       {
         type: 'photo',
         id: 'big-thunder-photo3',
-        prompt: 'From the line, photograph the big blasting plunger in the explosives room.',
+        prompt: 'From the line, photograph the blasting machines in the explosives room.',
         tip: 'Ask a grown-up to hold your spot in line first.',
-        source: BT_KTP,
+        source: BT_DD,
       },
-      // evidence: a birdcage labeled "Rosita" / a "canary in a coal mine"
+      // evidence: "A birdcage hangs overhead in the second queue room, labeled "Rosita.""
       {
         type: 'photo',
         id: 'big-thunder-photo4',
         prompt: 'From the line, look up and snap the birdcage with the name Rosita on it.',
         tip: 'It hangs overhead, so tilt your camera up.',
-        source: BT_MV,
+        source: BT_DD,
       },
-      // evidence: portrait "nestled in the center behind the winding ramp that leads to the trains"
+      // evidence: "an ornate framed portrait of Barnabas T. Bullion can be seen situated on top of some rafters"
       {
         type: 'photo',
         id: 'big-thunder-photo5',
-        prompt: 'From the winding ramp, snap the portrait of mine boss Barnabas T. Bullion.',
-        tip: 'It hangs high near the ceiling.',
-        source: BT_MV,
+        prompt: 'From the upstairs queue, snap the portrait of mine boss Barnabas T. Bullion.',
+        tip: 'It sits up high on the rafters, so tilt your camera up.',
+        source: BT_NTQ,
       },
-      // evidence: "U.R. Daring, U.B. Bold, I.M. Brave, I.B. Hearty, U.R. Courageous, and I.M. Fearless"
+      // evidence: "I.M Brave, I.B Hearty, I.M Fearless, U.B Bold, U.R Courageous, and U.R Daring"
       {
         type: 'photo',
         id: 'big-thunder-photo6',
         prompt: 'From the station, photograph the name on the front of a train before you board.',
         tip: 'Can you find I.M. Fearless?',
-        source: BT_MV,
+        source: BT_DD,
       },
 
       // ---- Trivia ----
@@ -1660,96 +1641,33 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'In the lobby, find an oval portrait of a bear with an instrument.',
         hint: 'Many were painted by Marc Davis, the Imagineer who dreamed up the bears in the first place.',
       },
-      // source: CB_NT. evidence: "two bear cubs in pink bows playing upright bass"
-      {
-        type: 'spy',
-        id: 'country-bears-s4',
-        prompt: 'Find the newer painting of two bear cubs in pink bows.',
-        hint: 'New art was added in 2024, painted to match Marc Davis’s style.',
-      },
-      // source: CB_NT. evidence: Ernest's burnt rehearsal fiddle, plaque noting "fireproofing proved necessary"
+      // source: CB_NT, CB_BM. evidence: Earnest's rehearsal fiddle in a lobby case; plaque noting "fireproofing proved necessary"
       {
         type: 'spy',
         id: 'country-bears-s5',
         prompt: 'Find Ernest’s burnt fiddle in a display case.',
         hint: 'He played so hot at rehearsal that “fireproofing proved necessary.”',
       },
-      // source: CB_NT. evidence: "A wooden metronome set to 88 BPM with golden bees, provided by Gomer"
-      {
-        type: 'spy',
-        id: 'country-bears-s6',
-        prompt: 'Find a metronome decorated with golden bees.',
-        hint: 'It belongs to Gomer, the piano bear who loves honey. It’s set to 88 beats a minute.',
-      },
-      // source: CB_NT. evidence: "Ursus H. Bear's top hat: He founded Grizzly Hall and was Henry's grandfather."
-      {
-        type: 'spy',
-        id: 'country-bears-s7',
-        prompt: 'Find the top hat that belonged to Ursus H. Bear.',
-        hint: 'Ursus founded Grizzly Hall and is Henry’s grandpa. Top hats run in the family!',
-      },
-      // source: CB_NT. evidence: "The Daily Bee" reprint about Grizzly Hall's opening in October 1898
-      {
-        type: 'spy',
-        id: 'country-bears-s8',
-        prompt: 'Find the old newspaper called “The Daily Bee.” What year did Grizzly Hall open?',
-        hint: 'October 1898! The headline promises a “Wild and Wooly” time.',
-      },
-      // source: CB_NT. evidence: Romeo's "Les Paw" guitar; Big Al's vest patch "Big Al's 10th Farewell Tour," with an "11" added
-      {
-        type: 'spy',
-        id: 'country-bears-s9',
-        prompt: 'Find Big Al’s red vest covered in patches. Which farewell tour is he on?',
-        hint: 'The patch says 10th Farewell Tour, with an 11 added. Big Al never really says goodbye! Look for Romeo’s “Les Paw” guitar nearby.',
-      },
-      // source: CB_NT. evidence: "Golden statue of Teddi Barra in her floral swing"
-      {
-        type: 'spy',
-        id: 'country-bears-s13',
-        prompt: 'Find the golden statue of Teddi Barra on her flower swing.',
-        hint: 'In the show, Teddi swings down from the ceiling. Her swing is covered in pink roses.',
-      },
-      // source: CB_NT. evidence: "Beary Poppins" poster, Trixie's book "I Bearly Remember"
+      // source: CB_NT, CB_BM, CB_IM. evidence: "Beary Poppins" poster in the "Awards & Memorabilia" case; Trixie's book "I Bearly Remember" on display
       {
         type: 'spy',
         id: 'country-bears-s14',
         prompt: 'Find the poster called “Beary Poppins.”',
         hint: 'It sits near Trixie’s book, “I Bearly Remember.” The bears love a good pun.',
       },
-      // source: CB_NT. evidence: "The original 16mm film reel for Ken Bearns' documentary"
-      {
-        type: 'spy',
-        id: 'country-bears-s10',
-        prompt: 'Find the film reel for a documentary called “Singing Wild.”',
-        hint: 'It’s by “Ken Bearns,” a bear-y pun on the real filmmaker Ken Burns.',
-      },
-      // source: CB_NT. evidence: "Big Al's footprints: A concrete slab"
-      {
-        type: 'spy',
-        id: 'country-bears-s11',
-        prompt: 'Find Big Al’s footprints pressed in concrete. Whose feet are bigger, yours or his?',
-        hint: 'Like a movie star’s footprints, but furrier.',
-      },
-      // source: CB_NT. evidence: Four magazines: National Growl, Hiber-Nation, Bears Magazine, and Country Bear Living
+      // source: CB_IM. evidence: lobby cases hold "artifacts, magazines, awards, and…a book!"
       {
         type: 'spy',
         id: 'country-bears-s15',
-        prompt: 'Find the bear magazines. Which one is called “Hiber-Nation”?',
-        hint: 'There are four: National Growl, Hiber-Nation, Bears Magazine and Country Bear Living.',
+        prompt: 'Find the bear magazines in a display case. Can you spot a bear pun in a title?',
+        hint: 'The lobby cases hold artifacts, magazines, awards and even a book.',
       },
-      // source: CB_NT. evidence: the center portrait is of Ursus H. Bear, "who bears a striking resemblance to his grandson"
-      {
-        type: 'spy',
-        id: 'country-bears-s12',
-        prompt: 'In the theater, look above the red curtains for the carved face of Ursus H. Bear.',
-        hint: 'He “bears a striking resemblance” to his grandson Henry. During the show, look for the honeycomb on Gomer’s piano too!',
-      },
-      // source: CB_NT. evidence: "Mounted moose, buffalo, and deer heads (Melvin, Buff, and Max) above the exit doors"
+      // source: CB_TP, CB_NT. evidence: "Max, Melvin, and Buff are the three characters hanging on the wall" (March 2025); "Mounted moose, buffalo, and deer heads (Melvin, Buff, and Max)"
       {
         type: 'spy',
         id: 'country-bears-s16',
-        prompt: 'Before the show, look above the doors for a moose, a buffalo and a deer on the wall.',
-        hint: 'They are Melvin, Buff and Max. They’ll have jokes for you later!',
+        prompt: 'Before the show, look at the wall for a moose, a buffalo and a deer.',
+        hint: 'They are Melvin, Buff and Max. They banter with guests before the show!',
       },
       // evidence: three bears, "Big Al is center, Zeke left, and Zeb right"
       {
@@ -1773,30 +1691,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'country-bears-photo3',
         prompt: 'From the lobby, snap Ernest’s burnt fiddle in its display case.',
         tip: 'Look for the label about fireproofing.',
-        source: CB_NT,
-      },
-      // evidence: "A wooden metronome set to 88 BPM with golden bees, provided by Gomer"
-      {
-        type: 'photo',
-        id: 'country-bears-photo4',
-        prompt: 'From the lobby, photograph Gomer’s metronome with the golden bees.',
-        tip: 'Get close to see the tiny bees.',
-        source: CB_NT,
-      },
-      // evidence: "Big Al's red vest" patches, "Big Al's 10th Farewell Tour," with an "11" added
-      {
-        type: 'photo',
-        id: 'country-bears-photo5',
-        prompt: 'From the lobby, snap Big Al’s red vest covered in patches.',
-        tip: 'Find the patch with the 11 added.',
-        source: CB_NT,
-      },
-      // evidence: "Big Al's footprints: A concrete slab"
-      {
-        type: 'photo',
-        id: 'country-bears-photo6',
-        prompt: 'From the lobby, take a photo of Big Al’s footprints in concrete. Put your own foot next to them!',
-        tip: 'Do his feet look bigger than yours?',
         source: CB_NT,
       },
 
@@ -2035,26 +1929,12 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the hearse out front. What is pulling it?',
         hint: 'An empty harness. The horse must be a ghost!',
       },
-      // source: HM_ITM. evidence: cat footprints "Embedded in the concrete"
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s3',
-        prompt: 'Look down. Can you find cat paw prints pressed into the path?',
-        hint: 'Early plans had a black cat roaming the Mansion. A raven got the job inside instead.',
-      },
-      // source: HM_DREAD, HM. evidence: "a murder mystery for guests to solve featuring the sinister Dread Family"
+      // source: HM_RG, HM. evidence: busts "each carry a rhyme with clues to a murder mystery" (Apr 2026); "a murder mystery for guests to solve featuring the sinister Dread Family"
       {
         type: 'spy',
         id: 'haunted-mansion-s4',
         prompt: 'Find the busts of the Dread Family and read their rhymes.',
         hint: 'Each poem hides a clue about how that family member met their end. Can your group solve the mystery?',
-      },
-      // source: HM_DREAD. evidence: Aunt Florence "found face down in canary seed"
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s5',
-        prompt: 'Find Aunt Florence’s bust. What was she found face down in?',
-        hint: 'Canary seed! Fans think the bird-loving Twins had something to do with it.',
       },
       // source: HM_RG. evidence: "Our Patriarch Dear Departed Grandpa Marc"
       {
@@ -2063,20 +1943,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the tombstone for “Dear Departed Grandpa Marc.”',
         hint: 'It honors Imagineer Marc Davis, who created most of the Mansion’s ghostly characters.',
       },
-      // source: HM_ITM. evidence: "Master Gracey tombstone: Pays tribute to Yale Gracey"
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s7',
-        prompt: 'Find the tombstone for Master Gracey.',
-        hint: 'It honors Yale Gracey, the Imagineer who invented many of the Mansion’s spooky illusions.',
-      },
-      // source: HM_ITM. evidence: "Those names are now on tombstones" (Phineas, Ezra, and Gus)
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s8',
-        prompt: 'Find three tombstones with the names Phineas, Ezra and Gus.',
-        hint: 'Those are the Hitchhiking Ghosts! Fans and Cast Members gave them those names years ago.',
-      },
       // source: HM_RG. evidence: "A composer of note and renown here reposes, his melodies fade as he now decomposes."
       {
         type: 'spy',
@@ -2084,26 +1950,19 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the Composer’s crypt and read its poem.',
         hint: '“His melodies fade as he now decomposes.” Get it? A DE-composer!',
       },
-      // source: HM_ITM. evidence: pipe organ inscribed "Ravenscroft"
+      // source: HM. evidence: pipe organ from the fictional "Ravenscroft" company, named for vocalist Thurl Ravenscroft
       {
         type: 'spy',
         id: 'haunted-mansion-s10',
         prompt: 'Find the organ with the name “Ravenscroft” on it.',
-        hint: 'Thurl Ravenscroft is the lead singer of the singing busts in the graveyard scene.',
+        hint: 'It is named for Thurl Ravenscroft, a singer who lent his voice to the Mansion.',
       },
-      // source: HM_ITM. evidence: "Organist's tomb: Features a row of ghostly heads that mirror the ballroom organ's spirit heads"
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s15',
-        prompt: 'Find the organist’s tomb and its row of ghostly heads.',
-        hint: 'They match the spirit heads on the organ in the ballroom scene inside the Mansion.',
-      },
-      // source: HM_ITM, HM. evidence: "the Mariner's brine-filled sepulcher, whose ghost sings and sneezes from within"
+      // source: HM. evidence: "the Mariner's brine-filled sepulcher, whose ghost sings and sneezes from within"
       {
         type: 'spy',
         id: 'haunted-mansion-s11',
         prompt: 'Find the sea captain’s tomb. Listen closely. What sounds does he make?',
-        hint: 'He sings an old sailor song, blows bubbles and sneezes! In early plans he was going to be the Mansion’s main character.',
+        hint: 'He sings and sneezes from inside his tomb!',
       },
       // source: HM. evidence: "a crypt for Prudence Pock the poetess, which features haunted moving books"
       {
@@ -2118,13 +1977,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'haunted-mansion-s13',
         prompt: 'Just before you go inside, find Madame Leota’s tombstone. Keep watching her face.',
         hint: '“Dear Sweet Leota, beloved by all.” You’ll meet her again in the séance room, inside her crystal ball.',
-      },
-      // source: HM_AE. evidence: Over the fireplace, a portrait ages. It depicts Master Gracey
-      {
-        type: 'spy',
-        id: 'haunted-mansion-s14',
-        prompt: 'In the foyer, watch the portrait over the fireplace. What happens to the young man?',
-        hint: 'He ages before your eyes! Fans call him Master Gracey, the Mansion’s former owner.',
       },
       // evidence: "Board a Doom Buggy to tour the happy haunt of 999 ghouls and ghosts who are dying to meet you."
       {
@@ -2142,13 +1994,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'Can you see where the ghost horse should be?',
         source: HM_RG,
       },
-      // evidence: "a murder mystery for guests to solve featuring the sinister Dread Family"
+      // evidence: busts "each carry a rhyme with clues to a murder mystery"
       {
         type: 'photo',
         id: 'haunted-mansion-photo4',
         prompt: 'From the line, snap one of the Dread Family busts and its rhyme.',
         tip: 'The rhyme holds a clue, so zoom in to read it later.',
-        source: HM_DREAD,
+        source: HM_RG,
       },
       // evidence: "Our Patriarch Dear Departed Grandpa Marc"
       {
@@ -2344,15 +2196,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         answer: 0,
         explain: 'One to three people. Snuggle up, it’s spooky in there!',
         source: HM,
-      },
-      // evidence: "Mr. Toad statue: In the back left of the pet cemetery"
-      {
-        type: 'truefalse',
-        id: 'haunted-mansion-r7',
-        statement: 'In the pet cemetery near the exit, there is a little statue of Mr. Toad.',
-        answer: true,
-        explain: 'Fact! It honors Mr. Toad’s Wild Ride, a Fantasyland ride that closed long ago.',
-        source: HM_AE,
       },
 
       // ---- Play ----
