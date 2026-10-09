@@ -21,6 +21,8 @@ export type LineSession = {
   dripEvery?: number;
   /** How many quests have appeared so far; only ever grows. */
   shown?: number;
+  /** When the latest quest appeared, so the next one is due lastAt + dripEvery. */
+  lastAt?: number;
   done: Record<string, { star: boolean }>;
   /** What was picked in Would You Rather quests, kept for the keepsake. */
   picks: string[];

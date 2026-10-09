@@ -1,12 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
   Pressable,
   ScrollView,
   StyleSheet,
   View,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -33,18 +31,25 @@ export default function LineStory() {
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 10_000);
+    const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
 
   const active = session && session.attractionId === id ? session : null;
-  const dueNow = active
-    ? START_QUESTS + Math.floor(Math.max(0, now - active.startedAt) / 60000 / (active.dripEvery ?? 3))
-    : 0;
+  const [view, setView] = useState<number | null>(null);
+  const dripMs = (active?.dripEvery ?? 3) * 60_000;
+  const lastAt = active ? (active.lastAt ?? active.startedAt) : 0;
+  const due = active ? Math.floor(Math.max(0, now - lastAt) / dripMs) : 0;
   useEffect(() => {
-    if (active && dueNow > (active.shown ?? 0)) updateSession((s) => ({ ...s, shown: Math.max(s.shown ?? 0, dueNow) }));
+    if (!active || due < 1) return;
+    updateSession((s) => ({
+      ...s,
+      shown: Math.max(s.shown ?? 1, 1) + due,
+      lastAt: (s.lastAt ?? s.startedAt) + due * dripMs,
+    }));
+    setView(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dueNow, active?.id]);
+  }, [due, active?.id]);
 
   // Quests seen before this line started, so the story prefers fresh ones and
   // stays in the same order when the app is reopened mid-line.
@@ -82,14 +87,16 @@ export default function LineStory() {
   const pct = Math.min(1, elapsed / active.waitMinutes);
   const stars = Object.values(active.done).filter((d) => d.star).length;
 
-  // A new quest appears every few minutes (pick 2, 3 or 5); nothing is locked, and
-  // anything that has appeared stays. "Show the next one now" is always there.
+  // One activity at a time. A new one arrives on a timer the guest sets (default 3
+  // minutes); earlier ones stay reachable, and "next now" skips the wait.
   const drip = active.dripEvery ?? 3;
-  const due = START_QUESTS + Math.floor(Math.max(0, now - active.startedAt) / 60000 / drip);
-  const total = Math.min(queue.length, Math.max(active.shown ?? 0, due));
+  const total = Math.min(queue.length, Math.max(active.shown ?? 1, 1));
   const list = queue.slice(0, total);
   const outOfQuests = total >= queue.length;
-  const minsToNext = Math.max(1, Math.ceil(drip - (Math.max(0, now - active.startedAt) / 60000) % drip));
+  const idx = Math.max(0, Math.min(view ?? total - 1, total - 1));
+  const onLatest = idx === total - 1;
+  const secsLeft = Math.max(0, Math.ceil((lastAt + dripMs - now) / 1000));
+  const countdown = `${Math.floor(secsLeft / 60)}:${String(secsLeft % 60).padStart(2, '0')}`;
 
   // Team mode: fact questions go around the group one player at a time;
   // look-around games and photo spots are for everyone.
@@ -165,6 +172,7 @@ export default function LineStory() {
         style={{ backgroundColor: c.sky }}
         contentContainerStyle={{ alignItems: 'center', paddingBottom: 120 + insets.bottom }}>
         <View style={[styles.page, { paddingHorizontal: 16, paddingTop: 16, gap: 14 }]}>
+          {idx === 0 && (
           <View style={[styles.narration, pageShadow, { borderColor: c.ink }]}>
             <View style={StyleSheet.absoluteFill} pointerEvents="none">
               <LandScene landId={land.id} color={c.ground} opacity={0.12} />
@@ -177,11 +185,15 @@ export default function LineStory() {
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' and $1')
                 : 'a brave group'}{' '}
-              joined the line for {a.name}. Their adventure begins now! A new quest appears every few minutes, so keep looking around.
+              joined the line for {a.name}. Their adventure begins now! A new activity appears every few minutes, so keep looking around.
             </Txt>
           </View>
+          )}
 
-          {list.map((pq, i) => {
+          {(() => {
+            const pq = list[idx];
+            if (!pq) return null;
+            const i = idx;
             const fact = a.facts.length ? a.facts[Math.floor(i / 6) % a.facts.length] : undefined;
             return (
               <Fragment key={pq.quest.id}>
@@ -221,23 +233,44 @@ export default function LineStory() {
                 {bisAppearsAfter(active.id, i) && <BisPop seed={`${active.id}:${i}`} />}
               </Fragment>
             );
-          })}
+          })()}
+
+          {total > 1 && (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Pressable accessibilityRole="button" disabled={idx === 0} onPress={() => setView(idx - 1)} hitSlop={10}>
+                <Txt weight="bold" size={15} style={{ opacity: idx === 0 ? 0.35 : 1 }}>
+                  ← Earlier
+                </Txt>
+              </Pressable>
+              <Txt size={13}>
+                {idx + 1} of {total}
+              </Txt>
+              <Pressable accessibilityRole="button" disabled={onLatest} onPress={() => setView(idx + 1)} hitSlop={10}>
+                <Txt weight="bold" size={15} style={{ opacity: onLatest ? 0.35 : 1 }}>
+                  Later →
+                </Txt>
+              </Pressable>
+            </View>
+          )}
 
           {!outOfQuests && (
             <View style={[styles.next, { borderColor: c.ink }]}>
-              <Txt weight="bold" size={16} style={{ textAlign: 'center' }}>
-                ✨ Next quest in about {minsToNext} min
+              <Txt weight="bold" size={16} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
+                ✨ Something new in {countdown}
               </Txt>
               <Pressable
                 accessibilityRole="button"
-                onPress={() => updateSession((s) => ({ ...s, shown: Math.max(s.shown ?? 0, total) + 1 }))}>
+                onPress={() => {
+                  updateSession((s) => ({ ...s, shown: Math.max(s.shown ?? 1, 1) + 1, lastAt: Date.now() }));
+                  setView(null);
+                }}>
                 <Txt size={14} style={{ textDecorationLine: 'underline' }}>
                   Can’t wait? Show the next one now
                 </Txt>
               </Pressable>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Txt size={13}>New quest every</Txt>
-                {[2, 3, 5].map((m) => (
+                <Txt size={13}>New activity every</Txt>
+                {[1, 2, 3, 5, 10].map((m) => (
                   <Pressable
                     key={m}
                     accessibilityRole="button"
@@ -253,10 +286,10 @@ export default function LineStory() {
             </View>
           )}
 
-          {outOfQuests && (
+          {outOfQuests && onLatest && (
             <View style={[styles.end, pageShadow]}>
               <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
-                You played every {a.name} quest we have! You’re a true line legend. 🏆
+                You’ve seen every {a.name} activity we have! You’re a true line legend. 🏆
               </Txt>
             </View>
           )}
@@ -290,9 +323,6 @@ export default function LineStory() {
 }
 
 /** Quests the whole group does together, so everyone scores. */
-/** Quests that are there the moment the line story opens. */
-const START_QUESTS = 2;
-
 const TEAM_QUESTS = new Set(['spy', 'challenge', 'photo', 'wyr']);
 
 const styles = StyleSheet.create({
