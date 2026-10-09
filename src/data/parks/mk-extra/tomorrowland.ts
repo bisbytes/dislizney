@@ -40,7 +40,6 @@ const AO_LIFT = 'https://blogmickey.com/2025/10/astro-orbiter-broken-following-f
 // Carousel of Progress
 const COP = WIKI + "Walt_Disney's_Carousel_of_Progress";
 const COP_WDWNT = 'https://wdwnt.com/2026/07/last-look-at-walt-disneys-carousel-of-progress-before-major-reimagining/';
-const COP_TP = 'https://touringplans.com/blog/five-things-to-know-about-walt-disneys-carousel-of-progress/';
 
 // Monsters, Inc. Laugh Floor
 const LF = WIKI + 'Monsters,_Inc._Laugh_Floor';
@@ -48,7 +47,6 @@ const LF_DISNEY = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/m
 const LF_FAN = 'https://disney.fandom.com/wiki/Monsters,_Inc._Laugh_Floor';
 const LF_TP = 'https://touringplans.com/blog/five-things-to-know-about-monsters-inc-laugh-floor/';
 const LF_DA = 'https://www.disneyavenue.com/2017/10/exploring-monsters-inc-laugh-floor.html';
-const LF_WDWNT = 'https://wdwnt.com/2021/05/photos-monsters-inc-laugh-floor-preparing-to-reopen-at-magic-kingdom/';
 const TIMEKEEPER = WIKI + 'The_Timekeeper';
 
 /**
@@ -110,19 +108,19 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the three-panel lighted sign near the entrance. Most people walk right past it!',
         hint: 'Look to the right. Superfans love it because hardly anyone notices it.',
       },
-      // source: SM_TP. evidence: An "Active Earth Stations" list names every Disney Park Space Mountain
-      {
-        type: 'spy',
-        id: 'space-mountain-r3',
-        prompt: 'Find the list of “Active Earth Stations.” Which one is Magic Kingdom?',
-        hint: 'Every station is a real Space Mountain around the world. Ours is “Tomorrowland Station MK-1,” the very first.',
-      },
       // source: SM_TP. evidence: Lists of "Active Lunar Stations" name real star systems, scientists, and astronauts.
       {
         type: 'spy',
         id: 'space-mountain-r4',
         prompt: 'Now find the “Active Lunar Stations.” Do you recognize any names?',
         hint: 'Imagineers named these after real star systems, scientists and astronauts.',
+      },
+      // source: SM_TP. evidence: An "Active Earth Stations" list names every Disney Park Space Mountain
+      {
+        type: 'spy',
+        id: 'space-mountain-r3',
+        prompt: 'Find the list of “Active Earth Stations.” Which one is Magic Kingdom?',
+        hint: 'Every station is a real Space Mountain around the world. Ours is “Tomorrowland Station MK-1,” the very first.',
       },
       // source: SM. evidence: "The line then dips into the "star tunnel", which takes guests under the"
       {
@@ -138,6 +136,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'In the star tunnel, peek through a “window.” Find a planet, a galaxy and a star map.',
         hint: 'The star maps show pretend space routes, like a flight map for rockets.',
       },
+      // source: SM_TP. evidence: Another room has a "window" showing space walkers fixing a satellite.
+      {
+        type: 'spy',
+        id: 'space-mountain-r11',
+        prompt: 'Find the astronauts on a spacewalk. What are they fixing?',
+        hint: 'A satellite! Keep watching for more spacewalkers when your rocket climbs the lift.',
+      },
       // source: SM_TP. evidence: "Celestial charts: Seven lighted charts."
       {
         type: 'spy',
@@ -151,41 +156,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'space-mountain-r7',
         prompt: 'Super-hard mission: find “Disney’s Hyperion Resort” hidden on a star chart.',
         hint: 'It’s on the “Titan Stations Sector Two” chart, upper right. Hyperion Avenue is where Walt’s studio moved in 1926.',
-      },
-      // source: SM. evidence: "the queue opens into a large room filled with small, silver, ball-pit like balls."
-      {
-        type: 'spy',
-        id: 'space-mountain-r8',
-        prompt: 'Find the big room full of little silver balls. What do they remind you of?',
-        hint: 'Space station? Asteroid field? Imagineers let your imagination decide.',
-      },
-      // source: SM. evidence: "The room also contains a "star map"."
-      {
-        type: 'spy',
-        id: 'space-mountain-r9',
-        prompt: 'In the same room, find the star map. Can you spot a constellation you know?',
-        hint: 'Space travelers check the map before launch, just like pilots check a flight map.',
-      },
-      // source: SM. evidence: "space windows" in the walls featuring planets, astronauts, and a model of the spaceship
-      {
-        type: 'spy',
-        id: 'space-mountain-r10',
-        prompt: 'Find a “space window” with a model spaceship in it.',
-        hint: 'That ship is the one you see on the lift hill. The windows also show planets and astronauts.',
-      },
-      // source: SM_TP. evidence: Another room has a "window" showing space walkers fixing a satellite.
-      {
-        type: 'spy',
-        id: 'space-mountain-r11',
-        prompt: 'Find the astronauts on a spacewalk. What are they fixing?',
-        hint: 'A satellite! Keep watching for more spacewalkers when your rocket climbs the lift.',
-      },
-      // source: SM, SM_TP. evidence: "Previously, stand-by riders could participate in various 90-second long video games that were hosted by a robot" / Interactive games ran from 2009 to 2018
-      {
-        type: 'spy',
-        id: 'space-mountain-r12',
-        prompt: 'Find a screen showing space pictures along the line.',
-        hint: 'From 2009 to 2018 these were 90-second video games hosted by a robot. Now they show space scenes.',
       },
       // source: SM_FAN. evidence: The entrance, star tunnel, and loading area music remain ... heard since 1985
       {
@@ -232,14 +202,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of the “Active Earth Stations” list. Point to Magic Kingdom!',
         tip: 'Ours is “Tomorrowland Station MK-1.”',
         source: SM_TP,
-      },
-      // evidence: "the queue opens into a large room filled with small, silver, ball-pit like balls."
-      {
-        type: 'photo',
-        id: 'space-mountain-r-photo5',
-        prompt: 'From the line, photograph the room full of little silver balls.',
-        tip: 'Get low and aim at the balls so they fill the whole photo.',
-        source: SM,
       },
       // evidence: Another room has a "window" showing space walkers fixing a satellite.
       {
@@ -1003,13 +965,21 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find Zurg’s wanted poster. What would you write on it?',
         hint: 'Evil Emperor Zurg is the most wanted villain in the galaxy. You will meet him on the ride.',
       },
-      // source: BUZZ. evidence: "featuring such detail as giant, exposed Philips screw heads"
+      // source: BUZZ_FAN. evidence: A Buzz Lightyear animatronic with wings open ... Buzz's face is a projected screen.
       {
         type: 'spy',
-        id: 'buzz-lightyear-r6',
-        prompt: 'Find a giant screw head. Why would a screw be so huge?',
-        hint: 'Because you’ve been shrunk to the size of a toy! Everything here is built toy-sized giant.',
+        id: 'buzz-lightyear-r9',
+        prompt: 'Find Buzz on his platform. Are his wings open or closed?',
+        hint: 'Open! He’s an Audio-Animatronic figure, and his moving face is projected.',
       },
+      // source: BUZZ_WDWNT. evidence: The View Master now also shows Buddy among its scenes.
+      {
+        type: 'spy',
+        id: 'buzz-lightyear-r8',
+        prompt: 'Find the giant View-Master toy. Watch the scenes: can you spot Buddy the robot?',
+        hint: 'Buddy was added to the View-Master in 2026, right after joining Star Command.',
+      },
+      // NOTE: sources confirm these three murals/displays exist but not where they sit relative to Buzz's platform.
       // source: BUZZ_WDWNT. evidence: The Sector 9 scan murals "appear unchanged."
       {
         type: 'spy',
@@ -1030,20 +1000,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'buzz-lightyear-r-spy2',
         prompt: 'Find the mural that follows the little green aliens’ journey. Where are they going?',
         hint: 'This mural is also unchanged from before the 2026 update.',
-      },
-      // source: BUZZ_WDWNT. evidence: The View Master now also shows Buddy among its scenes.
-      {
-        type: 'spy',
-        id: 'buzz-lightyear-r8',
-        prompt: 'Find the giant View-Master toy. Watch the scenes: can you spot Buddy the robot?',
-        hint: 'Buddy was added to the View-Master in 2026, right after joining Star Command.',
-      },
-      // source: BUZZ_FAN. evidence: A Buzz Lightyear animatronic with wings open ... Buzz's face is a projected screen.
-      {
-        type: 'spy',
-        id: 'buzz-lightyear-r9',
-        prompt: 'Find Buzz on his platform. Are his wings open or closed?',
-        hint: 'Open! He’s an Audio-Animatronic figure, and his moving face is projected.',
       },
       // source: BUZZ_FAN. evidence: The briefing uses an oversized, toy-instruction-style explanation.
       {
@@ -1105,14 +1061,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of the Sector 9 scan murals.',
         tip: 'They are on the wall as you walk.',
         source: BUZZ_WDWNT,
-      },
-      // evidence: "featuring such detail as giant, exposed Philips screw heads"
-      {
-        type: 'photo',
-        id: 'buzz-lightyear-r-photo6',
-        prompt: 'From the line, photograph a giant screw head. Put a hand next to it to show how big it is!',
-        tip: 'Everything is toy-sized giant because you have been shrunk.',
-        source: BUZZ,
       },
 
       // ---- Trivia ----
@@ -1413,13 +1361,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look straight up. What is flying right above the PeopleMover station?',
         hint: 'Astro Orbiter’s rockets! The station sits in Rocket Tower Plaza, right beneath them.',
       },
-      // source: PM_TP. evidence: The entrance is next to the Lunching Pad and under Astro Orbiter, across from the Carousel of Progress.
-      {
-        type: 'spy',
-        id: 'peoplemover-r2',
-        prompt: 'Find the big round Carousel of Progress building across the way.',
-        hint: 'The PeopleMover entrance faces it. You’ll glide past it again on the ride.',
-      },
       // source: PM_TP. evidence: The entrance is next to the Lunching Pad
       {
         type: 'spy',
@@ -1497,14 +1438,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of the Astro Orbiter rockets flying right above the station.',
         tip: 'Tilt your camera up and wait for a rocket to swing by.',
         source: PM,
-      },
-      // evidence: The entrance is next to the Lunching Pad and under Astro Orbiter, across from the Carousel of Progress.
-      {
-        type: 'photo',
-        id: 'peoplemover-r-photo2',
-        prompt: 'From the line, photograph the round Carousel of Progress building across the way.',
-        tip: 'The entrance faces it.',
-        source: PM_TP,
       },
       // evidence: The entrance is next to the Lunching Pad
       {
@@ -1898,12 +1831,12 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Watch one rocket closely. Does it look like it’s weaving between the planets?',
         hint: 'That’s the Imagineers’ trick: the planets sit just right so rockets seem to zip between them.',
       },
-      // source: AO_DISNEY. evidence: "Control how high you fly by pulling or pushing the lever inside your ship."
+      // source: AO_DISNEY, AO_LIFT. evidence: "Control how high you fly by pulling or pushing the lever inside your ship." / October 2025: the central lift stopped working, so the ride ran at about half height; no later fix confirmed
       {
         type: 'spy',
         id: 'astro-orbiter-x12',
-        prompt: 'Watch the rockets. Find one flying high and one flying low.',
-        hint: 'Every pilot controls their own height with a lever inside the ship.',
+        prompt: 'Watch the rockets. Do they all fly at the same height?',
+        hint: 'Every ship has a lever inside to change height. Fans reported in fall 2025 that the rebuilt ride was running lower than before, so heights may vary.',
       },
       // source: AO_DISNEY. evidence: "your retro 2-passenger spacecraft"
       {
@@ -2151,9 +2084,9 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       {
         type: 'truefalse',
         id: 'astro-orbiter-r15',
-        statement: 'In 2025, the whole ride was lifted off its platform with a crane.',
+        statement: 'In 2025, the whole ride system was removed from its platform and rebuilt.',
         answer: true,
-        explain: 'Fact! The ride system was fully removed, then a crane put it back with the planets.',
+        explain: 'Fact! The ride system was fully removed in early 2025, rebuilt, and reopened in June 2025.',
         source: AO_CRANE,
       },
       // evidence: "was closed for more than 5 months as Disney rebuilt the attraction."
@@ -2285,125 +2218,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       { text: 'The updated show is set to open with an Audio-Animatronics figure of Walt Disney.', source: COP },
     ],
     quests: [
-      // ---- Look around the waiting area, in walking order ----
-      // source: COP_TP. evidence: "The queue for the Carousel of Progress is a sloped ramp up to the entrance."
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r1',
-        prompt: 'Find the sloped ramp that leads up to the theater doors.',
-        hint: 'Walk up and wait outside for the next show. The whole theater spins to meet you!',
-      },
-      // source: COP_WDWNT. evidence: The current sign is a platinum hexagon on a blue base in a flowerbed.
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r2',
-        prompt: 'Find a six-sided sign. How many sides can you count?',
-        hint: 'Hexagons! The classic sign was a platinum hexagon on a blue base, set in a flowerbed.',
-      },
-      // source: COP_WDWNT. evidence: guests can watch it rotate from outside while they wait under the PeopleMover track.
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r3',
-        prompt: 'Look up! What other ride’s track runs over the waiting area?',
-        hint: 'The PeopleMover. Wave if a train glides by!',
-      },
-      // source: COP. evidence: "the six carousel theaters surrounding the six fixed stages."
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r4',
-        prompt: 'Look at the big round building. Can you imagine it turning like a carousel?',
-        hint: 'Six theaters spin around six stages that stay still. You ride the theater, not the stage!',
-      },
-      // source: COP_WDWNT. evidence: A poster with World's Fair concept art sits on a railing in front of the theater. / Poster: Inspired by the 1964 World's Fair poster, featuring John, Sarah, Rover, and a new robot assistant.
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r5',
-        prompt: 'Find a poster near the theater. Who is on it?',
-        hint: 'The classic one showed World’s Fair art. The new poster, inspired by the 1964 one, shows John, Sarah, Rover and a new robot helper.',
-      },
-      // source: COP_WDWNT. evidence: A mural with diagonal orange, yellow, and pink lines is near a TV monitor
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r6',
-        prompt: 'Look for a mural with bright diagonal stripes. What colors do you see?',
-        hint: 'Orange, yellow and pink lines give the building its retro-future look.',
-      },
-      // source: COP_WDWNT. evidence: Mounted TVs show a brief pre-show of archive footage, including clips from the 1964 special "Disneyland Goes to the World's Fair."
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r7',
-        prompt: 'Find a TV screen in the waiting area. Is it showing old black-and-white movies?',
-        hint: 'The pre-show uses real footage from 1964, when this show was a star of the New York World’s Fair.',
-      },
-      // source: COP_WDWNT. evidence: One section shows the Sherman brothers playing the theme song for Walt Disney, who is shown a model of the carousel theater.
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r8',
-        prompt: 'In the pre-show, watch for two brothers at a piano playing for Walt.',
-        hint: 'The Sherman Brothers, playing “There’s a Great Big Beautiful Tomorrow” for Walt Disney himself!',
-      },
-      // source: COP_WDWNT. evidence: Walt Disney, who is shown a model of the carousel theater. / shows Walt at a technical rehearsal
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r9',
-        prompt: 'Spot Walt Disney in the old film. What is he looking at?',
-        hint: 'A model of the carousel theater, and later a rehearsal. Walt loved this show.',
-      },
-      // source: COP_WDWNT. evidence: The pre-show also covers the show's technology, including its 32 animatronics
-      {
-        type: 'spy',
-        id: 'carousel-of-progress-r10',
-        prompt: 'Listen to the pre-show. How many Audio-Animatronics figures does the narrator say there are?',
-        hint: 'The classic show had 32 Audio-Animatronics figures!',
-      },
-      // evidence: The current sign is a platinum hexagon on a blue base in a flowerbed.
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r11',
-        prompt: 'From the line, take a group photo with the Carousel of Progress sign.',
-        tip: 'Look for the hexagon-shaped sign out front.',
-        source: COP_WDWNT,
-      },
-      // evidence: guests can "watch it rotate from the outside"; "colorful designs featuring futuristic lines"
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r-photo2',
-        prompt: 'From the waiting area, photograph the big round building and its colorful futuristic lines.',
-        tip: 'The show is closed for a big update until about 2027, so check the building looks like this before you plan your shot.',
-        source: COP_WDWNT,
-      },
-      // evidence: "The queue for the Carousel of Progress is a sloped ramp up to the entrance."
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r-photo3',
-        prompt: 'From the line, take a photo of the sloped ramp that leads up to the theater doors.',
-        tip: 'Stand at the bottom and look up the ramp.',
-        source: COP_TP,
-      },
-      // evidence: "The PeopleMover track runs above the queue."
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r-photo4',
-        prompt: 'From the waiting area, photograph the PeopleMover track overhead.',
-        tip: 'Wait for a train to glide over and snap it.',
-        source: COP_WDWNT,
-      },
-      // evidence: "More hexagonal Carousel of Progress signs are next to the enter/exit doors."
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r-photo5',
-        prompt: 'From the line, find a second hexagon sign next to the doors and photograph it.',
-        tip: 'These signs may change during the 2027 update, so look for any hexagons.',
-        source: COP_WDWNT,
-      },
-      // evidence: A mural with diagonal orange, yellow, and pink lines is near a TV monitor
-      {
-        type: 'photo',
-        id: 'carousel-of-progress-r-photo6',
-        prompt: 'From the waiting area, photograph the mural with bright diagonal lines.',
-        tip: 'Look for orange, yellow and pink. It may change in the 2027 update.',
-        source: COP_WDWNT,
-      },
 
       // ---- Trivia ----
       // evidence: "Music: "There's a Great Big Beautiful Tomorrow" by the Sherman Brothers"
@@ -2666,27 +2480,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look up. Can you spot a PeopleMover train gliding over this line?',
         hint: 'The PeopleMover passes right above the Laugh Floor queue.',
       },
-      // source: LF_WDWNT. evidence: "Markers from Buzz Lightyear’s Space Ranger Spin are still on the ground between the two queues."
-      {
-        type: 'spy',
-        id: 'laugh-floor-r4',
-        prompt: 'Look at the ground between the lines. Any markers that belong to a different ride?',
-        hint: 'This queue was once overflow for Buzz Lightyear next door, and some Buzz markers were left behind.',
-      },
-      // source: LF_DA. evidence: A display in the queue shows some of the show's characters.
-      {
-        type: 'spy',
-        id: 'laugh-floor-r5',
-        prompt: 'Find the display of monster comedians. Which one looks the funniest?',
-        hint: 'The comedians change from show to show, so you may meet different monsters today.',
-      },
-      // source: LF_DA. evidence: "One of the containers used to store the energy from laughter."
-      {
-        type: 'spy',
-        id: 'laugh-floor-r6',
-        prompt: 'Find a laugh container. What do you think goes inside?',
-        hint: 'Laughs! Monstropolis stores laugh energy in these to power the city.',
-      },
       // source: LF_DISNEY. evidence: "Text your favorite joke before the lights go down and it could be used in the show!"
       {
         type: 'spy',
@@ -2715,26 +2508,19 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'When it’s time, notice the door you walk through. Where does it lead?',
         hint: 'Into the monster world! In the story, it’s a door from Tomorrowland to Monstropolis.',
       },
-      // source: LF_DA. evidence: A large Laugh-o-meter sits to the side, and its lights rise with the audience's laughter.
-      {
-        type: 'spy',
-        id: 'laugh-floor-r11',
-        prompt: 'Inside, find the Laugh-o-meter. Watch it as people laugh!',
-        hint: 'Its lights rise higher the more the audience laughs. Let’s fill it up!',
-      },
-      // source: LF_DA. evidence: "a big screen alongside the monster stage," which displays audience members
+      // source: LF_TP. evidence: Screens around the theater show fellow guests with silly captions.
       {
         type: 'spy',
         id: 'laugh-floor-r-spy1',
-        prompt: 'Find the big screen next to the stage. Who might show up on it?',
-        hint: 'It can show people in the audience. You might see yourself!',
+        prompt: 'Inside, look for screens that show the audience. Who might show up on them?',
+        hint: 'They can show guests with silly captions. You might see yourself!',
       },
-      // source: LF_DA. evidence: Mike Wazowski hosts, with Roz on a screen. She warns that the club could be shut down without enough laughs.
+      // source: LF_TP. evidence: Roz is one of only two characters from the original movie in the show, the other being Mike. She makes a final joke that credits "That Guy."
       {
         type: 'spy',
         id: 'laugh-floor-r12',
-        prompt: 'Keep your eyes open for Roz on a screen.',
-        hint: 'She warns that the club could be shut down if there aren’t enough laughs!',
+        prompt: 'Keep your eyes open for Roz. She is one of only two movie characters in the show!',
+        hint: 'The other is Mike Wazowski. Roz makes the very last joke.',
       },
       // evidence: In fall 2018, the entry structure ... replaced with a sign in the style of 1971 Tomorrowland attraction signs.
       {
@@ -2743,22 +2529,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take your silliest group photo with the Laugh Floor sign.',
         tip: 'The sign is at the entrance.',
         source: LF_FAN,
-      },
-      // evidence: "One of the containers used to store the energy from laughter."
-      {
-        type: 'photo',
-        id: 'laugh-floor-r-photo2',
-        prompt: 'From the line, take a photo of a laugh container.',
-        tip: 'Have your family laugh next to it. Ha ha!',
-        source: LF_DA,
-      },
-      // evidence: "Shown are at least some of the characters from the show in a display in the queue."
-      {
-        type: 'photo',
-        id: 'laugh-floor-r-photo3',
-        prompt: 'From the line, photograph the display of monster comedians.',
-        tip: 'Pick your favorite monster and zoom in.',
-        source: LF_DA,
       },
       // evidence: Guests can watch Mike Wazowski's video while they wait
       {
@@ -2775,14 +2545,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, photograph the sign that tells you how to send a joke to the monsters.',
         tip: 'A grown-up can text a joke before the show starts.',
         source: LF_DISNEY,
-      },
-      // evidence: "A gigantic Laugh-o-meter Roz mentions sits off to the side" of the stage
-      {
-        type: 'photo',
-        id: 'laugh-floor-r-photo6',
-        prompt: 'Before the show starts, take a photo of the giant Laugh-o-meter beside the stage.',
-        tip: 'Put your phone away once the lights go down.',
-        source: LF_DA,
       },
 
       // ---- Trivia ----
