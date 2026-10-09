@@ -8,6 +8,7 @@ import { BisFooter } from '@/components/bis';
 import { FactCard, WikiCard } from '@/components/cards';
 import { CrewPicker } from '@/components/crew-picker';
 import { LandScene } from '@/components/land-scene';
+import { QueueTimesLink } from '@/components/queue-times-credit';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { WaitBadge } from '@/components/wait-badge';
 import { getAttraction, isClosedForRefurb } from '@/data/parks';
@@ -205,7 +206,12 @@ export default function RideIntro() {
           {a.wikiTitle && <WikiCard title={a.wikiTitle} />}
           <Txt size={13} color={c.ink} style={{ textAlign: 'center' }}>
             Opened {a.opened}
-            {posted ? ' · Posted wait times powered by Queue-Times.com' : ''}
+            {posted && (
+              <>
+                {' · Posted wait times · '}
+                <QueueTimesLink />
+              </>
+            )}
           </Txt>
           <BisFooter />
         </View>
