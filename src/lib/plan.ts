@@ -42,60 +42,68 @@ function unseenFirst(items: PlannedQuest[], seen: Set<string>) {
   return [...items.filter((p) => !seen.has(p.quest.id)), ...items.filter((p) => seen.has(p.quest.id))];
 }
 
+/** The kinds of content, as guests meet them. Used for rotating the mix and for the content table. */
+export type Category = 'fact' | 'look' | 'play' | 'photo';
+
+export const CATEGORY_LABEL: Record<Category, string> = {
+  fact: 'Trivia & facts',
+  look: 'Look around the line',
+  play: 'Games & riddles',
+  photo: 'Photo spots',
+};
+
+export function categoryOf(q: Quest): Category {
+  switch (q.type) {
+    case 'trivia':
+    case 'truefalse':
+    case 'guess':
+    case 'order':
+      return 'fact';
+    case 'spy':
+      return 'look';
+    case 'photo':
+      return 'photo';
+    default:
+      return 'play';
+  }
+}
+
+/** Order the categories take turns in. Each visit starts the rotation somewhere new. */
+const ROTATION: Category[] = ['fact', 'look', 'play', 'look', 'fact', 'photo'];
+
 /**
  * The full ordered list of activities for one line. Everything is about the
- * ride you're in line for: its trivia and facts, mixed with I Spy, challenges
- * and riddles anchored in it, and its photo spots spread along the way.
+ * ride you're in line for. Trivia, games and photo spots are mixed up fresh
+ * each visit and take turns; the look-around items are the one thing that
+ * isn't shuffled: they stay in the order you walk past them in the queue.
  * Nothing from other rides or general games: if a very long wait uses it
  * all, the story simply ends.
  */
 export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>): PlannedQuest[] {
   const rand = seeded(seed);
-  const { attraction } = ref;
-  const isPhoto = (q: Quest) => q.type === 'photo';
-  const isFact = (q: Quest) =>
-    q.type === 'trivia' || q.type === 'truefalse' || q.type === 'guess' || q.type === 'order';
-  const plan = (qs: Quest[]) =>
+  const quests = ref.attraction.quests;
+  const plan = (qs: Quest[], shuffled: boolean) =>
     unseenFirst(
-      qs.map((quest) => ({ quest })),
+      (shuffled ? shuffle(qs, rand) : qs).map((quest) => ({ quest })),
       seen,
     );
+  const pools: Record<Category, PlannedQuest[]> = {
+    fact: plan(quests.filter((q) => categoryOf(q) === 'fact'), true),
+    look: quests.filter((q) => categoryOf(q) === 'look').map((quest) => ({ quest })),
+    play: plan(quests.filter((q) => categoryOf(q) === 'play'), true),
+    photo: plan(quests.filter((q) => categoryOf(q) === 'photo'), true),
+  };
 
-  const isSpy = (q: Quest) => q.type === 'spy';
-  const own = attraction.quests.filter((q) => !isPhoto(q) && !isSpy(q));
-  // The first few quests are hand-picked openers; the rest are shuffled per visit.
-  const openers = own.slice(0, 3);
-  const rest = shuffle(own.slice(3), rand);
-  const facts = plan(rest.filter(isFact));
-  const play = plan(rest.filter((q) => !isFact(q)));
-
-  // Two facts, then one game, repeating.
-  const mixed: PlannedQuest[] = openers.map((quest) => ({ quest }));
-  let f = 0;
-  let p = 0;
-  while (f < facts.length || p < play.length) {
-    for (let k = 0; k < 2 && f < facts.length; k++) mixed.push(facts[f++]);
-    if (p < play.length) mixed.push(play[p++]);
+  const start = Math.floor(rand() * ROTATION.length);
+  const out: PlannedQuest[] = [];
+  const total = Object.values(pools).reduce((n, p) => n + p.length, 0);
+  for (let i = 0; out.length < total; i++) {
+    const next = pools[ROTATION[(start + i) % ROTATION.length]].shift();
+    if (next) out.push(next);
   }
 
-  // Look-around moments follow the queue: they're listed in the order you
-  // walk past things, so they stay in that order, spread evenly along the line,
-  // with the ride's photo spots tucked in between.
-  const lookAround: PlannedQuest[] = [];
-  const spies = attraction.quests.filter(isSpy);
-  const photos = plan(attraction.quests.filter(isPhoto));
-  const gap = Math.max(1, Math.round(spies.length / Math.max(1, photos.length)));
-  spies.forEach((quest, i) => {
-    lookAround.push({ quest });
-    if ((i + 1) % gap === 0 && photos.length) lookAround.push(photos.shift()!);
-  });
-  lookAround.push(...photos);
-
-  const every = (mixed.length + lookAround.length) / Math.max(1, lookAround.length);
-  lookAround.forEach((pq, i) => mixed.splice(Math.min(mixed.length, Math.round(1 + i * every)), 0, pq));
-
   const used = new Set<string>();
-  return mixed.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));
+  return out.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));
 }
 
 /** How many quests from the front of the queue fill this many minutes. */

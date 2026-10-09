@@ -37,7 +37,8 @@ export default function LineStory() {
 
   const active = session && session.attractionId === id ? session : null;
   const [view, setView] = useState<number | null>(null);
-  const dripMs = (active?.dripEvery ?? 3) * 60_000;
+  const dripMin = active?.dripEvery ?? 3;
+  const dripMs = dripMin * 60_000;
   const lastAt = active ? (active.lastAt ?? active.startedAt) : 0;
   const due = active ? Math.floor(Math.max(0, now - lastAt) / dripMs) : 0;
   useEffect(() => {
