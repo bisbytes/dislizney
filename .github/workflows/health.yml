@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  pages: read
 
 concurrency:
   group: health
@@ -21,7 +22,8 @@ jobs:
     timeout-minutes: 5
     env:
       PUBLISH_SITE: ${{ vars.PUBLISH_SITE }}
-      SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+      SITE_URL: ${{ vars.SITE_URL }}
+      GH_TOKEN: ${{ github.token }}
       BOARD_URL: ${{ vars.BOARD_URL }}
     steps:
       - name: Check site, wait times and board
@@ -35,7 +37,12 @@ jobs:
           }
           down=0
 
-          # The site (only once it's switched on).
+          # The site (only once it's switched on). Its address comes from the Pages
+          # settings, so a custom domain like line.bisbytes.com is picked up on its own.
+          if [ -z "$SITE_URL" ]; then
+            SITE_URL=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .html_url 2>/dev/null || true)
+            SITE_URL=${SITE_URL:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/}
+          fi
           if [ "$PUBLISH_SITE" = "true" ]; then
             get "$SITE_URL" home.html
             deep=$( (curl -sS -m 20 "${SITE_URL%/}/park/magic-kingdom" || true) | grep -c '_expo/static/js' || true)
@@ -48,6 +55,13 @@ jobs:
           # Queue-Times, fetched the way a browser on the site would.
           get https://queue-times.com/parks/6/queue_times.json waits.json -D waits.h -H "Origin: https://${GITHUB_REPOSITORY_OWNER}.github.io"
           browser=$(grep -qi '^access-control-allow-origin' waits.h 2>/dev/null && echo true || echo false)
+          wcode=$code; wt=$t
+          # The website reads wait times through the board service's relay, since Queue-Times doesn't allow browsers.
+          if [ -n "$BOARD_URL" ] && [ "$browser" = false ]; then
+            get "${BOARD_URL%/}/api/waits?park=6" relay.json
+            if [ "$code" = 200 ] && jq -e '.lands' relay.json > /dev/null 2>&1; then browser=true; fi
+          fi
+          code=$wcode; t=$wt
           if [ "$code" = 200 ] && rides=$(jq '[.lands[]?.rides[]?, .rides[]?] | length' waits.json 2>/dev/null); then
             open=$(jq '[.lands[]?.rides[]?, .rides[]? | select(.is_open)] | length' waits.json)
             waits=$(jq -nc --argjson c "$code" --argjson ms "$t" --argjson r "$rides" --argjson o "$open" --argjson b "$browser" '{state:"up",code:$c,ms:$ms,rides:$r,open:$o,browserAllowed:$b}')
