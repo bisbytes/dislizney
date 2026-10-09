@@ -5,7 +5,7 @@ import { Txt } from '@/components/ui';
 import { BRAND } from '@/lib/brand';
 import { colors } from '@/theme';
 
-/** Bis, the Bis Bytes mascot, from the Bis Bytes artwork, in polka-dot park ears. */
+/** Bis, the Bis Bytes mascot, from the Bis Bytes artwork, in plain park ears. */
 export function Bis({ size = 64 }: { size?: number }) {
   return (
     <Image
