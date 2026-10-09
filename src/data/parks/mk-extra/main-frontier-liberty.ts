@@ -93,6 +93,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Under the station, find the statue of Roy O. Disney sitting with Minnie Mouse.',
         hint: 'Roy was Walt’s big brother, the one who made sure Walt Disney World got built. One of the four steam engines is named for him.',
       },
+      // source: RR_RG. evidence: "Roger E. Broggie display" honors "the first Imagineer ever"
+      {
+        type: 'spy',
+        id: 'wdw-railroad-s12',
+        prompt: 'Find the display for Roger Broggie, the engine’s namesake.',
+        hint: 'Roger Broggie was the first Imagineer ever. He helped Walt build his backyard railroad.',
+      },
       // source: RR_RG. evidence: "mini-museum with information displays and shadow boxes"
       {
         type: 'spy',
@@ -168,6 +175,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'wdw-railroad-s11',
         prompt: 'Boarding at Fantasyland Station? Find the tall water tower.',
         hint: 'Steam engines get thirsty! The tower refills the water tank behind the engine.',
+      },
+      // evidence: "modeled after the former Victorian-style Saratoga Springs station"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo1',
+        prompt: 'From the front of the station, snap its fancy old-time Victorian building.',
+        tip: 'Try to fit the whole roof and trim in your picture.',
+        source: RR,
+      },
+      // evidence: "Roy O. Disney display and the "Sharing the Magic" statue"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo2',
+        prompt: 'From the station, take a photo of the Sharing the Magic statue of Roy O. Disney and Minnie Mouse.',
+        tip: 'You can stand next to it with your family.',
+        source: RR_RG,
+      },
+      // evidence: Lilly Belle display "has fine print below, which tells how Lillian granted Walt permission to run the tracks through her flower beds"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo3',
+        prompt: 'From the station, snap the Lilly Belle engine display and its fine print.',
+        tip: 'The fine print tells a story about flower beds.',
+        source: RR_RG,
+      },
+      // evidence: bulletin board schedule lists "Carolwood Pacific" and "Grizzly Flats Express"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo4',
+        prompt: 'From the lower level of the station, photograph the train schedule board with its old train names.',
+        tip: 'Look for the Carolwood Pacific.',
+        source: RR_TP,
+      },
+      // evidence: "penny arcades, an old-timey football game, and railroad history artwork"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo5',
+        prompt: 'From the upstairs waiting area, snap the old-timey football game.',
+        tip: 'Penny arcade games kept travelers busy long ago.',
+        source: RR_TP,
+      },
+      // evidence: "new diamond-shaped smokestacks and square-shaped headlamps"
+      {
+        type: 'photo',
+        id: 'wdw-railroad-photo6',
+        prompt: 'From the platform, photograph a train pulling in. Get its diamond-shaped smokestack in the shot.',
+        tip: 'Wait for the whistle, then be ready!',
+        source: RR,
       },
 
       // ---- Trivia ----
@@ -357,6 +412,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look up high. Do the top windows and stones look smaller than the ones near the ground?',
         hint: 'That’s forced perspective, a movie-set trick. Building the top smaller makes the castle seem even taller.',
       },
+      // source: CASTLE. evidence: "The tower with the clock in front is number 10."
+      {
+        type: 'spy',
+        id: 'cinderella-castle-s10',
+        prompt: 'Find the clock on the front of the castle. What time does it show?',
+        hint: 'It sits on tower number 10. Towers on this castle are numbered, just like rooms in a hotel.',
+      },
+      // source: CASTLE. evidence: "The tallest is number 20"
+      {
+        type: 'spy',
+        id: 'cinderella-castle-s11',
+        prompt: 'Find the tallest tower of all.',
+        hint: 'It is tower number 20, and Tinker Bell’s fireworks zipline is attached to it.',
+      },
       // source: CASTLE. evidence: "all gold colors are anodized aluminum"
       {
         type: 'spy',
@@ -419,6 +488,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'cinderella-castle-s9',
         prompt: 'Behind the castle, find the Cinderella Fountain. What is she holding in her hand?',
         hint: 'A little bird. Look for her mouse friends nearby too.',
+      },
+      // evidence: "There are a total of 27 towers on the castle"
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo1',
+        prompt: 'From the path in front of the castle, take a photo of its tall towers and pointy roofs.',
+        tip: 'Stand back so you can fit the tallest ones in.',
+        source: CASTLE,
+      },
+      // evidence: moat "Holds about 3.37 million US gallons of water"
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo2',
+        prompt: 'From beside the moat, snap the castle’s reflection in the water.',
+        tip: 'Hold your phone low for a bigger reflection.',
+        source: CASTLE,
+      },
+      // evidence: "Cinderella Castle cannot raise its bridge"
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo3',
+        prompt: 'From the walkway, photograph the drawbridge that looks ready to rise.',
+        tip: 'Fun fact for your photo caption: this one can’t actually move!',
+        source: CASTLE,
+      },
+      // evidence: one sister is "red with anger" and the other "green with envy"
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo4',
+        prompt: 'From under the archway, snap the mosaic stepsister whose face is red with anger.',
+        tip: 'Look but don’t touch. The glass pieces are tiny and delicate.',
+        source: CASTLE,
+      },
+      // evidence: "A bird rests in the palm of her hand."
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo5',
+        prompt: 'From behind the castle, photograph Cinderella Fountain and the little bird in her hand.',
+        tip: 'The fountain is near Bibbidi Bobbidi Boutique.',
+        source: CASTLE_RG,
+      },
+      // evidence: "Stained glass windows line the back of the castle."
+      {
+        type: 'photo',
+        id: 'cinderella-castle-photo6',
+        prompt: 'From the Fantasyland side, snap the stained glass windows on the back of the castle.',
+        tip: 'Sunlight makes the colors glow.',
+        source: CASTLE_RG,
       },
 
       // ---- Trivia ----
@@ -646,6 +763,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the entrance, look up at the mountain. Can you spot a smokestack puffing away?',
         hint: 'Two working smokestacks came back in the 2026 makeover after sitting quiet for years.',
       },
+      // source: BT_MB. evidence: "Keep your eye out for goats."
+      {
+        type: 'spy',
+        id: 'big-thunder-s12',
+        prompt: 'Scan the rocky mountain slopes. Can you spot a goat?',
+        hint: 'Goats like to climb high rocks, just like the ones around Big Thunder.',
+      },
       // source: BT_MB. evidence: one sign notes that "this mining job is dangerous" / "fire is prohibited!"
       {
         type: 'spy',
@@ -724,6 +848,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap the red rock spires of Big Thunder Mountain.',
         tip: 'They’re shaped like the buttes of Monument Valley.',
         source: BT,
+      },
+      // evidence: "the return of two working smokestacks on the mountain's exterior"
+      {
+        type: 'photo',
+        id: 'big-thunder-photo2',
+        prompt: 'From the entrance path, snap a smokestack on the side of the mountain.',
+        tip: 'Wait for a puff of smoke for a great picture.',
+        source: BT_WKMG,
+      },
+      // evidence: "Plunger to activate explosions" / "Explosives Magazine Room"
+      {
+        type: 'photo',
+        id: 'big-thunder-photo3',
+        prompt: 'From the line, photograph the big blasting plunger in the explosives room.',
+        tip: 'Ask a grown-up to hold your spot in line first.',
+        source: BT_KTP,
+      },
+      // evidence: a birdcage labeled "Rosita" / a "canary in a coal mine"
+      {
+        type: 'photo',
+        id: 'big-thunder-photo4',
+        prompt: 'From the line, look up and snap the birdcage with the name Rosita on it.',
+        tip: 'It hangs overhead, so tilt your camera up.',
+        source: BT_MV,
+      },
+      // evidence: portrait "nestled in the center behind the winding ramp that leads to the trains"
+      {
+        type: 'photo',
+        id: 'big-thunder-photo5',
+        prompt: 'From the winding ramp, snap the portrait of mine boss Barnabas T. Bullion.',
+        tip: 'It hangs high near the ceiling.',
+        source: BT_MV,
+      },
+      // evidence: "U.R. Daring, U.B. Bold, I.M. Brave, I.B. Hearty, U.R. Courageous, and I.M. Fearless"
+      {
+        type: 'photo',
+        id: 'big-thunder-photo6',
+        prompt: 'From the station, photograph the name on the front of a train before you board.',
+        tip: 'Can you find I.M. Fearless?',
+        source: BT_MV,
       },
 
       // ---- Trivia ----
@@ -1084,6 +1248,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'In Tiana’s office, find the newspaper headline about her party.',
         hint: 'The New Orleans Business Journal says Tiana is throwing a Mardi Gras party for all of New Orleans!',
       },
+      // source: TI_AM. evidence: "A cooking-class poster whose paper-like art style matches the "Almost There" sequence"
+      {
+        type: 'spy',
+        id: 'tianas-bayou-s15',
+        prompt: 'On the office bulletin board, find the cooking-class poster. Does its art look like cut paper?',
+        hint: 'Its paper-like style matches “Almost There,” a dreamy song scene from the movie.',
+      },
       // source: TI_AM. evidence: A letter signed "Eric G." is a tribute to Eric Goldberg, Louis's supervising animator
       {
         type: 'spy',
@@ -1125,6 +1296,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'tianas-bayou-s14',
         prompt: 'In the salt mine tunnel, find the safety video and the messages around it.',
         hint: '“We are stronger together!” Tiana’s Foods sits on a salt dome, which is why the ride is up so high.',
+      },
+      // evidence: Visitors are greeted with a sign reading "Everybody's welcome!"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo1',
+        prompt: 'From the start of the line, snap the “Everybody’s welcome!” sign.',
+        tip: 'Stand next to it with your family.',
+        source: TI_AM,
+      },
+      // evidence: "A Tiana's Foods delivery truck is parked in a prime spot near the office entrance"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo2',
+        prompt: 'From the line, photograph the old Tiana’s Foods delivery truck.',
+        tip: 'Try to get the Tiana’s Foods name in the picture.',
+        source: TI_BM,
+      },
+      // evidence: "a mural designed by Louisiana artist Malaika Favorite"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo3',
+        prompt: 'From the line, snap the big mural on the Tiana’s Foods barn.',
+        tip: 'Pick your favorite part and zoom in.',
+        source: TI_AM,
+      },
+      // evidence: "a weathervane crafted by Louisiana blacksmiths Darryl Reeves and Karina Roca"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo4',
+        prompt: 'From the line, tilt your camera up and snap the weathervane on the building.',
+        tip: 'It was made by hand, so look for the fine details.',
+        source: TIANA,
+      },
+      // evidence: "a children's garden, birdhouses, and a vintage delivery vehicle"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo5',
+        prompt: 'From the line, photograph a birdhouse in the children’s garden.',
+        tip: 'See if you can find a few different ones.',
+        source: TI_AM,
+      },
+      // evidence: chalkboard message reading "Celebration at my house, tonight! Everybody's welcome!"
+      {
+        type: 'photo',
+        id: 'tianas-bayou-photo6',
+        prompt: 'From the line in Tiana’s kitchen, snap the chalkboard message and the plate of beignets.',
+        tip: 'Look for the table with the fresh beignets.',
+        source: TI_AM,
       },
 
       // ---- Trivia ----
@@ -1490,6 +1709,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find Big Al’s red vest covered in patches. Which farewell tour is he on?',
         hint: 'The patch says 10th Farewell Tour, with an 11 added. Big Al never really says goodbye! Look for Romeo’s “Les Paw” guitar nearby.',
       },
+      // source: CB_NT. evidence: "Golden statue of Teddi Barra in her floral swing"
+      {
+        type: 'spy',
+        id: 'country-bears-s13',
+        prompt: 'Find the golden statue of Teddi Barra on her flower swing.',
+        hint: 'In the show, Teddi swings down from the ceiling. Her swing is covered in pink roses.',
+      },
+      // source: CB_NT. evidence: "Beary Poppins" poster, Trixie's book "I Bearly Remember"
+      {
+        type: 'spy',
+        id: 'country-bears-s14',
+        prompt: 'Find the poster called “Beary Poppins.”',
+        hint: 'It sits near Trixie’s book, “I Bearly Remember.” The bears love a good pun.',
+      },
       // source: CB_NT. evidence: "The original 16mm film reel for Ken Bearns' documentary"
       {
         type: 'spy',
@@ -1504,12 +1737,74 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find Big Al’s footprints pressed in concrete. Whose feet are bigger, yours or his?',
         hint: 'Like a movie star’s footprints, but furrier.',
       },
+      // source: CB_NT. evidence: Four magazines: National Growl, Hiber-Nation, Bears Magazine, and Country Bear Living
+      {
+        type: 'spy',
+        id: 'country-bears-s15',
+        prompt: 'Find the bear magazines. Which one is called “Hiber-Nation”?',
+        hint: 'There are four: National Growl, Hiber-Nation, Bears Magazine and Country Bear Living.',
+      },
       // source: CB_NT. evidence: the center portrait is of Ursus H. Bear, "who bears a striking resemblance to his grandson"
       {
         type: 'spy',
         id: 'country-bears-s12',
         prompt: 'In the theater, look above the red curtains for the carved face of Ursus H. Bear.',
         hint: 'He “bears a striking resemblance” to his grandson Henry. During the show, look for the honeycomb on Gomer’s piano too!',
+      },
+      // source: CB_NT. evidence: "Mounted moose, buffalo, and deer heads (Melvin, Buff, and Max) above the exit doors"
+      {
+        type: 'spy',
+        id: 'country-bears-s16',
+        prompt: 'Before the show, look above the doors for a moose, a buffalo and a deer on the wall.',
+        hint: 'They are Melvin, Buff and Max. They’ll have jokes for you later!',
+      },
+      // evidence: three bears, "Big Al is center, Zeke left, and Zeb right"
+      {
+        type: 'photo',
+        id: 'country-bears-photo1',
+        prompt: 'From outside the doors, snap the carved wooden bears over the entrance.',
+        tip: 'Big Al is in the middle.',
+        source: CB_NT,
+      },
+      // evidence: "Don't hibernate on this one! Go!" (National Growl)
+      {
+        type: 'photo',
+        id: 'country-bears-photo2',
+        prompt: 'From the line, photograph the poster with funny critic reviews.',
+        tip: 'Try to fit “Don’t hibernate on this one! Go!” in your picture.',
+        source: CB_NT,
+      },
+      // evidence: Ernest's burnt rehearsal fiddle, plaque noting "fireproofing proved necessary"
+      {
+        type: 'photo',
+        id: 'country-bears-photo3',
+        prompt: 'From the lobby, snap Ernest’s burnt fiddle in its display case.',
+        tip: 'Look for the label about fireproofing.',
+        source: CB_NT,
+      },
+      // evidence: "A wooden metronome set to 88 BPM with golden bees, provided by Gomer"
+      {
+        type: 'photo',
+        id: 'country-bears-photo4',
+        prompt: 'From the lobby, photograph Gomer’s metronome with the golden bees.',
+        tip: 'Get close to see the tiny bees.',
+        source: CB_NT,
+      },
+      // evidence: "Big Al's red vest" patches, "Big Al's 10th Farewell Tour," with an "11" added
+      {
+        type: 'photo',
+        id: 'country-bears-photo5',
+        prompt: 'From the lobby, snap Big Al’s red vest covered in patches.',
+        tip: 'Find the patch with the 11 added.',
+        source: CB_NT,
+      },
+      // evidence: "Big Al's footprints: A concrete slab"
+      {
+        type: 'photo',
+        id: 'country-bears-photo6',
+        prompt: 'From the lobby, take a photo of Big Al’s footprints in concrete. Put your own foot next to them!',
+        tip: 'Do his feet look bigger than yours?',
+        source: CB_NT,
       },
 
       // ---- Trivia ----
@@ -1803,6 +2098,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the organ with the name “Ravenscroft” on it.',
         hint: 'Thurl Ravenscroft is the lead singer of the singing busts in the graveyard scene.',
       },
+      // source: HM_ITM. evidence: "Organist's tomb: Features a row of ghostly heads that mirror the ballroom organ's spirit heads"
+      {
+        type: 'spy',
+        id: 'haunted-mansion-s15',
+        prompt: 'Find the organist’s tomb and its row of ghostly heads.',
+        hint: 'They match the spirit heads on the organ in the ballroom scene inside the Mansion.',
+      },
       // source: HM_ITM, HM. evidence: "the Mariner's brine-filled sepulcher, whose ghost sings and sneezes from within"
       {
         type: 'spy',
@@ -1830,6 +2132,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'haunted-mansion-s14',
         prompt: 'In the foyer, watch the portrait over the fireplace. What happens to the young man?',
         hint: 'He ages before your eyes! Fans call him Master Gracey, the Mansion’s former owner.',
+      },
+      // evidence: "Board a Doom Buggy to tour the happy haunt of 999 ghouls and ghosts who are dying to meet you."
+      {
+        type: 'photo',
+        id: 'haunted-mansion-photo2',
+        prompt: 'From the line, snap the entrance sign about the 999 happy haunts.',
+        tip: 'Stand beside it for a family photo.',
+        source: HM_RG,
+      },
+      // evidence: "A horse harness attached to a hearse gives the illusion of a ghost horse."
+      {
+        type: 'photo',
+        id: 'haunted-mansion-photo3',
+        prompt: 'From the line, photograph the hearse with the empty horse harness.',
+        tip: 'Can you see where the ghost horse should be?',
+        source: HM_RG,
+      },
+      // evidence: "a murder mystery for guests to solve featuring the sinister Dread Family"
+      {
+        type: 'photo',
+        id: 'haunted-mansion-photo4',
+        prompt: 'From the line, snap one of the Dread Family busts and its rhyme.',
+        tip: 'The rhyme holds a clue, so zoom in to read it later.',
+        source: HM_DREAD,
+      },
+      // evidence: "Our Patriarch Dear Departed Grandpa Marc"
+      {
+        type: 'photo',
+        id: 'haunted-mansion-photo5',
+        prompt: 'From the line, photograph the tombstone for “Dear Departed Grandpa Marc.”',
+        tip: 'It honors Marc Davis, who helped design the Mansion.',
+        source: HM_RG,
+      },
+      // evidence: "Dear Sweet Leota, beloved by all in regions beyond now, but having a ball."
+      {
+        type: 'photo',
+        id: 'haunted-mansion-photo6',
+        prompt: 'From the line near the door, snap Madame Leota’s tombstone.',
+        tip: 'Watch her face for a moment before you snap.',
+        source: HM_RG,
       },
       // evidence: "the Composer Crypt, which features musical instruments that play variations of"
       {
@@ -2178,6 +2520,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'hall-of-presidents-s12',
         prompt: 'In the theater, what color is the curtain covering the stage before the show?',
         hint: 'Blue! When it lifts, all the presidents are standing together.',
+      },
+      // evidence: "The brick facade was designed to resemble Independence Hall in Philadelphia."
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo1',
+        prompt: 'From outside, snap the brick building that looks like Independence Hall.',
+        tip: 'Stand back to fit the whole front in.',
+        source: HOP_RG,
+      },
+      // evidence: "The Great Seal of the United States is displayed on the museum carpet."
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo2',
+        prompt: 'From the lobby, take a photo looking down at the Great Seal in the carpet.',
+        tip: 'Find the eagle.',
+        source: HOP_RG,
+      },
+      // evidence: "An honorary key to Disneyland given to Richard Nixon"
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo3',
+        prompt: 'From the lobby, snap the honorary key to Disneyland in its display case.',
+        tip: 'Read the sign next to it to see who got the key.',
+        source: HOP_RG,
+      },
+      // evidence: President John Kennedy with daughter Caroline and her pony, Macaroni
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo4',
+        prompt: 'From the lobby, photograph the black-and-white picture of a president with a pony.',
+        tip: 'The pony is named Macaroni.',
+        source: HOP_NT,
+      },
+      // evidence: "A Lincoln bust stands in front of a portrait within a white-railed display"
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo5',
+        prompt: 'From the lobby, snap the bust of Abraham Lincoln.',
+        tip: 'Try to get his portrait behind him too.',
+        source: HOP_NT,
+      },
+      // evidence: "a circular rotunda" with "a skylight ceiling"
+      {
+        type: 'photo',
+        id: 'hall-of-presidents-photo6',
+        prompt: 'From the middle of the round lobby, tilt your camera up and snap the skylight ceiling.',
+        tip: 'The lobby is a circle, so the ceiling is too.',
+        source: HOP_NT,
       },
 
       // ---- Trivia ----
