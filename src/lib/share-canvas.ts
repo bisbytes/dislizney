@@ -148,3 +148,93 @@ export async function drawShareImage(k: Keepsake, pixelWidth = 1080): Promise<st
 
   return canvas.toDataURL('image/png');
 }
+
+/** Draws the whole-day picture (see DayCard) straight onto a canvas on the web. */
+export async function drawDayImage(list: Keepsake[], includePhotos: boolean, pixelWidth = 1080): Promise<string> {
+  const rides = list.map((k) => ({ k, r: getAttraction(k.attractionId) })).filter((x) => x.r);
+  if (!rides.length) throw new Error('no rides');
+  const canvas = document.createElement('canvas');
+  const scale = pixelWidth / W;
+  canvas.width = Math.round(W * scale);
+  canvas.height = Math.round(H * scale);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('no canvas');
+  ctx.scale(scale, scale);
+
+  const uris = includePhotos ? list.flatMap((k) => k.photos ?? []).slice(0, 4) : [];
+  const photos = (await Promise.all(uris.map(loadImage))).filter((p): p is HTMLImageElement => !!p);
+  const parks = [...new Set(rides.map((x) => x.r!.park.name))].join(' and ');
+  const date = new Date(list[0].date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+  const minutes = list.reduce((n, k) => n + waitedMinutes(k), 0);
+  const stars = list.reduce((n, k) => n + k.stars, 0);
+
+  ctx.fillStyle = '#4b38d6';
+  ctx.fillRect(0, 0, W, H);
+
+  text(ctx, 'What a day!', 40, 28, colors.lemon);
+  text(ctx, `${parks || 'Walt Disney World'} · ${date}`, 64, 13, colors.paper, 500);
+
+  let y = 82;
+  if (photos.length) {
+    const size = photos.length <= 3 ? 90 : 66;
+    const gap = 6;
+    let x = (W - (photos.length * size + (photos.length - 1) * gap)) / 2;
+    for (const p of photos) {
+      ctx.save();
+      roundRect(ctx, x, y, size, size, 6);
+      ctx.clip();
+      const s = Math.min(p.width, p.height);
+      ctx.drawImage(p, (p.width - s) / 2, (p.height - s) / 2, s, s, x, y, size, size);
+      ctx.restore();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = colors.white;
+      roundRect(ctx, x, y, size, size, 6);
+      ctx.stroke();
+      x += size + gap;
+    }
+    y += size + 22;
+  } else {
+    const row = rides.slice(0, 4).map((x) => x.r!.attraction.emoji);
+    ctx.font = `400 40px ${FONT}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    row.forEach((e, i) => ctx.fillText(e, W / 2 + (i - (row.length - 1) / 2) * 56, y + 30));
+    y += 74;
+  }
+
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  rides.slice(0, 5).forEach(({ k, r }, i) => {
+    ctx.font = `500 14px ${FONT}`;
+    ctx.fillStyle = colors.white;
+    ctx.fillText(`${r!.attraction.emoji} ${r!.attraction.name} · ${waitedMinutes(k)} min`, 16, y + i * 20, W - 32);
+  });
+  y += Math.min(5, rides.length) * 20;
+  if (rides.length > 5) {
+    ctx.fillStyle = colors.paper;
+    ctx.fillText(`+ ${rides.length - 5} more`, 16, y);
+    y += 20;
+  }
+  y += 14;
+
+  const chips = [`🎢 ${rides.length} ride${rides.length === 1 ? '' : 's'}`, `⏱️ ${minutes} min`];
+  if (stars > 0) chips.push(`⭐ ${stars}`);
+  ctx.font = `700 14px ${FONT}`;
+  const widths = chips.map((t) => ctx.measureText(t).width + 24);
+  let cx = (W - (widths.reduce((a, b) => a + b, 0) + 6 * (chips.length - 1))) / 2;
+  chips.forEach((t, i) => {
+    ctx.fillStyle = colors.lemon;
+    roundRect(ctx, cx, y, widths[i], 26, 13);
+    ctx.fill();
+    ctx.fillStyle = colors.ink;
+    ctx.textAlign = 'center';
+    ctx.font = `700 14px ${FONT}`;
+    ctx.fillText(t, cx + widths[i] / 2, y + 14);
+    cx += widths[i] + 6;
+  });
+
+  ctx.globalAlpha = 0.8;
+  text(ctx, 'Once Upon a Line · by Bis Bytes', H - 20, 11, colors.paper, 400);
+  ctx.globalAlpha = 1;
+  return canvas.toDataURL('image/png');
+}
