@@ -138,6 +138,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'In the star tunnel, peek through a “window.” Find a planet, a galaxy and a star map.',
         hint: 'The star maps show pretend space routes, like a flight map for rockets.',
       },
+      // source: SM_TP. evidence: "Celestial charts: Seven lighted charts."
+      {
+        type: 'spy',
+        id: 'space-mountain-r-spy1',
+        prompt: 'Count the glowing star charts on the wall. How many are there?',
+        hint: 'Seven! Each one is a map of a different part of space.',
+      },
       // source: SM_TP. evidence: The second celestial chart, "Titan Stations Sector Two," includes "Disney's Hyperion Resort"
       {
         type: 'spy',
@@ -200,6 +207,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'space-mountain-r15',
         prompt: 'From the line, take a group photo with the Starport Seven-Five welcome sign.',
         tip: 'It’s at the entrance before you head inside.',
+        source: SM_TP,
+      },
+      // evidence: "which is 183 feet tall and 300 feet in diameter" / "support beams on the outside"
+      {
+        type: 'photo',
+        id: 'space-mountain-r-photo2',
+        prompt: 'From the line, take a photo of the giant white cone. Can you fit the whole mountain in?',
+        tip: 'The cone is 183 feet tall, with its support beams on the outside. Step back to fit it in.',
+        source: SM_TP,
+      },
+      // evidence: "A three-paneled lighted sign to the right is often overlooked."
+      {
+        type: 'photo',
+        id: 'space-mountain-r-photo3',
+        prompt: 'From the line, photograph the three-panel lighted sign that most people walk past.',
+        tip: 'Look to the right of the welcome sign.',
+        source: SM_TP,
+      },
+      // evidence: An "Active Earth Stations" list names every Disney Park Space Mountain
+      {
+        type: 'photo',
+        id: 'space-mountain-r-photo4',
+        prompt: 'From the line, take a photo of the “Active Earth Stations” list. Point to Magic Kingdom!',
+        tip: 'Ours is “Tomorrowland Station MK-1.”',
+        source: SM_TP,
+      },
+      // evidence: "the queue opens into a large room filled with small, silver, ball-pit like balls."
+      {
+        type: 'photo',
+        id: 'space-mountain-r-photo5',
+        prompt: 'From the line, photograph the room full of little silver balls.',
+        tip: 'Get low and aim at the balls so they fill the whole photo.',
+        source: SM,
+      },
+      // evidence: Another room has a "window" showing space walkers fixing a satellite.
+      {
+        type: 'photo',
+        id: 'space-mountain-r-photo6',
+        prompt: 'From the line, photograph the window where astronauts are fixing a satellite.',
+        tip: 'Hold your camera close to the glass so the window fills your photo.',
         source: SM_TP,
       },
 
@@ -583,6 +630,61 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Near loading, find the screens that explain how to ride a lightcycle.',
         hint: 'You lean forward like on a motorbike. Watch closely so you’re race-ready!',
       },
+      // source: TRON_RG. evidence: "Each position has an A or a B option."
+      {
+        type: 'spy',
+        id: 'tron-r-spy1',
+        prompt: 'At the loading area, find the floor markings. Are you going to be an A or a B?',
+        hint: 'Every spot on the loading platform has an A or a B.',
+      },
+      // evidence: "white canopy that glows in varying sequences of blue, white, and orange"
+      {
+        type: 'photo',
+        id: 'tron-r-photo1',
+        prompt: 'From the line, take a photo looking up at the wavy white canopy.',
+        tip: 'Aim straight up. After dark, wait for the colors to change.',
+        source: TRON_RG,
+      },
+      // evidence: "there are two TRON ride vehicles to the left"
+      {
+        type: 'photo',
+        id: 'tron-r-photo2',
+        prompt: 'From the line, take a photo with the two parked lightcycles near the entrance.',
+        tip: 'Look to the left as you approach. These are the test vehicles.',
+        source: TRON_WDWNT,
+      },
+      // evidence: "welcomes members of Team Blue"
+      {
+        type: 'photo',
+        id: 'tron-r-photo3',
+        prompt: 'From the line, photograph the sign that welcomes Team Blue. Stand next to it with your team!',
+        tip: 'Everyone riding is on Team Blue.',
+        source: TRON_WDWNT,
+      },
+      // evidence: "At the back of the building is a giant digitizer"
+      {
+        type: 'photo',
+        id: 'tron-r-photo4',
+        prompt: 'From the line, take a photo of the giant digitizer at the back of the building.',
+        tip: 'Look to the back of the building as the line winds around.',
+        source: TRON_WDWNT,
+      },
+      // evidence: "An Identity Disk is on display."
+      {
+        type: 'photo',
+        id: 'tron-r-photo5',
+        prompt: 'From the line, photograph the Identity Disc on display in the pre-show area.',
+        tip: 'Then look up and snap the ceiling lights that echo its shape.',
+        source: TRON_WDWNT,
+      },
+      // evidence: "part of the ride track above the extended outdoor queue"
+      {
+        type: 'photo',
+        id: 'tron-r-photo6',
+        prompt: 'From the line, photograph the ride track passing over the outdoor queue.',
+        tip: 'Wait for a train to zoom overhead, then snap the track.',
+        source: TRON_TP,
+      },
 
       // ---- Trivia ----
       // evidence: "Team Blue, the team that the guests are on."
@@ -915,6 +1017,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the “Sector 9” scan murals on the wall.',
         hint: 'These murals survived the big 2026 update unchanged, a treat for longtime fans.',
       },
+      // source: BUZZ_WDWNT. evidence: "Star Command Power Center display also appears unchanged."
+      {
+        type: 'spy',
+        id: 'buzz-lightyear-r-spy1',
+        prompt: 'Find the Star Command Power Center display. What do you think it powers?',
+        hint: 'It survived the 2026 update unchanged, like the Sector 9 murals.',
+      },
+      // source: BUZZ_WDWNT. evidence: "The green aliens' journey mural is also unchanged."
+      {
+        type: 'spy',
+        id: 'buzz-lightyear-r-spy2',
+        prompt: 'Find the mural that follows the little green aliens’ journey. Where are they going?',
+        hint: 'This mural is also unchanged from before the 2026 update.',
+      },
       // source: BUZZ_WDWNT. evidence: The View Master now also shows Buddy among its scenes.
       {
         type: 'spy',
@@ -949,6 +1065,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'buzz-lightyear-r12',
         prompt: 'Watch the Star Cruisers roll by. Can you spot the screens on board?',
         hint: 'Since 2026, every vehicle has screens that show your score in real time.',
+      },
+      // evidence: "a Space Mountain-style white spire"
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo1',
+        prompt: 'From the line, take a photo of the new entrance sign and its tall white spire.',
+        tip: 'Step back to fit the spire in.',
+        source: BUZZ_EGGS,
+      },
+      // evidence: "Buzz is still on the platform between the Zurg wanted poster and the View Master toy."
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo2',
+        prompt: 'From the line, photograph Buzz Lightyear on his platform. Strike his pose!',
+        tip: 'Buzz stands between the Zurg wanted poster and the giant View-Master.',
+        source: BUZZ_WDWNT,
+      },
+      // evidence: "Buzz is still on the platform between the Zurg wanted poster and the View Master toy."
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo3',
+        prompt: 'From the line, take a photo of Zurg’s wanted poster. Make your meanest Zurg face next to it!',
+        tip: 'It’s on one side of Buzz’s platform.',
+        source: BUZZ_WDWNT,
+      },
+      // evidence: "now shows an image of Buddy, the support bot, among the scenes."
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo4',
+        prompt: 'From the line, photograph the giant View-Master toy.',
+        tip: 'Buddy the robot is one of the pictures. Can you see him?',
+        source: BUZZ_WDWNT,
+      },
+      // evidence: "Sector 9 scan murals appear unchanged."
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo5',
+        prompt: 'From the line, take a photo of the Sector 9 scan murals.',
+        tip: 'They are on the wall as you walk.',
+        source: BUZZ_WDWNT,
+      },
+      // evidence: "featuring such detail as giant, exposed Philips screw heads"
+      {
+        type: 'photo',
+        id: 'buzz-lightyear-r-photo6',
+        prompt: 'From the line, photograph a giant screw head. Put a hand next to it to show how big it is!',
+        tip: 'Everything is toy-sized giant because you have been shrunk.',
+        source: BUZZ,
       },
 
       // ---- Trivia ----
@@ -1263,6 +1427,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the Lunching Pad snack stand near the entrance. Say its name out loud. Get the joke?',
         hint: 'Lunch + launch pad. It’s the PeopleMover’s next-door neighbor.',
       },
+      // source: PM_TP. evidence: "A turnstile marks the start of the queue."
+      {
+        type: 'spy',
+        id: 'peoplemover-r-spy1',
+        prompt: 'Find the turnstile where the line begins. Walk through it, one at a time!',
+        hint: 'Past the turnstile, the line zigzags in switchbacks in the open air.',
+      },
       // source: PM_TP. evidence: Because of the continuous load system, the author estimates about 1.5 minutes of waiting per 100 people ahead of you.
       {
         type: 'spy',
@@ -1318,6 +1489,54 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'peoplemover-r10',
         prompt: 'When a train glides by, listen closely. How loud is it?',
         hint: 'Super quiet! There’s no engine on board. Magnets in the track pull the train along.',
+      },
+      // evidence: "which resides in the center of Rocket Tower Plaza and beneath the Astro Orbiter"
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo1',
+        prompt: 'From the line, take a photo of the Astro Orbiter rockets flying right above the station.',
+        tip: 'Tilt your camera up and wait for a rocket to swing by.',
+        source: PM,
+      },
+      // evidence: The entrance is next to the Lunching Pad and under Astro Orbiter, across from the Carousel of Progress.
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo2',
+        prompt: 'From the line, photograph the round Carousel of Progress building across the way.',
+        tip: 'The entrance faces it.',
+        source: PM_TP,
+      },
+      // evidence: The entrance is next to the Lunching Pad
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo3',
+        prompt: 'From the line, take a photo with the Lunching Pad sign.',
+        tip: 'It is right next to the entrance.',
+        source: PM_TP,
+      },
+      // evidence: The trams have five cars, each with two benches facing each other.
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo4',
+        prompt: 'From the line, photograph a whole PeopleMover train gliding by. Can you fit all five cars in?',
+        tip: 'Count the cars in your photo.',
+        source: PM_TP,
+      },
+      // evidence: "Passing the queue, passengers step onto the Speedramp (inclined moving walkway) to the second level."
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo5',
+        prompt: 'From the line, take a photo of the Speedramp that carries riders up to the trains.',
+        tip: 'Take it before you step on. Keep both hands free on the ramp.',
+        source: PM,
+      },
+      // evidence: "new multicolored LED lighting that moves in time with the music being played in Tomorrowland"
+      {
+        type: 'photo',
+        id: 'peoplemover-r-photo6',
+        prompt: 'From the line, photograph the track’s colored lights.',
+        tip: 'The lights show best after dark.',
+        source: PM,
       },
 
       // ---- Trivia ----
@@ -1729,6 +1948,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'Wait for a rocket to swing by the colorful planets.',
         source: AO_DISNEY,
       },
+      // evidence: "a highly stylized iron-work tower in lieu of the center rocket"
+      {
+        type: 'photo',
+        id: 'astro-orbiter-r-photo2',
+        prompt: 'From the line, take a photo of the fancy ironwork tower in the middle of the ride.',
+        tip: 'Look up from the ground. Try to fit the tower and a rocket in the same shot.',
+        source: AO,
+      },
+      // evidence: "very vibrant planets"
+      {
+        type: 'photo',
+        id: 'astro-orbiter-r-photo3',
+        prompt: 'From the line, photograph your favorite planet on the tower.',
+        tip: 'The planets were rebuilt in 2025 and are bright and vibrant.',
+        source: AO_REBUILT,
+      },
+      // evidence: "Access happens via a dedicated elevator tucked beside the PeopleMover queue."
+      {
+        type: 'photo',
+        id: 'astro-orbiter-r-photo4',
+        prompt: 'From the line, take a photo at the elevator that lifts you up to the rockets.',
+        tip: 'It is tucked beside the PeopleMover line.',
+        source: AO_TRIP,
+      },
+      // evidence: "A lovely view of Space Mountain can be seen to the right."
+      {
+        type: 'photo',
+        id: 'astro-orbiter-r-photo5',
+        prompt: 'From the Rocket Platform, photograph Space Mountain’s white cone.',
+        tip: 'Look to the right once you get to the top. Take it while you wait, before you board.',
+        source: AO_WDWNT,
+      },
+      // evidence: "on top of the PeopleMover platform"
+      {
+        type: 'photo',
+        id: 'astro-orbiter-r-photo6',
+        prompt: 'From the line, photograph the whole ride perched on top of the PeopleMover station.',
+        tip: 'Stand far back on the ground to fit it all in.',
+        source: AO,
+      },
 
       // ---- Trivia ----
       // evidence: "circled round and round, 60 feet above the ground"
@@ -2105,6 +2364,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'Look for the hexagon-shaped sign out front.',
         source: COP_WDWNT,
       },
+      // evidence: guests can "watch it rotate from the outside"; "colorful designs featuring futuristic lines"
+      {
+        type: 'photo',
+        id: 'carousel-of-progress-r-photo2',
+        prompt: 'From the waiting area, photograph the big round building and its colorful futuristic lines.',
+        tip: 'The show is closed for a big update until about 2027, so check the building looks like this before you plan your shot.',
+        source: COP_WDWNT,
+      },
+      // evidence: "The queue for the Carousel of Progress is a sloped ramp up to the entrance."
+      {
+        type: 'photo',
+        id: 'carousel-of-progress-r-photo3',
+        prompt: 'From the line, take a photo of the sloped ramp that leads up to the theater doors.',
+        tip: 'Stand at the bottom and look up the ramp.',
+        source: COP_TP,
+      },
+      // evidence: "The PeopleMover track runs above the queue."
+      {
+        type: 'photo',
+        id: 'carousel-of-progress-r-photo4',
+        prompt: 'From the waiting area, photograph the PeopleMover track overhead.',
+        tip: 'Wait for a train to glide over and snap it.',
+        source: COP_WDWNT,
+      },
+      // evidence: "More hexagonal Carousel of Progress signs are next to the enter/exit doors."
+      {
+        type: 'photo',
+        id: 'carousel-of-progress-r-photo5',
+        prompt: 'From the line, find a second hexagon sign next to the doors and photograph it.',
+        tip: 'These signs may change during the 2027 update, so look for any hexagons.',
+        source: COP_WDWNT,
+      },
+      // evidence: A mural with diagonal orange, yellow, and pink lines is near a TV monitor
+      {
+        type: 'photo',
+        id: 'carousel-of-progress-r-photo6',
+        prompt: 'From the waiting area, photograph the mural with bright diagonal lines.',
+        tip: 'Look for orange, yellow and pink. It may change in the 2027 update.',
+        source: COP_WDWNT,
+      },
 
       // ---- Trivia ----
       // evidence: "Music: "There's a Great Big Beautiful Tomorrow" by the Sherman Brothers"
@@ -2423,6 +2722,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Inside, find the Laugh-o-meter. Watch it as people laugh!',
         hint: 'Its lights rise higher the more the audience laughs. Let’s fill it up!',
       },
+      // source: LF_DA. evidence: "a big screen alongside the monster stage," which displays audience members
+      {
+        type: 'spy',
+        id: 'laugh-floor-r-spy1',
+        prompt: 'Find the big screen next to the stage. Who might show up on it?',
+        hint: 'It can show people in the audience. You might see yourself!',
+      },
       // source: LF_DA. evidence: Mike Wazowski hosts, with Roz on a screen. She warns that the club could be shut down without enough laughs.
       {
         type: 'spy',
@@ -2437,6 +2743,46 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take your silliest group photo with the Laugh Floor sign.',
         tip: 'The sign is at the entrance.',
         source: LF_FAN,
+      },
+      // evidence: "One of the containers used to store the energy from laughter."
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo2',
+        prompt: 'From the line, take a photo of a laugh container.',
+        tip: 'Have your family laugh next to it. Ha ha!',
+        source: LF_DA,
+      },
+      // evidence: "Shown are at least some of the characters from the show in a display in the queue."
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo3',
+        prompt: 'From the line, photograph the display of monster comedians.',
+        tip: 'Pick your favorite monster and zoom in.',
+        source: LF_DA,
+      },
+      // evidence: Guests can watch Mike Wazowski's video while they wait
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo4',
+        prompt: 'From the line, take a photo of Mike Wazowski on the screen.',
+        tip: 'Wait for Mike to appear, then snap.',
+        source: LF_DISNEY,
+      },
+      // evidence: "Text your favorite joke before the lights go down and it could be used in the show!"
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo5',
+        prompt: 'From the line, photograph the sign that tells you how to send a joke to the monsters.',
+        tip: 'A grown-up can text a joke before the show starts.',
+        source: LF_DISNEY,
+      },
+      // evidence: "A gigantic Laugh-o-meter Roz mentions sits off to the side" of the stage
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo6',
+        prompt: 'Before the show starts, take a photo of the giant Laugh-o-meter beside the stage.',
+        tip: 'Put your phone away once the lights go down.',
+        source: LF_DA,
       },
 
       // ---- Trivia ----

@@ -162,13 +162,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Spot puffs of steam from an arriving train. Count how many you see!',
         hint: 'These are real steam engines, more than 90 years old. Listen for the whistle first.',
       },
-      // source: RR. evidence: "a sound effect of a telegraph operator using a telegraph key to enter Morse code can be heard at the station"
-      {
-        type: 'spy',
-        id: 'wdw-railroad-s10',
-        prompt: 'Boarding at Frontierland Station? Listen for the tap-tap-tap of a telegraph.',
-        hint: 'It taps out Morse code. Legend says it’s Walt Disney’s 1955 Disneyland opening speech.',
-      },
       // source: RR. evidence: "the railroad's water tower is used to refill the tender if needed"
       {
         type: 'spy',
