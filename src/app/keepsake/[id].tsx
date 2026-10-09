@@ -368,20 +368,48 @@ function SharePanel({ k, open, onClose }: { k: Keepsake; open: boolean; onClose:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
+  const ready = useRef<Promise<string> | null>(null);
+
+  /** Makes the picture, giving up (and trying a smaller one) rather than hanging on a phone. */
+  const make = () => {
+    const attempt = (scale: number, ms: number) =>
+      Promise.race([
+        captureRef(card, {
+          format: 'png',
+          quality: 1,
+          width: Math.round(SHARE_IMAGE.width * scale),
+          height: Math.round(SHARE_IMAGE.height * scale),
+          result: Platform.OS === 'web' ? 'data-uri' : 'tmpfile',
+        }),
+        new Promise<string>((_, no) => setTimeout(() => no(new Error('slow')), ms)),
+      ]);
+    return attempt(1, 12_000).catch(() => attempt(0.5, 12_000));
+  };
+
+  // On the web, start the picture as soon as the panel opens so the tap can share right away.
+  useEffect(() => {
+    ready.current = null;
+    if (!open || Platform.OS !== 'web') return;
+    const t = setTimeout(() => {
+      const p = make();
+      p.catch(() => {});
+      ready.current = p;
+    }, 500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   const send = async () => {
     tap();
     setBusy(true);
+    setMsg('');
     try {
-      const uri = await captureRef(card, {
-        format: 'png',
-        quality: 1,
-        ...SHARE_IMAGE,
-        result: Platform.OS === 'web' ? 'data-uri' : 'tmpfile',
-      });
+      const uri = await (ready.current ?? make());
       setMsg(await shareImage(uri, text));
     } catch {
+      ready.current = null;
       Clipboard.setStringAsync(text).catch(() => {});
-      setMsg('Couldn’t make the picture, but your caption is copied 📋');
+      setMsg('Couldn’t make the picture, but your caption is copied 📋 Tap again to retry.');
     } finally {
       setBusy(false);
     }
