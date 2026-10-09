@@ -15,6 +15,7 @@ import { BisFooter } from '@/components/bis';
 import { RadarToggle } from '@/components/cards';
 import { LandBar } from '@/components/land-bar';
 import { LandScene } from '@/components/land-scene';
+import { QueueTimesLink } from '@/components/queue-times-credit';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { WaitBadge } from '@/components/wait-badge';
 import { getPark, isClosedForRefurb } from '@/data/parks';
@@ -208,7 +209,7 @@ export default function PickYourRide() {
           )}
           {waits.size > 0 && (
             <Txt size={12} color={colors.inkSoft} style={{ textAlign: 'center', marginTop: 12 }}>
-              Posted wait times powered by Queue-Times.com
+              Posted wait times · <QueueTimesLink />
             </Txt>
           )}
           <View style={{ paddingHorizontal: 16 }}>
