@@ -327,8 +327,8 @@ export const magicKingdom: Park = {
               source: SRC.pirates,
             },
             {
-              text: 'The Barker Bird parrot was moved outside the entrance in 1975.',
-              source: SRC.pirates,
+              text: 'The ride’s old parrot greeter, the Barker Bird, now has a look-alike named Rummy. He watches over The Beak and Barrel, a pirate pub in Adventureland that opened in 2025.',
+              source: 'https://touringplans.com/blog/magic-kingdoms-beak-barrel-pub-opens-august-29th/',
             },
           ],
           quests: [

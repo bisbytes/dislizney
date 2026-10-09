@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
  * ignore text sent along with a picture, so the caption is copied first,
  * ready to paste.
  */
-export async function shareImage(uri: string, caption: string): Promise<string> {
+export async function shareImage(uri: string, caption: string, fileName = 'my-ride.png'): Promise<string> {
   Clipboard.setStringAsync(caption).catch(() => {});
   if (Platform.OS !== 'web') {
     if (!(await Sharing.isAvailableAsync())) return 'Sharing isn’t available on this phone.';
@@ -17,7 +17,7 @@ export async function shareImage(uri: string, caption: string): Promise<string> 
   }
 
   const blob = await (await fetch(uri)).blob();
-  const file = new globalThis.File([blob], 'my-ride.png', { type: 'image/png' });
+  const file = new globalThis.File([blob], fileName, { type: 'image/png' });
   const nav = globalThis.navigator as Navigator | undefined;
   if (nav?.canShare?.({ files: [file] })) {
     try {
@@ -30,7 +30,7 @@ export async function shareImage(uri: string, caption: string): Promise<string> 
   }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'my-ride.png';
+  a.download = fileName;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
   return 'Picture downloaded and caption copied! Add them to your post 📋';
