@@ -81,6 +81,52 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       },
     ],
     quests: [
+      // evidence: "The double-R is on purpose."
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo1',
+        prompt: 'From the line, snap the ride’s name sign. Can you fit both R’s in “Carrousel” in the photo?',
+        tip: 'The double R is on purpose.',
+        source: CARROUSEL_WDWNT,
+      },
+      // evidence: "placed directly behind Cinderella Castle in the castle courtyard"
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo2',
+        prompt: 'From the line, take a photo of the carrousel with Cinderella Castle rising behind it.',
+        tip: 'Stand back a little so you can fit the whole castle in.',
+        source: CARROUSEL_WDWNT,
+      },
+      // evidence: "adorned with golden helmets and shields"
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo3',
+        prompt: 'From the line, photograph a horse wearing a golden helmet or carrying a shield as it spins by.',
+        tip: 'Wait for the carrousel to slow down at the end of a ride.',
+        source: CARROUSEL_WDWNT,
+      },
+      // evidence: "flower garlands, feathers and other festoons"
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo4',
+        prompt: 'From the line, photograph a horse decorated with flower garlands or feathers.',
+        source: CARROUSEL_WDWNT,
+      },
+      // evidence: "Hand-painted scenes from Cinderella can be seen on the top."
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo5',
+        prompt: 'From the line, aim your camera up and photograph one of the hand-painted Cinderella scenes.',
+        tip: 'The scenes run around the top of the carrousel.',
+        source: CARROUSEL_WIKI,
+      },
+      // evidence: "all painted white with 23-karat gold leaf, silver, and bronze details"
+      {
+        type: 'photo',
+        id: 'carrousel-r-photo6',
+        prompt: 'From the line, take a close-up of a white horse with its shiny gold trim.',
+        source: CARROUSEL_WIKI,
+      },
       // evidence: "began construction of Carousel No. 46"
       {
         type: 'trivia',
@@ -396,6 +442,45 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'The posters hang along the queue on the way to the lobby.',
         source: PHIL_WIKI,
       },
+      // evidence: "with the background now blue and the trim gold" / "A concert with character"
+      {
+        type: 'photo',
+        id: 'philharmagic-r-photo3',
+        prompt: 'From the line, photograph the blue and gold marquee. Get the ribbon that says “A concert with character” in the shot.',
+        tip: 'The marquee got its blue and gold colors in 2021.',
+        source: PHIL_MARQUEE,
+      },
+      // evidence: "a ribbon sign was added to the front paying homage to Mickey Mouse Revue"
+      {
+        type: 'photo',
+        id: 'philharmagic-r-photo4',
+        prompt: 'From the line, find the ribbon sign out front that honors Mickey Mouse Revue and photograph it.',
+        tip: 'That older show played in this very theater when the park opened.',
+        source: PHIL_MARQUEE,
+      },
+      // evidence: posters include "Hades from Hercules"
+      {
+        type: 'photo',
+        id: 'philharmagic-r-photo5',
+        prompt: 'From the line, photograph the concert poster starring Hades.',
+        tip: 'The posters hang along the switchbacks inside.',
+        source: PHIL_WIKI,
+      },
+      // evidence: posters include Ariel and her sisters
+      {
+        type: 'photo',
+        id: 'philharmagic-r-photo6',
+        prompt: 'From the line, photograph the poster with Ariel and her sisters.',
+        source: PHIL_WIKI,
+      },
+      // evidence: "a gold and blue holding room, where you'll get your special 3D 'opera glasses'"
+      {
+        type: 'photo',
+        id: 'philharmagic-r-photo7',
+        prompt: 'In the gold and blue holding room, take a photo of your family wearing the 3D opera glasses before the show starts.',
+        tip: 'Do it in the room, before you head into the theater.',
+        source: PHIL_TP,
+      },
       // evidence: "PhilharMagic Orchestra at the Fantasyland Concert Hall"
       {
         type: 'trivia',
@@ -645,6 +730,14 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Inside the theater, look left and right. Where does the screen end?',
         hint: 'It wraps around the stage, 150 feet long and 24 feet high.',
       },
+      // evidence: "The musical notes, dots, and stars on the sign are all gold."
+      // source: https://wdwnt.com/2021/11/photos-mickeys-philharmagic-marquee-completed-at-magic-kingdom/
+      {
+        type: 'spy',
+        id: 'philharmagic-s13',
+        prompt: 'Look at the marquee. Can you spot gold musical notes and stars?',
+        hint: 'The notes, dots and stars on the sign are all gold. They match the gold trim.',
+      },
       // evidence: Mickey is the conductor
       {
         type: 'challenge',
@@ -707,6 +800,36 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'winnie-the-pooh-photo-4',
         prompt: 'From the line, take a photo of your crew painting with honey or drumming in Rabbit’s garden!',
         source: POOH_DISNEY,
+      },
+      // evidence: "above the door is the sign reading, 'Mr. Sanderz'" (next to the giant tree that's Pooh's home)
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo5',
+        prompt: 'From the line, photograph Pooh’s giant tree house with the “Mr. Sanderz” sign over the door.',
+        tip: 'It’s right by the queue entrance.',
+        source: POOH_TP,
+      },
+      // evidence: "spin sunflowers, beat out a tune on pumpkin and watermelon drums"
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo6',
+        prompt: 'From the line, photograph the giant sunflowers or the pumpkin and watermelon drums in Rabbit’s garden.',
+        source: POOH_TP,
+      },
+      // evidence: a series of "hives" with "bees" that you can move from one to the next
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo7',
+        prompt: 'From the line, take a photo of the beehives and the bees buzzing between them.',
+        source: POOH_TP,
+      },
+      // evidence: "the switchbacks are lined with Winnie the Pooh book pages"
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo8',
+        prompt: 'From the line, photograph one of the big storybook pages along the switchbacks.',
+        tip: 'Read the page out loud first!',
+        source: POOH_TP,
       },
       // evidence: "including a rather curious picture of J. Thaddeus Toad himself handing a deed over to Owl"
       {
@@ -1100,6 +1223,43 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         tip: 'Your group waits right in front of it.',
         source: BELLE_DISNEY,
       },
+      // evidence: "If you look closely at the entrance signage, you can spot Lumiére."
+      {
+        type: 'photo',
+        id: 'enchanted-tales-belle-r-photo3',
+        prompt: 'From the line, photograph the entrance sign. Can you find Lumière hiding on it?',
+        source: BELLE_WDWNT,
+      },
+      // evidence: "The top of Beast’s castle is visible high up the mountain in the background"
+      {
+        type: 'photo',
+        id: 'enchanted-tales-belle-r-photo4',
+        prompt: 'From the line, aim your camera at the top of the Beast’s castle high up on the mountain.',
+        source: BELLE_ALLEARS,
+      },
+      // evidence: "like these gears on the lantern post" (a nod to Maurice's inventive side)
+      {
+        type: 'photo',
+        id: 'enchanted-tales-belle-r-photo5',
+        prompt: 'From the line, photograph the lantern post with gears on it.',
+        tip: 'The gears are a wink to inventor Maurice.',
+        source: BELLE_WDWNT,
+      },
+      // evidence: "a well, lanterns, wooden buckets, a wheelbarrow, wagon wheels"
+      {
+        type: 'photo',
+        id: 'enchanted-tales-belle-r-photo6',
+        prompt: 'From the line, photograph the old well, a wooden bucket or the wheelbarrow along the path.',
+        source: BELLE_ALLEARS,
+      },
+      // evidence: "how tall Belle was as she grew from age three to 18"
+      {
+        type: 'photo',
+        id: 'enchanted-tales-belle-r-photo7',
+        prompt: 'In the cottage before the show starts, photograph the height marks on the wall. Which one is nearest to a kid in your group?',
+        tip: 'Take your picture while you wait, before the magic mirror scene begins.',
+        source: BELLE_WDWNT,
+      },
       // evidence: "a special enchanted mirror the Beast gave to Belle"
       {
         type: 'trivia',
@@ -1466,6 +1626,14 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find Maurice’s drawing of a music box.',
         hint: 'It’s the plan for his wedding present to Belle and the Beast.',
       },
+      // evidence: "Blueprints for Maurice's inventions line the walls of his workshop."
+      // source: https://wdwnt.com/2023/02/enchanted-tales-with-belle-reopens-magic-kingdom/
+      {
+        type: 'spy',
+        id: 'enchanted-tales-belle-s15',
+        prompt: 'In the workshop, look at the walls. Can you find a blueprint for one of Maurice’s inventions?',
+        hint: 'Maurice draws his plans on paper and pins them all around his workshop.',
+      },
       // evidence: roles include Beast, Suits of Armor, Mrs. Potts and Chip, Footstool, Horse
       {
         type: 'challenge',
@@ -1543,6 +1711,41 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap the jumbled red letters on the back of the entrance sign. Can you unscramble them?',
         tip: 'Check the back of the entrance sign.',
         source: BARN_PREP,
+      },
+      // evidence: "The sign is done in a circus style."
+      {
+        type: 'photo',
+        id: 'barnstormer-r-photo3',
+        prompt: 'From the line, photograph the front of the circus-style Barnstormer sign with the Great Goofini on it.',
+        source: BARN_TMFL,
+      },
+      // evidence: "A faux ticket booth sits at the entrance to The Barnstormer's queue."
+      {
+        type: 'photo',
+        id: 'barnstormer-r-photo4',
+        prompt: 'From the line, take a photo of the pretend circus ticket booth.',
+        source: BARN_TMFL,
+      },
+      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
+      {
+        type: 'photo',
+        id: 'barnstormer-r-photo5',
+        prompt: 'From the line, photograph the cannon and its pile of cannonballs.',
+        source: BARN_TMFL,
+      },
+      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
+      {
+        type: 'photo',
+        id: 'barnstormer-r-photo6',
+        prompt: 'From the line, photograph the dartboard. Can you tell where the darts landed?',
+        source: BARN_TMFL,
+      },
+      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
+      {
+        type: 'photo',
+        id: 'barnstormer-r-photo7',
+        prompt: 'From the line, take a photo of Goofini’s rocket ship prop.',
+        source: BARN_TMFL,
       },
       // evidence: "Riders reach a top speed of 40.2 kilometers per hour (25.0 mph)"
       {
