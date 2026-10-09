@@ -15,8 +15,6 @@ export type LineSession = {
   attractionId: string;
   waitMinutes: number;
   startedAt: number;
-  /** Extra minutes of play added after the planned story ran out. */
-  bonusMinutes: number;
   /** A new quest appears every this many minutes (default 3). */
   dripEvery?: number;
   /** How many quests have appeared so far; only ever grows. */
@@ -113,7 +111,6 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
         attractionId,
         waitMinutes,
         startedAt: Date.now(),
-        bonusMinutes: 0,
         done: {},
         picks: [],
       };

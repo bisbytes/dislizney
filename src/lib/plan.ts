@@ -1,22 +1,6 @@
 import type { AttractionRef } from '@/data/parks';
 import type { Quest } from '@/data/types';
 
-/**
- * Builds a line story sized to the wait. Rough minutes each activity takes
- * when a family plays together; used to fill the wait.
- */
-export const MINUTES: Record<Quest['type'], number> = {
-  trivia: 1.5,
-  truefalse: 1,
-  emoji: 1,
-  guess: 1.5,
-  order: 2,
-  spy: 3,
-  challenge: 3,
-  wyr: 2,
-  photo: 2,
-};
-
 export type PlannedQuest = { quest: Quest; from?: string };
 
 function seeded(seed: string) {
@@ -104,14 +88,6 @@ export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>):
 
   const used = new Set<string>();
   return out.filter((pq) => (used.has(pq.quest.id) ? false : (used.add(pq.quest.id), true)));
-}
-
-/** How many quests from the front of the queue fill this many minutes. */
-export function countForMinutes(queue: PlannedQuest[], minutes: number) {
-  let total = 0;
-  let n = 0;
-  while (n < queue.length && total < minutes) total += MINUTES[queue[n++].quest.type];
-  return Math.max(1, n);
 }
 
 /**
