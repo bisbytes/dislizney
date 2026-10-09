@@ -44,14 +44,21 @@ jobs:
 
       # GitHub Pages has no URL rewrites, so the deploy uses a single-page build
       # (404.html serves the app for deep links like /park/magic-kingdom) under the
-      # repo's sub-path. The base path is empty once a custom domain is set.
+      # base path from Pages: /dislizney, or empty (the root) with a custom domain.
       # app.json itself is left alone, so local dev is unchanged.
       - name: Configure web build for GitHub Pages
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path || format('/{0}', github.event.repository.name) }}
+          PAGES_OUTCOME: ${{ steps.pages.outcome }}
+          PAGES_BASE: ${{ steps.pages.outputs.base_path }}
+          REPO_BASE: /${{ github.event.repository.name }}
         run: |
-          jq --arg base "$BASE_PATH" \
-            '.expo.web.output = "single" | .expo.experiments.baseUrl = $base' \
+          # Use the Pages base path whenever Pages answered, even when it's empty
+          # (a custom domain like line.bisbytes.com serves from the root).
+          # Pull requests don't ask Pages, so they build for the repo sub-path.
+          if [ "$PAGES_OUTCOME" = success ]; then base=$PAGES_BASE; else base=$REPO_BASE; fi
+          echo "Base path: '${base}'"
+          jq --arg base "$base" \
+            '.expo.web.output = "single" | if $base == "" then del(.expo.experiments.baseUrl) else .expo.experiments.baseUrl = $base end' \
             app.json > app.pages.json
           mv app.pages.json app.json
 
