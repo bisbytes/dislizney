@@ -157,6 +157,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Inside the house, find the portraits of Wendy, John and Michael.',
         hint: 'Remember their faces! At the end of the ride you’ll see the Darling kids again, posed on Hook’s ship with Peter.',
       },
+      // source: PP_AEQ. evidence: "portraits of the kids are on the wall" and "a display of the parents" (fetched summary of the page)
+      {
+        type: 'spy',
+        id: 'peter-pan-r-spy14',
+        prompt: 'Near the kids’ portraits, find the display of Mr. and Mrs. Darling.',
+        hint: 'The whole Darling family lives here. Their house is the first stop on your way to Never Land.',
+      },
       // source: PP_WI. evidence: "very neat window that looks out onto London at night"
       {
         type: 'spy',
@@ -221,6 +228,38 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap a picture of the Darling house and Nana’s doghouse in the yard.',
         tip: 'Look for them in the outdoor part of the queue.',
         source: PP_WI,
+      },
+      // source: PP_AEQ. evidence: "You enter the house and portraits of the kids are on the wall."
+      {
+        type: 'photo',
+        id: 'peter-pan-r-photo3',
+        prompt: 'From the line, snap a photo of the portraits of Wendy, John and Michael on the wall.',
+        tip: 'They hang inside the Darling house, before the nursery.',
+        source: PP_AEQ,
+      },
+      // source: PP_WI. evidence: "very neat window that looks out onto London at night"
+      {
+        type: 'photo',
+        id: 'peter-pan-r-photo4',
+        prompt: 'From the line, snap a photo of the nursery window with London glowing outside.',
+        tip: 'Look for it in the Darlings’ nursery.',
+        source: PP_WI,
+      },
+      // source: PP_AE. evidence: building blocks "(a group is by Wendy's bed, another by the window as you exit)" spell "P Pan" and "DISNEY."
+      {
+        type: 'photo',
+        id: 'peter-pan-r-photo5',
+        prompt: 'From the line, snap a photo of the toy blocks by Wendy’s bed that spell “P Pan.”',
+        tip: 'The blocks sit on the nursery floor.',
+        source: PP_AE,
+      },
+      // source: PP_AE. evidence: "As you approach the loading zone, you will see pirate ships, suspended from the ceiling."
+      {
+        type: 'photo',
+        id: 'peter-pan-r-photo6',
+        prompt: 'From the line, snap a photo of the pirate ships hanging from the ceiling near the loading area.',
+        tip: 'Take it before you board. Phones away once you step on the ship!',
+        source: PP_AE,
       },
       // ---- Trivia ----
       // evidence: "Board your pirate galleon and follow Peter Pan as he beckons you"
@@ -609,6 +648,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Look around for restaurant windows peeking down at the boats.',
         hint: 'Windows at Pinocchio Village Haus overlook this queue and the ride, so diners can watch boats float by.',
       },
+      // source: SW_TP. evidence: "Guests step over a small wall and then down a moderate step into their boat." (fetched summary of the page)
+      {
+        type: 'spy',
+        id: 'small-world-r-spy12',
+        prompt: 'Watch the boats at the loading area. Where do riders step to climb in?',
+        hint: 'Riders step over a small wall and then down into the boat. Watch your step!',
+      },
       // source: SW_TP. evidence: "Each row can accommodate 3-5 people, depending on size."
       {
         type: 'spy',
@@ -638,6 +684,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt:
           'From the line, snap a photo of the super colorful building front. How many colors made it into your picture?',
         source: SW,
+      },
+      // evidence: "The facade shows glittery numbers 0 through 9, below and to the right of a smiling clock face." (fetched summary of the page)
+      {
+        type: 'photo',
+        id: 'small-world-r-photo3',
+        prompt: 'From the line, snap a photo of the smiling clock face on the clock tower.',
+        source: SW_NT25,
+      },
+      // evidence: "glittery numbers 0 through 9."
+      {
+        type: 'photo',
+        id: 'small-world-r-photo4',
+        prompt: 'From the line, snap a close-up of the glittery numbers on the clock tower. Can you find your lucky number?',
+        tip: 'The numbers are near the clock face.',
+        source: SW_NT25,
+      },
+      // evidence: "the boats and the attraction's signature backdrop."
+      {
+        type: 'photo',
+        id: 'small-world-r-photo5',
+        prompt: 'From the line, snap a photo of the boats and the ride’s signature backdrop.',
+        tip: 'Look out over the loading area as you walk down the ramps.',
+        source: SW_TP,
+      },
+      // evidence: "always spelled without capital letters!"
+      {
+        type: 'photo',
+        id: 'small-world-r-photo6',
+        prompt: 'From the line, snap a photo of the ride’s name on a sign. Can you find any capital letters?',
+        tip: 'There shouldn’t be any!',
+        source: SW_TP,
       },
       // ---- Trivia ----
       // evidence: "gentle 10-minute journey through all 7 continents"
@@ -978,6 +1055,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
     ],
     quests: [
       // ---- Look around the queue, in walking order ----
+      // source: SD_AM. evidence: "cross a stone bridge and walk through a beautiful forest with the Dwarfs' cottage in the distance."
+      {
+        type: 'spy',
+        id: 'seven-dwarfs-r-spy14',
+        prompt: 'Cross the stone bridge at the start. Can you spot the dwarfs’ cottage through the trees?',
+        hint: 'The path leads through a forest toward the cottage, just like in the movie.',
+      },
       // source: SD_AE. evidence: "impressions left by forest creatures, acorns and sticks."
       {
         type: 'spy',
@@ -1083,6 +1167,36 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'seven-dwarfs-r-photo2',
         prompt: 'From the line, snap a photo of your favorite animal spigot at the gem washing station.',
         source: SD,
+      },
+      // source: SD_WM. evidence: "Two vultures sit atop the jib near the mine entrance." (fetched summary of the page) / SD_MV: "styled after the vultures in the film."
+      {
+        type: 'photo',
+        id: 'seven-dwarfs-r-photo3',
+        prompt: 'From the line, snap a photo of the two vultures perched on the crane near the mine entrance.',
+        tip: 'Look up high. They sit on the crane, outside before you enter.',
+        source: SD_WM,
+      },
+      // source: SD_MV. evidence: "a wisteria vine and birdhouse at the front door."
+      {
+        type: 'photo',
+        id: 'seven-dwarfs-r-photo4',
+        prompt: 'From the line, snap a photo of the dwarfs’ cottage with its wisteria vine and birdhouse.',
+        tip: 'You can see it from the outdoor part of the queue.',
+        source: SD_MV,
+      },
+      // source: SD_AE. evidence: "“Vault” is carved into the wooden crosspiece, or lintel, above the doorway."
+      {
+        type: 'photo',
+        id: 'seven-dwarfs-r-photo5',
+        prompt: 'From the line, snap a photo of the doorway with “Vault” carved above it.',
+        source: SD_AE,
+      },
+      // source: SD_AM. evidence: "Picks, shovels, barrels and hoists are scattered throughout the queue tunnel and at the load-in area."
+      {
+        type: 'photo',
+        id: 'seven-dwarfs-r-photo6',
+        prompt: 'From the line, snap a photo of the mining tools in the queue tunnel. Can you fit a pick and a shovel in one picture?',
+        source: SD_AM,
       },
       // ---- Trivia ----
       // evidence: "38in (97cm) or taller"
@@ -1427,6 +1541,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find a seashell tucked into the queue. What color is it?',
         hint: 'Shells are hidden all along the way, like treasures washed up by the tide.',
       },
+      // source: LM_RG. evidence: sign reads "Dear Friends, Help the crabs sort Scuttle's collection of human stuff into piles."
+      {
+        type: 'spy',
+        id: 'little-mermaid-r-spy11',
+        prompt: 'Find the sign from the crabs. What do they need help sorting?',
+        hint: 'The crabs ask you to help sort Scuttle’s collection of human stuff into piles.',
+      },
       // source: LM_AE. evidence: "When you see them on the screens, they will stop with thingamabobs they find." / LM_AM: games of "trash" or "treasure"
       {
         type: 'spy',
@@ -1477,6 +1598,36 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap a photo of the Ariel figurehead on the shipwreck.',
         tip: 'The shipwreck sits by the entrance.',
         source: LM_RG,
+      },
+      // source: LM_DB. evidence: "The outdoor queue winds through a rock-work grotto with waterfalls"
+      {
+        type: 'photo',
+        id: 'little-mermaid-r-photo3',
+        prompt: 'From the line, snap a photo of a waterfall tumbling through the rockwork.',
+        tip: 'The waterfalls are in the outdoor part of the queue.',
+        source: LM_DB,
+      },
+      // source: LM_AM. evidence: "sea life, including barnacles and starfish, appear to help guide them to their destination."
+      {
+        type: 'photo',
+        id: 'little-mermaid-r-photo4',
+        prompt: 'From the line, snap a close-up of a starfish or barnacles on the rocks.',
+        source: LM_AM,
+      },
+      // source: LM_AE. evidence: "As you enter a grotto, you'll see Scuttle who tells stories and jokes." / LM_BM: "the Scuttle animatronic has returned to the queue"
+      {
+        type: 'photo',
+        id: 'little-mermaid-r-photo5',
+        prompt: 'From the line, snap a photo of Scuttle the seagull telling his jokes in the grotto.',
+        source: LM_AE,
+      },
+      // source: LM_AM. evidence: "If the grand mural in the load-in area were turned on its side, it would reach a depth of more than 14 fathoms."
+      {
+        type: 'photo',
+        id: 'little-mermaid-r-photo6',
+        prompt: 'From the line, snap a photo of the giant mural in the loading area.',
+        tip: 'Take it before you climb into your clamshell. Phones away once you board!',
+        source: LM_AM,
       },
       // ---- Trivia ----
       // evidence: "Scuttle greets the Guests and makes a muddled attempt to tell them all about Ariel's story"
@@ -1852,6 +2003,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the slide that looks like a doghouse. Whose house is it?',
         hint: 'It belongs to “Sport” the dog.',
       },
+      // source: DU_AE. evidence: "a large, elevated play structure covered in nets" with "a ladder to a pretend high-dive and trampoline-shaped steps" (fetched summary of the page)
+      {
+        type: 'spy',
+        id: 'dumbo-r-spy14',
+        prompt: 'Find the ladder up to the pretend high-dive. Can you spot the trampoline-shaped steps?',
+        hint: 'The play structure is covered in nets, like a real circus rig.',
+      },
       // source: DU_KP. evidence: "look for the pretend box of fireworks and pull the string"
       {
         type: 'spy',
@@ -1894,6 +2052,37 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'dumbo-r-photo2',
         prompt: 'From the line, snap a photo of Timothy spinning on top of the marquee.',
         source: DU,
+      },
+      // source: DU_PS. evidence: "There is a Dumbo ride vehicle between the two Dumbo the Flying Elephant rides for guests to take photos."
+      {
+        type: 'photo',
+        id: 'dumbo-r-photo3',
+        prompt: 'From the line, pose with the parked Dumbo vehicle between the two rides.',
+        tip: 'It sits outside, between the two flying rides.',
+        source: DU_PS,
+      },
+      // source: DU_KP. evidence: "the pager for this attraction resembles a Circus ticket"
+      {
+        type: 'photo',
+        id: 'dumbo-r-photo4',
+        prompt: 'From the line, snap a photo of your family’s circus-ticket pager.',
+        tip: 'Hold it up next to the big top tent.',
+        source: DU_KP,
+      },
+      // source: DU_KP. evidence: "One of the slides is called "The Human Cannonball."" / DU_MB: playground closed Feb 2025, "has officially reopened!" July 20, 2025
+      {
+        type: 'photo',
+        id: 'dumbo-r-photo5',
+        prompt: 'From the line, snap a photo of the slide called “The Human Cannonball.”',
+        tip: 'The play area closed for a refresh in early 2025 and reopened in July 2025.',
+        source: DU_KP,
+      },
+      // source: DU_PS. evidence: "panels at the base of the attraction that depict various scenes from the movie."
+      {
+        type: 'photo',
+        id: 'dumbo-r-photo6',
+        prompt: 'From the line, snap a photo of a movie scene painted on the panels at the base of the ride.',
+        source: DU_PS,
       },
       // ---- Trivia ----
       // evidence: "You can adjust your altitude during your flight, so you can soar high or swoop low."
@@ -2250,6 +2439,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the giant teapot in the middle of the ride. Keep watching it!',
         hint: 'The teapot came with the roof in 1973, and the sleepy Dormouse lives inside.',
       },
+      // source: MT_AE. evidence: "A Dormouse periodically pops out of the teapot in the center of the platform." (fetched summary of the page)
+      {
+        type: 'spy',
+        id: 'mad-tea-party-r-spy9',
+        prompt: 'Keep your eyes on the teapot. Can you catch the Dormouse popping out?',
+        hint: 'The sleepy Dormouse pops up out of the teapot every so often. Be quick!',
+      },
       // source: MT_AE. evidence: "one of 18 pastel-colored teacups." / MT_MB: "the attraction was once again repainted, giving it the color scheme that it has today."
       {
         type: 'spy',
@@ -2278,6 +2474,43 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap a photo of the White Rabbit’s clock.',
         tip: 'Look near the entrance.',
         source: MT_SIGN,
+      },
+      // source: MT_SIGN. evidence: "designed to look like they are made up of Tulgey Wood."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo2',
+        prompt: 'From the line, snap a photo of the queue sign that looks carved from Tulgey Wood.',
+        tip: 'These signs were new in April 2024.',
+        source: MT_SIGN,
+      },
+      // source: MT_SIGN. evidence: "a pair of tulips hangs from atop the 'stand by' entrance sign."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo3',
+        prompt: 'From the line, snap a photo of the tulips hanging above the standby entrance sign.',
+        source: MT_SIGN,
+      },
+      // source: MT_MB. evidence: "the central teapot (housing the Dormouse from Alice in Wonderland) was also added."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo4',
+        prompt: 'From the line, snap a photo of the giant teapot in the middle of the ride.',
+        source: MT_MB,
+      },
+      // source: MT. evidence: "It was updated in 1992 with a new color scheme, new music, and the colorful lanterns."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo5',
+        prompt: 'From the line, snap a photo of the colorful lanterns hanging over the teacups.',
+        source: MT,
+      },
+      // source: MT_AE. evidence: "one of 18 pastel-colored teacups."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo6',
+        prompt: 'From the line, snap a photo of the teacup you want to ride. Which pastel color is it?',
+        tip: 'There are 18 teacups to choose from.',
+        source: MT_AE,
       },
       // ---- Trivia ----
       // evidence: "one of 18 pastel-colored teacups."
