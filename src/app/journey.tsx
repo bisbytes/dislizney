@@ -1,4 +1,3 @@
-import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -6,15 +5,16 @@ import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BisFooter } from '@/components/bis';
+import { DaySharePanel } from '@/components/day-share-panel';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { exportJourney, importJourney } from '@/lib/backup';
-import { dayCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
+import { useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 export default function Journey() {
   const { keepsakes, session, ready, importKeepsakes } = useJourney();
-  const [toast, setToast] = useState<string | null>(null);
+  const [sharing, setSharing] = useState<string | null>(null);
   const [backupMsg, setBackupMsg] = useState('');
 
   const backup = async () => {
@@ -55,19 +55,9 @@ export default function Journey() {
   const stars = keepsakes.reduce((n, k) => n + k.stars, 0);
   const inLine = session && getAttraction(session.attractionId);
 
-  const shareDay = async (day: string, list: Keepsake[]) => {
+  const shareDay = (day: string) => {
     tap();
-    const text = dayCaption(list);
-    Clipboard.setStringAsync(text).catch(() => {});
-    setToast(day);
-    const nav = Platform.OS === 'web' ? (globalThis.navigator as Navigator | undefined) : undefined;
-    if (nav?.share) {
-      try {
-        await nav.share({ title: 'My Disney day', text });
-      } catch {
-        // Cancelled or blocked: the caption is already copied.
-      }
-    }
+    setSharing(day);
   };
 
   return (
@@ -128,13 +118,9 @@ export default function Journey() {
                       day: 'numeric',
                     })}
                   </Txt>
-                  <StoryButton small label="📤 Share my day" onPress={() => shareDay(day, list)} />
+                  <StoryButton small label="📤 Share my day" onPress={() => shareDay(day)} />
                 </View>
-                {toast === day && (
-                  <Txt weight="medium" size={14} style={{ textAlign: 'right' }}>
-                    Day caption and hashtags copied! 📋
-                  </Txt>
-                )}
+                <DaySharePanel list={list} open={sharing === day} onClose={() => setSharing(null)} />
                 <CrewDay list={list} />
                 <View style={styles.grid}>
                   {list.map((k, i) => (
