@@ -49,6 +49,8 @@ const BARN_ITM =
 const BARN_TMFL = 'https://www.themouseforless.com/walt-disney-world/parks/magic-kingdom/barnstormer/';
 const BARN_ALLEARS = 'https://allearsnet.com/tp/mk/barnstormer-featuring-great-goofini.htm';
 const BARN_WDWNT = 'https://wdwnt.com/the-barnstormer/';
+const BARN_RG = 'https://www.resortsgal.com/parks/magic-kingdom/barnstormer';
+const BARN_DFB = 'https://www.disneyfoodblog.com/2026/06/26/after-a-lengthy-closure-this-magic-kingdom-attraction-reopened-early/';
 
 /** Extra ride-specific content for Fantasyland (Castle Courtyard, Enchanted Forest, Storybook Circus). Every sourced item was checked against its source page. */
 export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
@@ -220,14 +222,14 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       {
         type: 'guess',
         id: 'carrousel-r1',
-        question: 'How many carved horses can you ride on today?',
+        question: 'About how many carved horses does Disney say you can choose from today?',
         answer: 90,
         min: 20,
         max: 200,
         step: 1,
         unit: 'horses',
         tolerance: 10,
-        explain: 'There are 90 wood-carved horses, and no two are exactly alike.',
+        explain: 'Disney says you can pick one of 90 wood-carved horses, or one carved chariot. Each horse is unique.',
         source: CARROUSEL_DISNEY,
       },
       // evidence: "Ride time: 2 minutes"
@@ -362,13 +364,15 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find something gold, something silver and something bronze on the horses.',
         hint: 'The white horses are trimmed with real 23-karat gold leaf, plus silver and bronze.',
       },
-      // evidence: "or one intricately carved chariot"
+      // evidence: "Climb aboard one of 90 wood-carved ornate horses—or one intricately carved chariot" (Disney page, current); blogmickey 2024-03: "90 hand-carved wooden horses or a single ornately carved chariot"; Wikipedia: "One three-seat chariot originally installed on the carousel was lost during the refurbishment" and was "rediscovered and installed in 1997"
       // source: https://disneyworld.disney.go.com/attractions/magic-kingdom/prince-charming-regal-carrousel/
+      // source: https://blogmickey.com/2024/03/mural-refurbishment-continues-at-prince-charming-regal-carrousel-in-magic-kingdom/
+      // source: https://en.wikipedia.org/wiki/Prince_Charming_Regal_Carrousel
       {
         type: 'spy',
         id: 'carrousel-s9',
         prompt: 'Find the carved chariot as it spins past.',
-        hint: 'It was added in 1997, and three horses were taken out to make room for it.',
+        hint: 'It is a three-seat chariot that was lost during an early restoration, then found again and put back in 1997.',
       },
       // evidence: "Hand-painted scenes from Cinderella can be seen on the top."
       // source: https://en.wikipedia.org/wiki/Prince_Charming_Regal_Carrousel
@@ -398,11 +402,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         a: 'Ride a big horse on the outside edge',
         b: 'Ride in the carved chariot',
       },
+      // evidence: "One horse with a golden bow on its tail is said to be Cinderella's, but the article calls this 'just a fan theory.'" (WDWNT, 2024-07-24)
+      // source: https://wdwnt.com/2024/07/prince-charming-regal-carrousel-refurb-complete/
       {
         type: 'emoji',
         id: 'carrousel-x26',
         emojis: '🐴🎀✨',
-        hint: 'One special horse in the second row wears this on its tail.',
+        hint: 'Fans say one special horse, Cinderella’s, wears this on its tail.',
         choices: ['A crown', 'A golden bow', 'A bell', 'A saddle'],
         answer: 1,
       },
@@ -785,15 +791,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
       },
     ],
     quests: [
-      // fixed versions of winnie-the-pooh-photo-1 and -photo-2
-      // evidence: "Raymond Kinman, a woodcarver, carved the entrance sign that guests walk under."
-      {
-        type: 'photo',
-        id: 'winnie-the-pooh-photo-3',
-        prompt: 'From the line, snap a photo of the carved wooden sign at the entrance. Say “hunny”!',
-        tip: 'You walk right under it as you enter.',
-        source: POOH_WIKI,
-      },
       // evidence: "Explore Rabbit's Garden, paint with honey and visit Eeyore's home."
       {
         type: 'photo',
@@ -807,20 +804,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'winnie-the-pooh-r-photo5',
         prompt: 'From the line, photograph Pooh’s giant tree house with the “Mr. Sanderz” sign over the door.',
         tip: 'It’s right by the queue entrance.',
-        source: POOH_TP,
-      },
-      // evidence: "spin sunflowers, beat out a tune on pumpkin and watermelon drums"
-      {
-        type: 'photo',
-        id: 'winnie-the-pooh-r-photo6',
-        prompt: 'From the line, photograph the giant sunflowers or the pumpkin and watermelon drums in Rabbit’s garden.',
-        source: POOH_TP,
-      },
-      // evidence: a series of "hives" with "bees" that you can move from one to the next
-      {
-        type: 'photo',
-        id: 'winnie-the-pooh-r-photo7',
-        prompt: 'From the line, take a photo of the beehives and the bees buzzing between them.',
         source: POOH_TP,
       },
       // evidence: "the switchbacks are lined with Winnie the Pooh book pages"
@@ -1047,15 +1030,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         explain: 'Magic Kingdom was first in 1999, then Disneyland (2003), Hong Kong (2005) and Shanghai (2016).',
         source: POOH_WIKI,
       },
-      // Look around: queue, in walk order.
-      // evidence: "Raymond Kinman, a woodcarver, carved the entrance sign that guests walk under."
-      // source: https://en.wikipedia.org/wiki/The_Many_Adventures_of_Winnie_the_Pooh_(attraction)
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s1',
-        prompt: 'Look up at the carved wooden entrance sign. Find a character carved into it.',
-        hint: 'Imagineer Raymond Kinman, a woodcarver, carved this sign by hand.',
-      },
       // evidence: You enter next to the giant tree that's Pooh's home, with a sign reading "Mr. Sanderz" above the door.
       // source: https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh
       {
@@ -1063,14 +1037,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'winnie-the-pooh-s2',
         prompt: 'Find Pooh’s tree house and read the sign above the door.',
         hint: 'It says “Mr. Sanderz.” This big tree was moved here from Pooh’s old play area when the queue opened in 2010.',
-      },
-      // evidence: "guests can go into Pooh's house and see how the bear lives"
-      // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s3',
-        prompt: 'Peek inside Pooh’s house. What does a bear keep at home?',
-        hint: 'The queue lets you step into Pooh’s home and see how he lives. Look for hunny!',
       },
       // evidence: The queue is framed as Chapter One of the story, with storybook pages supplying the backstory.
       // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
@@ -1080,45 +1046,14 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find a giant storybook page. Which chapter is it?',
         hint: 'The queue is Chapter One of the story. The pages set up the adventure before you ride.',
       },
-      // evidence: "Explore Rabbit's Garden, paint with honey and visit Eeyore's home."
+      // evidence: "Explore Rabbit's Garden, paint with honey and visit Eeyore's home." (Disney page) / Resorts Gal (updated 2026-04-25): queue play area includes "Eeyore's home, Rabbit's garden, and a touch screen where kids can paint with honey"
       // source: https://disneyworld.disney.go.com/attractions/magic-kingdom/many-adventures-of-winnie-the-pooh/
+      // source: https://www.resortsgal.com/blog/many-adventures-of-winnie-the-pooh/
       {
         type: 'spy',
         id: 'winnie-the-pooh-s5',
         prompt: 'Find Eeyore’s house. Is it standing up straight?',
-        hint: 'Eeyore’s gloomy little home has its own storybook page outside.',
-      },
-      // evidence: Eeyore's and Piglet's houses have storybook pages outside them.
-      // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s6',
-        prompt: 'Now find Piglet’s house. Is it big or very small?',
-        hint: 'Piglet’s home has a storybook page too. Later on the ride, Piglet gets stuck in the flood!',
-      },
-      // evidence: Rabbit's Garden: You can spin sunflowers and play pumpkin and watermelon drums.
-      // source: https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s7',
-        prompt: 'In Rabbit’s garden, find a giant sunflower you can spin.',
-        hint: 'Rabbit takes his garden very seriously. On the ride, you’ll see him buried under carrots!',
-      },
-      // evidence: You can spin sunflowers and play pumpkin and watermelon drums.
-      // source: https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s8',
-        prompt: 'Find the vegetables that work like drums. Which one sounds the best?',
-        hint: 'Pumpkins and watermelons in Rabbit’s garden make music when you tap them.',
-      },
-      // evidence: Rabbit's garden has gophers that pop up and interact with guests.
-      // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s9',
-        prompt: 'Watch Rabbit’s garden for a gopher popping up.',
-        hint: 'Gopher isn’t in the old Pooh books. Disney created him, and he pops up all over this ride.',
+        hint: 'Eeyore’s gloomy little home is part of the play area in the line.',
       },
       // evidence: The honey walls are "large interactive touch screens" where guests can smear and draw in honey.
       // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
@@ -1128,14 +1063,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the wall of honey. What can you draw in it?',
         hint: 'It’s a big touch screen that lets you smear pretend honey, no sticky fingers!',
       },
-      // evidence: A series of "hives" with "bees" that you move between.
-      // source: https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s11',
-        prompt: 'Find the beehives and help a bee buzz from one hive to another.',
-        hint: 'Bees mean hunny, and hunny is what Pooh is after on the whole ride.',
-      },
       // evidence: Switchbacks are lined with Winnie the Pooh book pages.
       // source: https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh
       {
@@ -1143,14 +1070,6 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'winnie-the-pooh-s12',
         prompt: 'In the back-and-forth part of the line, read a book page out loud together.',
         hint: 'The switchbacks are lined with storybook pages, so the story keeps going while you wait.',
-      },
-      // evidence: At the loading area, Chapter Two pages line the back wall.
-      // source: https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh
-      {
-        type: 'spy',
-        id: 'winnie-the-pooh-s13',
-        prompt: 'Near the hunny pots, find the pages for the next chapter.',
-        hint: 'Chapter Two pages line the wall where you board. Turn the page and ride into the story!',
       },
       // evidence: "Eeyore complains about the wind and then about the rain."
       {
@@ -1726,26 +1645,12 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, take a photo of the pretend circus ticket booth.',
         source: BARN_TMFL,
       },
-      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
+      // evidence: "Right inside the entrance is a giant cannon loaded with cannonballs." (Resorts Gal, published 2025-12-01, updated 2026-04-25); TMFL: "Props, including cannon with cannonballs"
       {
         type: 'photo',
         id: 'barnstormer-r-photo5',
         prompt: 'From the line, photograph the cannon and its pile of cannonballs.',
-        source: BARN_TMFL,
-      },
-      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
-      {
-        type: 'photo',
-        id: 'barnstormer-r-photo6',
-        prompt: 'From the line, photograph the dartboard. Can you tell where the darts landed?',
-        source: BARN_TMFL,
-      },
-      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship, dot the queue."
-      {
-        type: 'photo',
-        id: 'barnstormer-r-photo7',
-        prompt: 'From the line, take a photo of Goofini’s rocket ship prop.',
-        source: BARN_TMFL,
+        source: BARN_RG,
       },
       // evidence: "Riders reach a top speed of 40.2 kilometers per hour (25.0 mph)"
       {
@@ -1925,7 +1830,7 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         explain: 'Birthdayland (1988), Starland (1990), Toontown Fair (1996), then Storybook Circus (2012).',
         source: BARN_TP,
       },
-      // evidence: Goofini can be greeted at Pete's Silly Sideshow, across the way.
+      // evidence: Pete's Silly Sideshow reopened June 26-27, 2026 after a closure that began January 4, 2026; Goofy greets there as "The Great Goofini." (Disney Food Blog 2026-06-26)
       {
         type: 'trivia',
         id: 'barnstormer-r8',
@@ -1933,7 +1838,7 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         choices: ['Pete’s Silly Sideshow', 'Cinderella Castle', 'Main Street Station', 'Tomorrowland Terrace'],
         answer: 0,
         explain: 'At Pete’s Silly Sideshow, right across the way in Storybook Circus.',
-        source: BARN_TP,
+        source: BARN_DFB,
       },
       // evidence: Its theme was "an airplane school where Goofy was the instructor."
       {
@@ -2025,7 +1930,8 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the circus-style Barnstormer sign at the entrance.',
         hint: 'It was redone in circus style in 2012, but the back still hides the old farm name.',
       },
-      // evidence: "A faux ticket booth sits at the entrance."
+      // evidence: "A faux ticket booth sits at the entrance." (TMFL, 2024-11); AllEars: entrance "marked by a circus-type ticket booth"; Domestic Geek Girl 2024-05-27: queue passes "ticket booths and posters"
+      // evidence (original): "A faux ticket booth sits at the entrance."
       // source: https://www.themouseforless.com/walt-disney-world/parks/magic-kingdom/barnstormer/
       {
         type: 'spy',
@@ -2049,29 +1955,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the Wheel of Peril.',
         hint: 'It’s one of Goofini’s daredevil acts. Watch out for flying knives!',
       },
-      // evidence: a rocket ride that "didn't go quite according to plan"
-      // source: https://insidethemagic.net/2012/03/detailed-storybook-circus-debut-builds-excitement-for-new-fantasyland-as-first-phase-opens-at-walt-disney-world/
-      {
-        type: 'spy',
-        id: 'barnstormer-s6',
-        prompt: 'Find Goofini’s rocket. Do you think his rocket ride went well?',
-        hint: 'It “didn’t go quite according to plan.” Goofini’s stunts rarely do!',
-      },
-      // evidence: "Props, including cannon with cannonballs" / His cannon stunt "didn't end well."
-      // source: https://www.themouseforless.com/walt-disney-world/parks/magic-kingdom/barnstormer/
+      // evidence: "a giant cannon loaded with cannonballs. Across the walkway, a trampoline has a cutout of Goofy's shape, which represents him being shot out of the cannon." (Resorts Gal, updated 2026-04-25)
+      // source: https://www.resortsgal.com/parks/magic-kingdom/barnstormer
       {
         type: 'spy',
         id: 'barnstormer-s7',
-        prompt: 'Find the cannon and its cannonballs.',
-        hint: 'Goofini tried being a human cannonball too. It didn’t end well.',
-      },
-      // evidence: "Props, including cannon with cannonballs, a dartboard, and a rocket ship"
-      // source: https://www.themouseforless.com/walt-disney-world/parks/magic-kingdom/barnstormer/
-      {
-        type: 'spy',
-        id: 'barnstormer-s8',
-        prompt: 'Find the dartboard. Where are the darts?',
-        hint: 'Another prop from Goofini’s circus act. Aim was never his strong suit.',
+        prompt: 'Find the cannon and its cannonballs. Then look across the walkway for the trampoline with a Goofy-shaped hole.',
+        hint: 'It looks like Goofini was the human cannonball and flew right through the trampoline.',
       },
       // evidence: Goofy's acts include "Tiger Juggling," which is a one-time performance.
       // source: https://insidethemagic.net/2012/03/detailed-storybook-circus-debut-builds-excitement-for-new-fantasyland-as-first-phase-opens-at-walt-disney-world/
