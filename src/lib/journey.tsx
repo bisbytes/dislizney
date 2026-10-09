@@ -17,6 +17,10 @@ export type LineSession = {
   startedAt: number;
   /** Extra minutes of play added after the planned story ran out. */
   bonusMinutes: number;
+  /** A new quest appears every this many minutes (default 3). */
+  dripEvery?: number;
+  /** How many quests have appeared so far; only ever grows. */
+  shown?: number;
   done: Record<string, { star: boolean }>;
   /** What was picked in Would You Rather quests, kept for the keepsake. */
   picks: string[];

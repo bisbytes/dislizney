@@ -17,7 +17,7 @@ import { QuestCard } from '@/components/quest-card';
 import { StoryButton, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { photoCaption, useJourney, type Player } from '@/lib/journey';
-import { buildQueue, countForMinutes } from '@/lib/plan';
+import { buildQueue } from '@/lib/plan';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
@@ -31,14 +31,20 @@ export default function LineStory() {
   const { play } = useSound();
   const insets = useSafeAreaInsets();
   const [now, setNow] = useState(Date.now());
-  const grownAt = useRef(-1);
 
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 30_000);
+    const t = setInterval(() => setNow(Date.now()), 10_000);
     return () => clearInterval(t);
   }, []);
 
   const active = session && session.attractionId === id ? session : null;
+  const dueNow = active
+    ? START_QUESTS + Math.floor(Math.max(0, now - active.startedAt) / 60000 / (active.dripEvery ?? 3))
+    : 0;
+  useEffect(() => {
+    if (active && dueNow > (active.shown ?? 0)) updateSession((s) => ({ ...s, shown: Math.max(s.shown ?? 0, dueNow) }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dueNow, active?.id]);
 
   // Quests seen before this line started, so the story prefers fresh ones and
   // stays in the same order when the app is reopened mid-line.
@@ -71,14 +77,19 @@ export default function LineStory() {
 
   const { land, attraction: a, park } = ref;
   const c = land.colors;
-  const planned = countForMinutes(queue, active.waitMinutes);
-  const total = Math.min(queue.length, countForMinutes(queue, active.waitMinutes + (active.bonusMinutes ?? 0)));
-  const list = queue.slice(0, total);
   const elapsed = Math.floor((now - active.startedAt) / 60000);
   const left = active.waitMinutes - elapsed;
   const pct = Math.min(1, elapsed / active.waitMinutes);
   const stars = Object.values(active.done).filter((d) => d.star).length;
+
+  // A new quest appears every few minutes (pick 2, 3 or 5); nothing is locked, and
+  // anything that has appeared stays. "Show the next one now" is always there.
+  const drip = active.dripEvery ?? 3;
+  const due = START_QUESTS + Math.floor(Math.max(0, now - active.startedAt) / 60000 / drip);
+  const total = Math.min(queue.length, Math.max(active.shown ?? 0, due));
+  const list = queue.slice(0, total);
   const outOfQuests = total >= queue.length;
+  const minsToNext = Math.max(1, Math.ceil(drip - (Math.max(0, now - active.startedAt) / 60000) % drip));
 
   // Team mode: fact questions go around the group one player at a time;
   // look-around games and photo spots are for everyone.
@@ -92,17 +103,6 @@ export default function LineStory() {
   });
   const scores = active.scores ?? {};
   const best = Math.max(0, ...players.map((p) => scores[p.id] ?? 0));
-
-  // Everything is open to play in any order. Scrolling near the bottom adds
-  // more, so the story never runs out while you're still in line.
-  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
-    const nearEnd = contentOffset.y + layoutMeasurement.height > contentSize.height - 900;
-    if (nearEnd && !outOfQuests && grownAt.current !== total) {
-      grownAt.current = total;
-      updateSession((s) => ({ ...s, bonusMinutes: (s.bonusMinutes ?? 0) + 10 }));
-    }
-  };
 
   const board = () => {
     const k = finishLine();
@@ -162,8 +162,6 @@ export default function LineStory() {
       </View>
 
       <ScrollView
-        onScroll={onScroll}
-        scrollEventThrottle={200}
         style={{ backgroundColor: c.sky }}
         contentContainerStyle={{ alignItems: 'center', paddingBottom: 120 + insets.bottom }}>
         <View style={[styles.page, { paddingHorizontal: 16, paddingTop: 16, gap: 14 }]}>
@@ -179,7 +177,7 @@ export default function LineStory() {
                     .join(', ')
                     .replace(/, ([^,]*)$/, ' and $1')
                 : 'a brave group'}{' '}
-              joined the line for {a.name}. Their adventure begins now! Scroll down and play your way to the front.
+              joined the line for {a.name}. Their adventure begins now! A new quest appears every few minutes, so keep looking around.
             </Txt>
           </View>
 
@@ -187,11 +185,6 @@ export default function LineStory() {
             const fact = a.facts.length ? a.facts[Math.floor(i / 6) % a.facts.length] : undefined;
             return (
               <Fragment key={pq.quest.id}>
-                {i === planned && (
-                  <Txt weight="bold" size={18} color={c.ink} style={{ textAlign: 'center', marginTop: 8 }}>
-                    ✨ Still waiting? The fun keeps going!
-                  </Txt>
-                )}
                 <QuestCard
                   quest={pq.quest}
                   step={i + 1}
@@ -230,6 +223,36 @@ export default function LineStory() {
             );
           })}
 
+          {!outOfQuests && (
+            <View style={[styles.next, { borderColor: c.ink }]}>
+              <Txt weight="bold" size={16} style={{ textAlign: 'center' }}>
+                ✨ Next quest in about {minsToNext} min
+              </Txt>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => updateSession((s) => ({ ...s, shown: Math.max(s.shown ?? 0, total) + 1 }))}>
+                <Txt size={14} style={{ textDecorationLine: 'underline' }}>
+                  Can’t wait? Show the next one now
+                </Txt>
+              </Pressable>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Txt size={13}>New quest every</Txt>
+                {[2, 3, 5].map((m) => (
+                  <Pressable
+                    key={m}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: drip === m }}
+                    onPress={() => updateSession((s) => ({ ...s, dripEvery: m }))}
+                    style={[styles.pace, drip === m && { backgroundColor: colors.lemon }]}>
+                    <Txt weight="bold" size={13}>
+                      {m} min
+                    </Txt>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+          )}
+
           {outOfQuests && (
             <View style={[styles.end, pageShadow]}>
               <Txt weight="bold" size={20} style={{ textAlign: 'center' }}>
@@ -267,9 +290,28 @@ export default function LineStory() {
 }
 
 /** Quests the whole group does together, so everyone scores. */
+/** Quests that are there the moment the line story opens. */
+const START_QUESTS = 2;
+
 const TEAM_QUESTS = new Set(['spy', 'challenge', 'photo', 'wyr']);
 
 const styles = StyleSheet.create({
+  next: {
+    backgroundColor: colors.paper,
+    borderWidth: 3,
+    borderRadius: 22,
+    padding: 14,
+    gap: 8,
+    alignItems: 'center',
+  },
+  pace: {
+    borderWidth: 2,
+    borderColor: colors.ink,
+    borderRadius: 999,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    backgroundColor: colors.white,
+  },
   scores: { gap: 6, paddingRight: 8 },
   score: {
     backgroundColor: colors.white,
