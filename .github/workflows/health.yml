@@ -48,6 +48,13 @@ jobs:
           # Queue-Times, fetched the way a browser on the site would.
           get https://queue-times.com/parks/6/queue_times.json waits.json -D waits.h -H "Origin: https://${GITHUB_REPOSITORY_OWNER}.github.io"
           browser=$(grep -qi '^access-control-allow-origin' waits.h 2>/dev/null && echo true || echo false)
+          wcode=$code; wt=$t
+          # The website reads wait times through the board service's relay, since Queue-Times doesn't allow browsers.
+          if [ -n "$BOARD_URL" ] && [ "$browser" = false ]; then
+            get "${BOARD_URL%/}/api/waits?park=6" relay.json
+            if [ "$code" = 200 ] && jq -e '.lands' relay.json > /dev/null 2>&1; then browser=true; fi
+          fi
+          code=$wcode; t=$wt
           if [ "$code" = 200 ] && rides=$(jq '[.lands[]?.rides[]?, .rides[]?] | length' waits.json 2>/dev/null); then
             open=$(jq '[.lands[]?.rides[]?, .rides[]? | select(.is_open)] | length' waits.json)
             waits=$(jq -nc --argjson c "$code" --argjson ms "$t" --argjson r "$rides" --argjson o "$open" --argjson b "$browser" '{state:"up",code:$c,ms:$ms,rides:$r,open:$o,browserAllowed:$b}')

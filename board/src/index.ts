@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
 
-import { getAttraction, getPark } from '../../src/data/parks';
+import { getAttraction, getPark, parks } from '../../src/data/parks';
 import { BOARD_EMOJIS, isBoardName, MAX_RIDE_SCORE, parkDay, secondsUntilReset } from '../../src/lib/board-names';
 import { type Platform, SiteStats } from './stats';
 
@@ -34,6 +34,7 @@ export default {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
     if (url.pathname === '/api/hello' || url.pathname === '/api/stats') return stats(request, url, env);
+    if (url.pathname === '/api/waits' && request.method === 'GET') return waits(url);
     if (url.pathname !== '/api/board') return json({ error: 'Not found' }, 404);
 
     if (request.method === 'GET') {
@@ -82,6 +83,26 @@ export default {
     return json({ error: 'Method not allowed' }, 405);
   },
 };
+
+const QUEUE_TIMES_IDS = new Set(parks.map((p) => p.queueTimesId).filter((id): id is number => typeof id === 'number'));
+
+/**
+ * Posted wait times for the website. Queue-Times doesn't let web pages read
+ * its feed directly, so the site asks here instead. Cloudflare caches each
+ * park's feed for two minutes, which also keeps load on Queue-Times tiny.
+ * Nothing about the request is kept.
+ */
+async function waits(url: URL): Promise<Response> {
+  const park = Number(url.searchParams.get('park'));
+  if (!QUEUE_TIMES_IDS.has(park)) return json({ error: 'Unknown park' }, 400);
+  const upstream = await fetch(`https://queue-times.com/parks/${park}/queue_times.json`, {
+    cf: { cacheTtl: 120, cacheEverything: true },
+  }).catch(() => undefined);
+  if (!upstream?.ok) return json({ error: 'Wait times unavailable' }, 502);
+  return new Response(upstream.body, {
+    headers: { ...headers, 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
+  });
+}
 
 const PLATFORMS: Platform[] = ['web', 'ios', 'android'];
 
