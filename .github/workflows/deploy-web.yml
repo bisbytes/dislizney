@@ -4,6 +4,8 @@
 # To go live (one time):
 #   1. Settings > Pages > Build and deployment > Source: "GitHub Actions".
 #   2. Settings > Secrets and variables > Actions > Variables: PUBLISH_SITE = true.
+# Custom domain (e.g. line.bisbytes.com): add it in Settings > Pages and a CNAME DNS record
+# pointing to bisbytes.github.io. The base path and health check adjust on their own.
 # To take the site down again, set PUBLISH_SITE to false and unpublish in Settings > Pages.
 name: Deploy web
 
