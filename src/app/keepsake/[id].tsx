@@ -14,6 +14,7 @@ import { getAttraction } from '@/data/parks';
 import { ShareCard, SHARE_IMAGE } from '@/components/share-card';
 import { saveToPhotos } from '@/lib/backup';
 import { shareImage } from '@/lib/share';
+import { drawShareImage } from '@/lib/share-canvas';
 import { boardNamesFor, canShareToBoard, shareToBoard } from '@/lib/board';
 import { hashtag, keepsakeCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
 import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
@@ -383,6 +384,7 @@ function SharePanel({ k, open, onClose }: { k: Keepsake; open: boolean; onClose:
         }),
         new Promise<string>((_, no) => setTimeout(() => no(new Error('slow')), ms)),
       ]);
+    if (Platform.OS === 'web') return drawShareImage(k).catch(() => drawShareImage(k, 540));
     return attempt(1, 12_000).catch(() => attempt(0.5, 12_000));
   };
 
