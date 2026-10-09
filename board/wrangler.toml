@@ -7,9 +7,17 @@ compatibility_date = "2026-09-01"
 name = "BOARD"
 class_name = "ParkBoard"
 
+[[durable_objects.bindings]]
+name = "STATS"
+class_name = "SiteStats"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["ParkBoard"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["SiteStats"]
 
 # No request logs are kept, so not even IP addresses are stored.
 [observability]

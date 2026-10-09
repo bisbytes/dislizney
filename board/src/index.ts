@@ -2,6 +2,9 @@ import { DurableObject } from 'cloudflare:workers';
 
 import { getAttraction, getPark } from '../../src/data/parks';
 import { BOARD_EMOJIS, isBoardName, MAX_RIDE_SCORE, parkDay, secondsUntilReset } from '../../src/lib/board-names';
+import { type Platform, SiteStats } from './stats';
+
+export { SiteStats };
 
 /**
  * Today's public scoreboard for dislizney.
@@ -13,7 +16,7 @@ import { BOARD_EMOJIS, isBoardName, MAX_RIDE_SCORE, parkDay, secondsUntilReset }
  * erased at 3am Orlando time every night.
  */
 
-type Env = { BOARD: DurableObjectNamespace<ParkBoard> };
+type Env = { BOARD: DurableObjectNamespace<ParkBoard>; STATS: DurableObjectNamespace<SiteStats> };
 type Row = { name: string; emoji: string; score: number; rides: number };
 type Entry = { name: string; emoji: string; score: number };
 
@@ -30,6 +33,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
+    if (url.pathname === '/api/hello' || url.pathname === '/api/stats') return stats(request, url, env);
     if (url.pathname !== '/api/board') return json({ error: 'Not found' }, 404);
 
     if (request.method === 'GET') {
@@ -78,6 +82,29 @@ export default {
     return json({ error: 'Method not allowed' }, 405);
   },
 };
+
+const PLATFORMS: Platform[] = ['web', 'ios', 'android'];
+
+/** Anonymous visit counts: the app says hello when it opens and every couple of minutes while open. */
+async function stats(request: Request, url: URL, env: Env): Promise<Response> {
+  const site = env.STATS.get(env.STATS.idFromName('site'));
+  if (url.pathname === '/api/stats' && request.method === 'GET') return json(await site.read(parkDay()));
+  if (url.pathname === '/api/hello' && request.method === 'POST') {
+    let body: { kind?: unknown; platform?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return json({ error: 'Bad request' }, 400);
+    }
+    const kind = body.kind === 'open' || body.kind === 'beat' ? body.kind : undefined;
+    const platform = PLATFORMS.find((p) => p === body.platform);
+    if (!kind || !platform) return json({ error: 'Bad request' }, 400);
+    // Only these two words are used; nothing about the request itself is kept.
+    await site.hello(parkDay(), kind, platform);
+    return json({ ok: true });
+  }
+  return json({ error: 'Method not allowed' }, 405);
+}
 
 /** One park's board for one park day. */
 export class ParkBoard extends DurableObject<Env> {

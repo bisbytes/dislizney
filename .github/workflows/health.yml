@@ -1,0 +1,80 @@
+# Checks every 15 minutes that the live site, the wait-times feed and the public
+# board answer, reads the anonymous visit counts, and prints one DISLIZNEY_STATUS
+# line the admin dashboard reads. Stores nothing; it only makes its own requests.
+name: Health check
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: health
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PUBLISH_SITE: ${{ vars.PUBLISH_SITE }}
+      SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+      BOARD_URL: ${{ vars.BOARD_URL }}
+    steps:
+      - name: Check site, wait times and board
+        run: |
+          set -u
+          # get URL FILE [curl args...]: sets $code (0 when unreachable) and $t (milliseconds).
+          get() {
+            local url=$1 file=$2; shift 2
+            local out; out=$(curl -sS -m 20 -o "$file" -w '%{http_code} %{time_total}' "$@" "$url" || true)
+            out=${out:-0 0}; code=$((10#${out% *})); t=$(awk -v x="${out#* }" 'BEGIN { printf "%d", x * 1000 }')
+          }
+          down=0
+
+          # The site (only once it's switched on).
+          if [ "$PUBLISH_SITE" = "true" ]; then
+            get "$SITE_URL" home.html
+            deep=$( (curl -sS -m 20 "${SITE_URL%/}/park/magic-kingdom" || true) | grep -c '_expo/static/js' || true)
+            if [ "$code" = 200 ] && grep -q '_expo/static/js' home.html && [ "$deep" -gt 0 ]; then state=up; else state=down; down=1; fi
+            site=$(jq -nc --arg s "$state" --argjson c "$code" --argjson ms "$t" --argjson d "$([ "$deep" -gt 0 ] && echo true || echo false)" '{state:$s,code:$c,ms:$ms,deepLinks:$d}')
+          else
+            site='{"state":"off"}'
+          fi
+
+          # Queue-Times, fetched the way a browser on the site would.
+          get https://queue-times.com/parks/6/queue_times.json waits.json -D waits.h -H "Origin: https://${GITHUB_REPOSITORY_OWNER}.github.io"
+          browser=$(grep -qi '^access-control-allow-origin' waits.h 2>/dev/null && echo true || echo false)
+          if [ "$code" = 200 ] && rides=$(jq '[.lands[]?.rides[]?, .rides[]?] | length' waits.json 2>/dev/null); then
+            open=$(jq '[.lands[]?.rides[]?, .rides[]? | select(.is_open)] | length' waits.json)
+            waits=$(jq -nc --argjson c "$code" --argjson ms "$t" --argjson r "$rides" --argjson o "$open" --argjson b "$browser" '{state:"up",code:$c,ms:$ms,rides:$r,open:$o,browserAllowed:$b}')
+          else
+            down=1; waits=$(jq -nc --argjson c "$code" '{state:"down",code:$c}')
+          fi
+
+          # Today's public board (only once it's set up). Reads the anonymous count only.
+          if [ -n "$BOARD_URL" ]; then
+            get "${BOARD_URL%/}/api/board?park=magic-kingdom" board.json
+            if [ "$code" = 200 ] && players=$(jq -e '.players' board.json 2>/dev/null); then
+              board=$(jq -nc --argjson c "$code" --argjson ms "$t" --argjson p "$players" '{state:"up",code:$c,ms:$ms,players:$p}')
+            else
+              down=1; board=$(jq -nc --argjson c "$code" '{state:"down",code:$c}')
+            fi
+          else
+            board='{"state":"off"}'
+          fi
+
+          # Anonymous visit counts (lives in the board service, so only once it's set up).
+          stats='null'
+          if [ -n "$BOARD_URL" ]; then
+            get "${BOARD_URL%/}/api/stats" stats.json
+            if [ "$code" = 200 ] && jq -e '.today' stats.json > /dev/null 2>&1; then
+              stats=$(jq -c '{activeNow, today: (.today | {visits, peak, web, ios, android}), days: [.days[] | {day, visits, peak}]}' stats.json)
+            fi
+          fi
+
+          echo "DISLIZNEY_STATUS $(jq -nc --arg at "$(date -u +%FT%TZ)" --argjson site "$site" --argjson waits "$waits" --argjson board "$board" --argjson stats "$stats" '{checkedAt:$at,site:$site,waits:$waits,board:$board,stats:$stats}')"
+          exit $down

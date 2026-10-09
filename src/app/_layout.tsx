@@ -11,12 +11,14 @@ import { JourneyProvider } from '@/lib/journey';
 import { ProgressProvider } from '@/lib/progress';
 import { RadarProvider } from '@/lib/radar';
 import { SoundProvider } from '@/lib/sound';
+import { useAppStats } from '@/lib/stats';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({ Fredoka_400Regular, Fredoka_500Medium, Fredoka_700Bold });
+  useAppStats();
 
   useEffect(() => {
     if (loaded || error) SplashScreen.hideAsync();
