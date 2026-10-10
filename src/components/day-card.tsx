@@ -1,13 +1,16 @@
 import { Image } from 'expo-image';
-import type { Ref } from 'react';
+import type { ComponentProps, Ref } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Txt } from '@/components/ui';
+import { Txt as BaseTxt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { type Keepsake } from '@/lib/journey';
 import { daySummaryChips } from '@/lib/play-summary';
 import { lightColors as colors } from '@/theme';
 import { SHARE_CARD_WIDTH, SHARE_IMAGE } from '@/components/share-card';
+
+/** Share pictures are always light, so their writing stays dark even when the phone is in dark mode. */
+const Txt = (props: ComponentProps<typeof BaseTxt>) => <BaseTxt color={colors.ink} {...props} />;
 
 /** Most rides and photos that fit on the day picture. */
 export const DAY_MAX_RIDES = 5;
