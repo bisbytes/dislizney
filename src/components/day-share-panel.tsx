@@ -7,6 +7,7 @@ import { DayCard } from '@/components/day-card';
 import { SHARE_IMAGE } from '@/components/share-card';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { dayCaption, type Keepsake } from '@/lib/journey';
+import { isSlow, track } from '@/lib/log';
 import { shareImage } from '@/lib/share';
 import { drawDayImage } from '@/lib/share-canvas';
 import { colors, fonts, MAX_WIDTH } from '@/theme';
@@ -47,7 +48,9 @@ export function DaySharePanel({ list, open, onClose }: { list: Keepsake[]; open:
     setMsg('');
     try {
       setMsg(await shareImage(await make(), text, 'my-day.png'));
-    } catch {
+      track('day_picture_ok');
+    } catch (e) {
+      track(isSlow(e) ? 'day_picture_slow' : 'day_picture_failed');
       Clipboard.setStringAsync(text).catch(() => {});
       setMsg('Couldn’t make the picture, but your caption is copied 📋 Tap again to retry.');
     } finally {

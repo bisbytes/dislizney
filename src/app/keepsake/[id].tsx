@@ -13,6 +13,7 @@ import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { ShareCard, SHARE_IMAGE } from '@/components/share-card';
 import { saveToPhotos } from '@/lib/backup';
+import { isSlow, track } from '@/lib/log';
 import { shareImage } from '@/lib/share';
 import { drawShareImage } from '@/lib/share-canvas';
 import { boardNamesFor, canShareToBoard, shareToBoard } from '@/lib/board';
@@ -78,6 +79,7 @@ export default function KeepsakePage() {
       }
       setToast(await saveToPhotos(pictures));
     } catch {
+      track('save_photos_failed');
       setToast('Couldn’t save the pictures. Please try again.');
     }
   };
@@ -408,7 +410,9 @@ function SharePanel({ k, open, onClose }: { k: Keepsake; open: boolean; onClose:
     try {
       const uri = await (ready.current ?? make());
       setMsg(await shareImage(uri, text));
-    } catch {
+      track('share_picture_ok');
+    } catch (e) {
+      track(isSlow(e) ? 'share_picture_slow' : 'share_picture_failed');
       ready.current = null;
       Clipboard.setStringAsync(text).catch(() => {});
       setMsg('Couldn’t make the picture, but your caption is copied 📋 Tap again to retry.');

@@ -5,12 +5,21 @@ import { DurableObject } from 'cloudflare:workers';
  *
  * What it keeps: per park day, how many times the app was opened, the most
  * people using it at once, and opens per platform (web, iOS, Android). That's
- * all. No ids, cookies, IP addresses or anything else about who opened it.
+ * all, plus a count per known event name (like a share picture that failed).
+ * No ids, cookies, IP addresses or anything else about who opened it.
  * "Active now" lives in memory only and is never written down. Days older
  * than 30 are deleted.
  */
 
-export type DayStats = { visits: number; peak: number; web: number; ios: number; android: number };
+export type DayStats = {
+  visits: number;
+  peak: number;
+  web: number;
+  ios: number;
+  android: number;
+  /** How many times each known event happened (for example a picture that failed). Counts only. */
+  events?: Record<string, number>;
+};
 export type Platform = 'web' | 'ios' | 'android';
 
 /** How often an open app says it's still here. "Active now" counts one window of these. */
@@ -60,6 +69,14 @@ export class SiteStats extends DurableObject {
       changed = true;
     }
     if (changed) await this.ctx.storage.put(key, stats);
+  }
+
+  /** One more of a known event happened. Only the name's count goes up. */
+  async event(day: string, name: string) {
+    const key = `day:${day}`;
+    const stats = (await this.ctx.storage.get<DayStats>(key)) ?? empty();
+    stats.events = { ...stats.events, [name]: (stats.events?.[name] ?? 0) + 1 };
+    await this.ctx.storage.put(key, stats);
   }
 
   async read(today: string) {
