@@ -1,5 +1,6 @@
 import type { AttractionRef } from '@/data/parks';
 import type { Quest } from '@/data/types';
+import { seasonFor } from '@/theme/seasons';
 
 export type PlannedQuest = { quest: Quest; from?: string };
 
@@ -63,9 +64,16 @@ const ROTATION: Category[] = ['fact', 'look', 'play', 'look', 'fact', 'photo'];
  * Nothing from other rides or general games: if a very long wait uses it
  * all, the story simply ends.
  */
-export function buildQueue(ref: AttractionRef, seed: string, seen: Set<string>): PlannedQuest[] {
+export function buildQueue(
+  ref: AttractionRef,
+  seed: string,
+  seen: Set<string>,
+  /** The date that decides the holiday look; defaults to the phone's date. Injectable for tests. */
+  today: Date = new Date(),
+): PlannedQuest[] {
+  const season = seasonFor(today);
   const rand = seeded(seed);
-  const quests = ref.attraction.quests;
+  const quests = ref.attraction.quests.filter((q) => !('season' in q && q.season) || q.season === season);
   const plan = (qs: Quest[], shuffled: boolean) =>
     unseenFirst(
       (shuffled ? shuffle(qs, rand) : qs).map((quest) => ({ quest })),
