@@ -85,6 +85,14 @@ All content lives in plain TypeScript files under `src/data/parks/`. See [CONTRI
 
 ## License
 
-[MIT](LICENSE). Code and content contributions are welcome.
+Copyright © 2026 BisBytes. Code and written content: [GNU AGPL v3.0 or later](LICENSE). You can use, change and share it, but if you ship a changed version, or run one as a website or app for other people, you must share your full source under the same license. Versions released before this change stay available under MIT.
+
+The names Once Upon a Line and Bis Bytes, and the Bis mascot artwork, are not covered by the code license. See [TRADEMARKS.md](TRADEMARKS.md).
+
+For other licensing terms, contact BisBytes through [GitHub](https://github.com/bisbytes).
+
+## Who made this
+
+Once Upon a Line was created by BisBytes, who came up with the idea, chose and arranged the rides and activities, set the rules for the content, and directed and reviewed the work. Much of the code was written with an AI coding assistant (Claude) under that direction. Bis is drawn from BisBytes' own character art.
 
 This app is an unofficial fan project and is not affiliated with or endorsed by The Walt Disney Company. Attraction names are trademarks of their respective owners.
