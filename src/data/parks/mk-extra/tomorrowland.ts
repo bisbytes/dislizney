@@ -27,6 +27,12 @@ const BUZZ_MB = 'https://mickeyblog.com/2026/03/21/join-us-on-the-new-buzz-light
 const PM = WIKI + 'Tomorrowland_Transit_Authority_PeopleMover';
 const PM_TP = 'https://touringplans.com/blog/2019/09/29/everything-you-need-to-know-about-the-tomorrowland-peoplemover';
 
+// Tomorrowland Speedway
+const SP = WIKI + 'Tomorrowland_Speedway';
+const SP_TP = 'https://touringplans.com/blog/2020/08/10/everything-you-need-to-know-about-the-tomorrowland-speedway/';
+const SP_RG = 'https://www.resortsgal.com/parks/magic-kingdom/tomorrowland-speedway';
+const SP_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/tomorrowland-speedway/';
+
 // Astro Orbiter
 const AO = WIKI + 'Astro_Orbiter';
 const AO_DISNEY = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/astro-orbiter/';
@@ -2745,6 +2751,397 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         emojis: '😂 📈',
         hint: 'It rises as the audience laughs.',
         choices: ['Laugh-o-meter', 'Thermometer', 'Speedometer', 'Scream Gauge'],
+        answer: 0,
+      },
+    ],
+  },
+  'tomorrowland-speedway': {
+    facts: [
+      // evidence: "On opening day, it was called the Grand Prix Raceway"
+      { text: 'On Magic Kingdom’s first day, October 1, 1971, this ride was called the Grand Prix Raceway.', source: SP_TP },
+      // evidence: "The Speedway is modeled on the Autopia attraction at Disneyland"
+      { text: 'The Speedway is modeled on Disneyland’s Autopia.', source: SP_TP },
+      // evidence: "In total, there are 146 cars driving with you on the 4 “lanes”."
+      { text: 'There are 146 cars sharing the track’s four lanes.', source: SP_TP },
+      // evidence: "your car follows a guide rail"
+      { text: 'Your car follows a guide rail, so steering is more for fun than for finding the way.', source: SP_TP },
+      // evidence: "every car gets the checkered flag when it crosses the finish line"
+      { text: 'Every car gets the checkered flag when it crosses the finish line.', source: SP_TP },
+      // evidence: "from its original length of more than 3100 feet" / "The present length is just over 2100 feet"
+      { text: 'The track started at more than 3,100 feet long and is now just over 2,100 feet.', source: SP_TP },
+    ],
+    quests: [
+      // ---- Look around the queue, in walking order ----
+      // source: SP_RG. evidence: "The entrance sign and the warning sign listing safety and eligibility notices."
+      {
+        type: 'spy',
+        id: 'speedway-r1',
+        prompt: 'At the entrance, find the big attraction sign and the warning sign near it.',
+        hint: 'The warning sign lists the safety rules and who can ride.',
+      },
+      // source: SP_RG. evidence: "You must be at least 54″ tall to drive a Speedway Car alone."
+      {
+        type: 'spy',
+        id: 'speedway-r2',
+        prompt: 'Read the warning sign. How tall must a driver be to drive a Speedway car alone?',
+        hint: '54 inches. Shorter riders can still ride with a driver who is tall enough.',
+      },
+      // source: SP_RG. evidence: "Supervise children at all times."
+      {
+        type: 'spy',
+        id: 'speedway-r3',
+        prompt: 'Find the sign that says “Supervise children at all times.”',
+        hint: 'It is one of the warnings at the entrance.',
+      },
+      // source: SP_TP. evidence: "The queue winds outside the entrance and across a pedestrian bridge"
+      {
+        type: 'spy',
+        id: 'speedway-r4',
+        prompt: 'Your line winds out and across a pedestrian bridge. Can you spot where it crosses?',
+        hint: 'The queue snakes across the bridge on its way to the loading areas.',
+      },
+      // source: SP_TP. evidence: "some pretty nice views of Storybook Circus, Space Mountain, the Tomorrowland PeopleMover"
+      {
+        type: 'spy',
+        id: 'speedway-r5',
+        prompt: 'From the queue, look for Space Mountain in the distance.',
+        hint: 'The queue has views of Space Mountain, the PeopleMover and Storybook Circus.',
+      },
+      // source: SP_RG. evidence: "It's fun to look up and see guests passing by on the Peoplemover."
+      {
+        type: 'spy',
+        id: 'speedway-r6',
+        prompt: 'Look up. Can you spot guests gliding by on the PeopleMover?',
+        hint: 'The track passes right underneath it.',
+      },
+      // source: SP_RG. evidence: "The track was shortened due to the addition of TRON Lightcycle Run." / TRON is visible from several points
+      {
+        type: 'spy',
+        id: 'speedway-r7',
+        prompt: 'Look for TRON Lightcycle / Run peeking over the track.',
+        hint: 'The Speedway track was shortened when TRON was built.',
+      },
+      // source: SP_RG. evidence: "The track curve is painted with the attraction's name."
+      {
+        type: 'spy',
+        id: 'speedway-r8',
+        prompt: 'Find the curve of the track that has the ride’s name painted on it.',
+        hint: 'It is painted right on the track.',
+      },
+      // source: SP_TP. evidence: "signs warn drivers not to bump into the cars in front of them"
+      {
+        type: 'spy',
+        id: 'speedway-r9',
+        prompt: 'Find a sign that warns drivers not to bump the car in front of them.',
+        hint: 'Good manners on a racetrack!',
+      },
+      // source: SP_TP. evidence: "at one point go over the roadway"
+      {
+        type: 'spy',
+        id: 'speedway-r10',
+        prompt: 'Watch where the cars go over a roadway. Can you find that spot?',
+        hint: 'Part of the track crosses above a road.',
+      },
+      // source: SP_RG. evidence: "When guests reach the loading area, a cast member assigns them a gate."
+      {
+        type: 'spy',
+        id: 'speedway-r11',
+        prompt: 'At the loading area, listen for the Cast Member who sends you to your gate.',
+        hint: 'You board when the next car pulls up to your gate.',
+      },
+      // source: SP_RG. evidence: "Cars waiting to depart are visible from the line."
+      {
+        type: 'spy',
+        id: 'speedway-r12',
+        prompt: 'Look at the row of cars waiting to take off. What color are most of them?',
+        hint: 'Count how many cars you can see from the line.',
+      },
+      // source: SP_TP. evidence: "every car gets the checkered flag when it crosses the finish line"
+      {
+        type: 'spy',
+        id: 'speedway-r13',
+        prompt: 'Find the checkered flag that marks the finish line.',
+        hint: 'Every car gets the checkered flag as it finishes.',
+      },
+
+      // ---- Photo spots ----
+      // evidence: "The queue winds outside the entrance and across a pedestrian bridge"
+      {
+        type: 'photo',
+        id: 'speedway-photo2',
+        prompt: 'From the line, take a group photo on the pedestrian bridge.',
+        tip: 'The queue crosses the bridge before it reaches the loading areas.',
+        source: SP_TP,
+      },
+      // evidence: "some pretty nice views of Storybook Circus, Space Mountain, the Tomorrowland PeopleMover"
+      {
+        type: 'photo',
+        id: 'speedway-photo3',
+        prompt: 'From the line, take a photo of Space Mountain behind the track.',
+        tip: 'Look for the view while the line winds toward the cars.',
+        source: SP_TP,
+      },
+      // evidence: "It's fun to look up and see guests passing by on the Peoplemover."
+      {
+        type: 'photo',
+        id: 'speedway-photo4',
+        prompt: 'From the line, photograph the PeopleMover gliding overhead.',
+        tip: 'The track passes underneath it.',
+        source: SP_RG,
+      },
+      // evidence: "The track curve is painted with the attraction's name."
+      {
+        type: 'photo',
+        id: 'speedway-photo5',
+        prompt: 'From the line, take a photo of the ride’s name painted on the curve of the track.',
+        tip: 'Look down at the track.',
+        source: SP_RG,
+      },
+      // evidence: "Cars waiting to depart are visible from the line."
+      {
+        type: 'photo',
+        id: 'speedway-photo6',
+        prompt: 'From the line, take a photo of the row of cars lined up and ready to race.',
+        tip: 'Take it from the loading area, while you wait for your gate.',
+        source: SP_RG,
+      },
+
+      // ---- Trivia ----
+      // evidence: "The Mark VII cars were designed by Bob Gurr"
+      {
+        type: 'trivia',
+        id: 'speedway-x1',
+        question: 'Which Imagineer designed the Mark VII cars?',
+        choices: ['Bob Gurr', 'John Hench', 'Marc Davis', 'Rolly Crump'],
+        answer: 0,
+        explain: 'Bob Gurr designed the Mark VII cars.',
+        source: SP_TP,
+      },
+      // evidence: "took their inspiration from the Corvette Stingray"
+      {
+        type: 'trivia',
+        id: 'speedway-x2',
+        question: 'Which sports car inspired the Mark VII cars?',
+        choices: ['Corvette Stingray', 'Model T', 'Volkswagen Beetle', 'Jeep'],
+        answer: 0,
+        explain: 'The Mark VII cars took their inspiration from the Corvette Stingray.',
+        source: SP_TP,
+      },
+      // evidence: "On opening day, it was called the Grand Prix Raceway"
+      {
+        type: 'trivia',
+        id: 'speedway-x3',
+        question: 'What was this ride called on opening day?',
+        choices: ['Grand Prix Raceway', 'Tomorrowland Speedway', 'Rocket Road', 'Autopia Junior'],
+        answer: 0,
+        explain: 'It opened as the Grand Prix Raceway.',
+        source: SP_TP,
+      },
+      // evidence: "The Speedway is modeled on the Autopia attraction at Disneyland"
+      {
+        type: 'trivia',
+        id: 'speedway-x4',
+        question: 'Which Disneyland ride is the Speedway modeled on?',
+        choices: ['Autopia', 'Matterhorn Bobsleds', 'Casey Jr. Circus Train', 'Rocket Rods'],
+        answer: 0,
+        explain: 'The Speedway is modeled on Disneyland’s Autopia.',
+        source: SP_TP,
+      },
+      // evidence: "The first reduction occurred when Space Mountain was built"
+      {
+        type: 'trivia',
+        id: 'speedway-x5',
+        question: 'Which attraction’s construction first made the Speedway track shorter?',
+        choices: ['Space Mountain', 'TRON Lightcycle / Run', 'Astro Orbiter', 'The Barnstormer'],
+        answer: 0,
+        explain: 'The first reduction came when Space Mountain was built.',
+        source: SP_TP,
+      },
+      // evidence: "The attraction reopened on May 18, 2019." / track adjusted for TRON Lightcycle / Run
+      {
+        type: 'trivia',
+        id: 'speedway-x6',
+        question: 'The track was changed to make room for which new coaster, reopening in May 2019?',
+        choices: ['TRON Lightcycle / Run', 'Big Thunder Mountain', 'Seven Dwarfs Mine Train', 'Tiana’s Bayou Adventure'],
+        answer: 0,
+        explain: 'Track adjustments made room for TRON Lightcycle / Run. The Speedway reopened on May 18, 2019.',
+        source: SP,
+      },
+      // evidence: Goodyear "supplied all of the tires on the Mark VII vehicles"
+      {
+        type: 'trivia',
+        id: 'speedway-x7',
+        question: 'Which company supplied the tires on the Mark VII cars?',
+        choices: ['Goodyear', 'Firestone', 'Michelin', 'Bridgestone'],
+        answer: 0,
+        explain: 'Goodyear, the opening-day sponsor, supplied the tires.',
+        source: SP,
+      },
+      // evidence: "every car gets the checkered flag when it crosses the finish line"
+      {
+        type: 'trivia',
+        id: 'speedway-x8',
+        question: 'What flag does every car get at the finish line?',
+        choices: ['Checkered flag', 'Green flag', 'Yellow flag', 'Pirate flag'],
+        answer: 0,
+        explain: 'Every car gets the checkered flag when it crosses the finish line.',
+        source: SP_TP,
+      },
+      // evidence: "you’ll sit on a hard bench with a back with one fabric lap belt for all riders"
+      {
+        type: 'trivia',
+        id: 'speedway-x9',
+        question: 'How many lap belts does each car have for its riders?',
+        choices: ['One shared belt', 'Two belts', 'A belt for each wheel', 'None'],
+        answer: 0,
+        explain: 'Each car has one fabric lap belt for all riders.',
+        source: SP_TP,
+      },
+
+      // ---- True or false ----
+      // evidence: "your car follows a guide rail"
+      {
+        type: 'truefalse',
+        id: 'speedway-x10',
+        statement: 'You can steer your car anywhere on the track you like.',
+        answer: false,
+        explain: 'Fiction! Your car follows a guide rail.',
+        source: SP_TP,
+      },
+      // evidence: "no one can drive alone unless they are 54 inches tall"
+      {
+        type: 'truefalse',
+        id: 'speedway-x11',
+        statement: 'You have to be 54 inches tall to drive a car by yourself.',
+        answer: true,
+        explain: 'Fact! No one can drive alone unless they are 54 inches tall.',
+        source: SP_TP,
+      },
+      // evidence: "from the opening day of Magic Kingdom on October 1, 1971"
+      {
+        type: 'truefalse',
+        id: 'speedway-x12',
+        statement: 'The Speedway was there from Magic Kingdom’s opening day.',
+        answer: true,
+        explain: 'Fact! It opened with the park on October 1, 1971.',
+        source: SP_TP,
+      },
+      // evidence: "Tomorrowland Speedway is a gas-powered race car attraction"
+      {
+        type: 'truefalse',
+        id: 'speedway-x13',
+        statement: 'The Speedway cars are electric.',
+        answer: false,
+        explain: 'Fiction! The Speedway cars are gas-powered.',
+        source: SP_DIS,
+      },
+
+      // ---- Guess ----
+      // evidence: "zip along at a breathtaking 7 mph!"
+      {
+        type: 'guess',
+        id: 'speedway-x14',
+        question: 'What is the Speedway cars’ top speed?',
+        answer: 7,
+        min: 1,
+        max: 40,
+        step: 1,
+        unit: 'mph',
+        tolerance: 2,
+        explain: 'Seven miles per hour. A governor keeps it there.',
+        source: SP_TP,
+      },
+      // evidence: "In total, there are 146 cars driving with you"
+      {
+        type: 'guess',
+        id: 'speedway-x15',
+        question: 'How many cars drive around the Speedway?',
+        answer: 146,
+        min: 20,
+        max: 300,
+        step: 2,
+        unit: 'cars',
+        tolerance: 20,
+        explain: 'There are 146 cars.',
+        source: SP_TP,
+      },
+      // evidence: "from its original length of more than 3100 feet"
+      {
+        type: 'guess',
+        id: 'speedway-x16',
+        question: 'About how long was the track on opening day?',
+        answer: 3100,
+        min: 1000,
+        max: 5000,
+        step: 100,
+        unit: 'feet',
+        tolerance: 300,
+        explain: 'More than 3,100 feet. Today it is just over 2,100.',
+        source: SP_TP,
+      },
+      // evidence: "You must be 32 inches tall to ride"
+      {
+        type: 'guess',
+        id: 'speedway-x17',
+        question: 'How many inches tall do you need to be to ride at all?',
+        answer: 32,
+        min: 20,
+        max: 60,
+        step: 1,
+        unit: 'inches',
+        tolerance: 2,
+        explain: 'Riders must be 32 inches tall. Driving alone takes 54.',
+        source: SP_TP,
+      },
+
+      // ---- Order ----
+      // evidence: "On opening day, it was called the Grand Prix Raceway" / "in 1994 the name was changed to the Tomorrowland Indy Speedway" / "in 2008 the name was shortened to Tomorrowland Speedway"
+      {
+        type: 'order',
+        id: 'speedway-x18',
+        prompt: 'Put the Speedway’s names in order, oldest first.',
+        items: ['Grand Prix Raceway (1971)', 'Tomorrowland Indy Speedway (1994)', 'Tomorrowland Speedway (2008)'],
+        explain: 'It opened as Grand Prix Raceway, became the Indy Speedway in 1994, and shortened its name in 2008.',
+        source: SP_TP,
+      },
+      // evidence: "The first reduction occurred when Space Mountain was built" / "Dumbo's relocation (2012), and TRON Lightcycle/Run adjustments (2019)"
+      {
+        type: 'order',
+        id: 'speedway-x19',
+        prompt: 'Put the changes that shortened the track in order, oldest first.',
+        items: ['Space Mountain is built', 'Dumbo moves (2012)', 'TRON changes (2019)'],
+        explain: 'Space Mountain came first, then Dumbo’s move in 2012, then TRON in 2019.',
+        source: SP_TP,
+      },
+
+      // ---- Ride games ----
+      { type: 'wyr', id: 'speedway-r31', a: 'Drive your own Speedway car', b: 'Ride along in the passenger seat' },
+      { type: 'wyr', id: 'speedway-r32', a: 'Take the first loading area', b: 'Take the second loading area' },
+      { type: 'wyr', id: 'speedway-r33', a: 'Win the checkered flag', b: 'Wave the checkered flag' },
+      {
+        type: 'challenge',
+        id: 'speedway-r34',
+        prompt: 'Race announcer voice! Take turns saying “Start your engines!” as dramatically as you can.',
+      },
+      {
+        type: 'challenge',
+        id: 'speedway-r35',
+        prompt: 'Plan your seating: who drives and who works the pedal? Pick a team name for your car.',
+      },
+      {
+        type: 'emoji',
+        id: 'speedway-x20',
+        emojis: '🏁 🏎️',
+        hint: 'You are in line for it!',
+        choices: ['Tomorrowland Speedway', 'Space Mountain', 'Astro Orbiter', 'Dumbo'],
+        answer: 0,
+      },
+      {
+        type: 'emoji',
+        id: 'speedway-x21',
+        emojis: '🏁 ⬛⬜',
+        hint: 'Every car gets one at the finish line.',
+        choices: ['Checkered flag', 'White flag', 'Pirate flag', 'Red flag'],
         answer: 0,
       },
     ],

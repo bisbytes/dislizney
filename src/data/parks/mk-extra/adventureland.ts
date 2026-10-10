@@ -30,6 +30,10 @@ const MC_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/magi
 const MC_AE = 'https://allearsnet.com/tp/mk/aladdin.htm';
 const MC_MW = 'https://themickeywiki.com/index.php/Magic_Carpets';
 const MC_WM = 'https://www.wdwmagic.com/attractions/the-magic-carpets-of-aladdin.htm';
+const PA_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/pirates-adventures/';
+const PA_WDWINFO = 'https://www.wdwinfo.com/walt-disney-world/a-pirates-adventure-the-magic-of-adventureland/';
+const PA_MB21 = 'https://mickeyblog.com/?p=186867';
+const PA_MB22 = 'https://mickeyblog.com/?p=249892';
 
 /**
  * Base quests in magic-kingdom.ts that are not about the ride itself (or are worded badly).
@@ -1982,6 +1986,195 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         emojis: '🪲 ↕️ 🧶',
         hint: 'What the back-row rider presses.',
         choices: ['The magic scarab', 'A ladybug button', 'A rug brush', 'A seat belt'],
+        answer: 0,
+      },
+    ],
+  },
+  'pirates-adventure': {
+    facts: [
+      // evidence: "The experience is open to any height and is included with Magic Kingdom admission."
+      { text: 'It is free with Magic Kingdom admission, and any height can play.', source: PA_DIS },
+      // evidence: "Missions have no time limit. You can stop and restart at any point during the day."
+      { text: 'Missions have no time limit, so you can stop and restart whenever you like.', source: PA_DIS },
+      // evidence: "Completing all five missions earns a special card signed by Captain Jack Sparrow"
+      { text: 'Finishing all five missions earns a special card signed by Captain Jack Sparrow.', source: PA_WDWINFO },
+      // evidence: "Tapping a spot can make locations smoke, shoot water, light up, or release steam."
+      { text: 'Tapping the right spots can make things smoke, shoot water, light up or release steam.', source: PA_WDWINFO },
+    ],
+    quests: [
+      // ---- Look around the start ----
+      // source: PA_MB. evidence: "begin at the Crow's Nest, across from Pirates of the Caribbean, where they receive a talisman"
+      {
+        type: 'spy',
+        id: 'pirates-adventure-r1',
+        prompt: 'Find the Crow’s Nest, where pirates pick up their talismans.',
+        hint: 'It is across from the Pirates of the Caribbean ride.',
+      },
+      // source: PA_DIS. evidence: "Tap your MagicBand+, Key to the World Card, or park admission at interactive touchpoints throughout the attraction."
+      {
+        type: 'spy',
+        id: 'pirates-adventure-r2',
+        prompt: 'Look around Adventureland for a spot where you can tap your MagicBand or card.',
+        hint: 'The touchpoints are spread throughout the attraction. Your map shows where to go.',
+      },
+      // source: PA_WDWINFO. evidence: "Cannons, barrels, rocks, and seemingly ordinary decorations are among the interactive pieces."
+      {
+        type: 'spy',
+        id: 'pirates-adventure-r3',
+        prompt: 'Spot a cannon, a barrel or a rock that might be more than decoration.',
+        hint: 'Some ordinary-looking props are interactive pieces of the game.',
+      },
+      // source: PA_MB21. evidence: "hidden animatronic details that activate during the hunt"
+      {
+        type: 'spy',
+        id: 'pirates-adventure-r4',
+        prompt: 'Look for little hidden details in Adventureland. Something might move or make a sound!',
+        hint: 'Tap the right spot and hidden details come to life.',
+      },
+
+      // ---- Photo spots ----
+      // evidence: "begin at the Crow's Nest, across from Pirates of the Caribbean"
+      {
+        type: 'photo',
+        id: 'pirates-adventure-photo1',
+        prompt: 'From the Crow’s Nest, take a group photo with your talismans before the hunt begins.',
+        tip: 'It is across from the Pirates of the Caribbean ride.',
+        source: PA_MB21,
+      },
+      // evidence: "Cannons, barrels, rocks, and seemingly ordinary decorations are among the interactive pieces."
+      {
+        type: 'photo',
+        id: 'pirates-adventure-photo2',
+        prompt: 'Take a photo of the barrels or cannons you find along the hunt.',
+        tip: 'Take it when you stop at a spot on your map, not while you walk.',
+        source: PA_WDWINFO,
+      },
+
+      // ---- Trivia ----
+      // evidence: "There are 5 missions in total."
+      {
+        type: 'trivia',
+        id: 'pirates-adventure-x1',
+        question: 'How many missions are there in A Pirate’s Adventure?',
+        choices: ['Five', 'Two', 'Seven', 'Twelve'],
+        answer: 0,
+        explain: 'There are five missions.',
+        source: PA_DIS,
+      },
+      // evidence: "Each mission takes approximately 20 minutes."
+      {
+        type: 'guess',
+        id: 'pirates-adventure-x2',
+        question: 'About how many minutes does each mission take?',
+        answer: 20,
+        min: 5,
+        max: 60,
+        step: 1,
+        unit: 'minutes',
+        tolerance: 5,
+        explain: 'Each mission takes about 20 minutes.',
+        source: PA_DIS,
+      },
+      // evidence: "Pick up a talisman, a special card for this attraction, at The Crow's Nest in Adventureland."
+      {
+        type: 'trivia',
+        id: 'pirates-adventure-x3',
+        question: 'Where do you pick up your talisman?',
+        choices: ['The Crow’s Nest', 'The Tiki Room', 'The castle', 'The Jungle Cruise dock'],
+        answer: 0,
+        explain: 'You pick up a talisman at The Crow’s Nest in Adventureland.',
+        source: PA_DIS,
+      },
+      // evidence: "The talisman lets you read a secret treasure map."
+      {
+        type: 'trivia',
+        id: 'pirates-adventure-x4',
+        question: 'What does the talisman help you read?',
+        choices: ['A secret treasure map', 'A menu', 'A ship’s log', 'A weather report'],
+        answer: 0,
+        explain: 'The talisman lets you read a secret treasure map.',
+        source: PA_DIS,
+      },
+      // evidence: "Completing each mission earns a treasure finder card, described as signed by Captain Jack Sparrow"
+      {
+        type: 'trivia',
+        id: 'pirates-adventure-x5',
+        question: 'What do you get for completing a mission?',
+        choices: ['A treasure finder card', 'A gold coin', 'A pirate hat', 'A ship'],
+        answer: 0,
+        explain: 'Each completed mission earns a treasure finder card.',
+        source: PA_MB22,
+      },
+      // evidence: "Be sure to go in order, or you won't find the treasure at the end!"
+      {
+        type: 'trivia',
+        id: 'pirates-adventure-x6',
+        question: 'What happens if you visit the map’s spots out of order?',
+        choices: ['You won’t find the treasure at the end', 'You get a bonus', 'Nothing at all', 'You win early'],
+        answer: 0,
+        explain: 'Go in order, or you will not find the treasure at the end.',
+        source: PA_WDWINFO,
+      },
+
+      // ---- True or false ----
+      // evidence: "The experience, including the cards and maps, is free."
+      {
+        type: 'truefalse',
+        id: 'pirates-adventure-x7',
+        statement: 'You pay extra to play A Pirate’s Adventure.',
+        answer: false,
+        explain: 'Fiction! It is included with Magic Kingdom admission.',
+        source: PA_DIS,
+      },
+      // evidence: "Missions have no time limit. You can stop and restart at any point during the day."
+      {
+        type: 'truefalse',
+        id: 'pirates-adventure-x8',
+        statement: 'You have to finish a mission in one go.',
+        answer: false,
+        explain: 'Fiction! There is no time limit, and you can stop and restart.',
+        source: PA_DIS,
+      },
+      // evidence: "Guests who complete all the missions join Jack's crew."
+      {
+        type: 'truefalse',
+        id: 'pirates-adventure-x9',
+        statement: 'Captain Jack Sparrow signs the card you earn for finishing all five missions.',
+        answer: true,
+        explain: 'Fact! Finishing all five earns a special card signed by Captain Jack Sparrow.',
+        source: PA_WDWINFO,
+      },
+
+      // ---- Order ----
+      // evidence: "Pick up a talisman ... Tap your MagicBand+ ... at interactive touchpoints" / "Each unlocked area reveals the next location on the map."
+      {
+        type: 'order',
+        id: 'pirates-adventure-x10',
+        prompt: 'Put the steps of a pirate mission in order.',
+        items: ['Pick up a talisman at the Crow’s Nest', 'Read the treasure map', 'Tap at the first spot', 'Follow the map to the next spot'],
+        explain: 'Pick up your talisman, read the map, tap at a spot, then follow the map to the next one.',
+        source: PA_DIS,
+      },
+
+      // ---- Ride games ----
+      { type: 'wyr', id: 'pirates-adventure-r31', a: 'Set off a cannon with a tap', b: 'Open a treasure chest with a tap' },
+      { type: 'wyr', id: 'pirates-adventure-r32', a: 'Be Captain Jack’s first mate', b: 'Be the lookout in the Crow’s Nest' },
+      {
+        type: 'challenge',
+        id: 'pirates-adventure-r33',
+        prompt: 'Pick pirate names for your crew and take turns introducing yourselves in your best pirate voice.',
+      },
+      {
+        type: 'challenge',
+        id: 'pirates-adventure-r34',
+        prompt: 'Choose a ship’s lookout. Everyone else says what they hope the treasure is.',
+      },
+      {
+        type: 'emoji',
+        id: 'pirates-adventure-x11',
+        emojis: '🗺️ 💰 🏴‍☠️',
+        hint: 'The treasure hunt you are about to start!',
+        choices: ['A Pirate’s Adventure', 'Space Mountain', 'The Haunted Mansion', 'Dumbo'],
         answer: 0,
       },
     ],
