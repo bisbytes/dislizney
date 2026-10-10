@@ -45,6 +45,8 @@ const MT = 'https://en.wikipedia.org/wiki/Mad_Tea_Party';
 const MT_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/mad-tea-party/';
 const MT_AE = 'https://allearsnet.com/tp/mk/tea.htm';
 const MT_MB = 'https://mickeyblog.com/2024/04/15/step-in-time-the-history-of-magic-kingdoms-mad-tea-party';
+const MT_SIGNS = 'https://mickeyblog.com/?p=429291';
+const MT_WDWNT = 'https://wdwnt.com/mad-tea-party/';
 const MT_DF = 'https://www.disneyfanatic.com/10-wonderful-facts-about-the-mad-tea-party-ride/';
 
 /**
@@ -2458,6 +2460,45 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, snap a photo of the teacup you want to ride. Which pastel color is it?',
         tip: 'There are 18 teacups to choose from.',
         source: MT_AE,
+      },
+      // source: MT_SIGNS (April 2024). evidence: "The signs are designed to look made of Tulgey Wood, the forest native to Wonderland."
+      {
+        type: 'spy',
+        id: 'mad-tea-party-r-spy10',
+        prompt: 'Look at the signs at the ride entrance. What are they made to look like?',
+        hint: 'Newer signs look like they are made from Tulgey Wood, a forest in Wonderland. There are Stand By and Lightning Lane signs with tulips and a wait-time sign.',
+      },
+      // source: MT_SIGNS. evidence: "The new clock on it is a White Rabbit clock" on the pink Lightning Lane sign.
+      {
+        type: 'spy',
+        id: 'mad-tea-party-r-spy11',
+        prompt: 'Find the clock on the pink Lightning Lane sign. Whose clock is it?',
+        hint: 'It is a White Rabbit clock, so he must be late again!',
+      },
+      // ---- Photos (new) ----
+      // source: MT_SIGNS. evidence: "The signs are designed to look made of Tulgey Wood" / "a pair of tulips hanging from atop the entrance sign."
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo7',
+        prompt: 'From the line, snap a photo of the Tulgey Wood style entrance sign with its hanging tulips.',
+        source: MT_SIGNS,
+      },
+      // source: MT_SIGNS. evidence: "The new clock on it is a White Rabbit clock"
+      {
+        type: 'photo',
+        id: 'mad-tea-party-r-photo8',
+        prompt: 'From the line, photograph the White Rabbit clock on the Lightning Lane sign.',
+        source: MT_SIGNS,
+      },
+      // evidence: "Charles Lutwidge Dodgson, who used the pen name Lewis Carroll."
+      {
+        type: 'trivia',
+        id: 'mad-tea-party-r-t15',
+        question: 'Who wrote the Alice stories that inspired this ride, using a pen name?',
+        choices: ['Lewis Carroll', 'A. A. Milne', 'J. M. Barrie', 'Roald Dahl'],
+        answer: 0,
+        explain: 'Charles Lutwidge Dodgson wrote as Lewis Carroll.',
+        source: MT_WDWNT,
       },
       // ---- Trivia ----
       // evidence: "one of 18 pastel-colored teacups."

@@ -33,6 +33,8 @@ const POOH_TP =
   'https://touringplans.com/blog/2020/07/26/everything-you-need-to-know-about-the-many-adventures-of-winnie-the-pooh';
 const POOH_MW = 'https://themickeywiki.com/index.php/The_Many_Adventures_of_Winnie_the_Pooh';
 const POOH_DISNEY = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/many-adventures-of-winnie-the-pooh/';
+const POOH_PREP = 'https://wdwprepschool.com/disney-world-parks/magic-kingdom/attractions/the-many-adventures-of-winnie-the-pooh';
+const POOH_PS = 'https://www.parksavers.com/the-many-adventures-of-winnie-the-pooh-ride-review-disney-world/';
 const POOH_WDWMAGIC = 'https://www.wdwmagic.com/attractions/the-many-adventures-of-winnie-the-pooh.htm';
 
 const BELLE_TP = 'https://touringplans.com/blog/five-things-to-know-about-enchanted-tales-with-belle';
@@ -1070,6 +1072,68 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'winnie-the-pooh-s12',
         prompt: 'In the back-and-forth part of the line, read a book page out loud together.',
         hint: 'The switchbacks are lined with storybook pages, so the story keeps going while you wait.',
+      },
+      // evidence: "Playing musical flowers and vegetables" (Parksavers) / "Spin musical flowers, tinker with toys, and play with a digital hunny board!" (Mickey Wiki)
+      // source: POOH_PS
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy13',
+        prompt: 'In Rabbit’s garden, find the musical flowers and vegetables. Play a tune together!',
+        hint: 'The garden has musical flowers and oversized veggies you can play with while you wait.',
+      },
+      // evidence: "Rabbit's garden: Gophers and carrots pop up from the ground." (Prep School) / "In Rabbit's garden, gophers pop up and interact with guests" (Mickey Wiki)
+      // source: POOH_PREP
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy14',
+        prompt: 'Watch the ground in Rabbit’s garden. Can you spot a gopher or a carrot popping up?',
+        hint: 'Gophers and carrots pop up out of the garden as guests play.',
+      },
+      // evidence: "Pushing bees along a track" (Parksavers) / "Kids can buzz a bee 'from hive to hive' along the metal track." (Prep School)
+      // source: POOH_PS
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy15',
+        prompt: 'Find the bee track. Can you buzz a bee from one hive to the next?',
+        hint: 'The oversized honeybees slide along a metal track between the hives.',
+      },
+      // evidence: "Piglet's house: Knock on the door to hear him stammer through 'a few cute phrases.'" (Prep School)
+      // source: POOH_PREP
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy16',
+        prompt: 'Find Piglet’s house and knock on the door. What does he say?',
+        hint: 'Piglet stammers through a few cute phrases when you knock.',
+      },
+      // evidence: "Crawling through tunnels" / "Visiting Piglet's and Eeyore's houses" (Parksavers)
+      // source: POOH_PS
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy17',
+        prompt: 'Find a tunnel or little house that small explorers can crawl through.',
+        hint: 'The play area has tunnels to crawl through, and Eeyore’s house is one kids can crawl through too.',
+      },
+      // evidence: "Storybook page: ... a peek inside Pooh's house." (Prep School)
+      // source: POOH_PREP
+      {
+        type: 'spy',
+        id: 'winnie-the-pooh-r-spy18',
+        prompt: 'Look at a storybook page that gives you a peek inside Pooh’s house.',
+        hint: 'The storybook pages preview what to expect, including a look inside Pooh’s home.',
+      },
+      // evidence: "Pushing bees along a track" (Parksavers)
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo9',
+        prompt: 'From the line, photograph the oversized honeybees on their track.',
+        source: POOH_PS,
+      },
+      // evidence: "Piglet's house: Knock on the door to hear him stammer" (Prep School)
+      {
+        type: 'photo',
+        id: 'winnie-the-pooh-r-photo10',
+        prompt: 'From the line, take a photo of Piglet’s house and its little door.',
+        source: POOH_PREP,
       },
       // evidence: "Eeyore complains about the wind and then about the rain."
       {
