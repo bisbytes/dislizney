@@ -33,7 +33,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
-    if (url.pathname === '/api/hello' || url.pathname === '/api/stats') return stats(request, url, env);
+    if (url.pathname === '/api/hello' || url.pathname === '/api/event' || url.pathname === '/api/stats') return stats(request, url, env);
     if (url.pathname === '/api/waits' && request.method === 'GET') return waits(url);
     if (url.pathname !== '/api/board') return json({ error: 'Not found' }, 404);
 
@@ -106,6 +106,17 @@ async function waits(url: URL): Promise<Response> {
 
 const PLATFORMS: Platform[] = ['web', 'ios', 'android'];
 
+/** The only events the app may report. Anything else is refused, so nothing free-form is ever stored. */
+const EVENTS = [
+  'share_picture_ok',
+  'share_picture_failed',
+  'share_picture_slow',
+  'day_picture_ok',
+  'day_picture_failed',
+  'day_picture_slow',
+  'save_photos_failed',
+];
+
 /** Anonymous visit counts: the app says hello when it opens and every couple of minutes while open. */
 async function stats(request: Request, url: URL, env: Env): Promise<Response> {
   const site = env.STATS.get(env.STATS.idFromName('site'));
@@ -122,6 +133,19 @@ async function stats(request: Request, url: URL, env: Env): Promise<Response> {
     if (!kind || !platform) return json({ error: 'Bad request' }, 400);
     // Only these two words are used; nothing about the request itself is kept.
     await site.hello(parkDay(), kind, platform);
+    return json({ ok: true });
+  }
+  if (url.pathname === '/api/event' && request.method === 'POST') {
+    let body: { event?: unknown; platform?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return json({ error: 'Bad request' }, 400);
+    }
+    const name = EVENTS.find((e) => e === body.event);
+    if (!name || !PLATFORMS.some((p) => p === body.platform)) return json({ error: 'Bad request' }, 400);
+    // Only the event's name is counted. Nothing about the request or the person is kept.
+    await site.event(parkDay(), name);
     return json({ ok: true });
   }
   return json({ error: 'Method not allowed' }, 405);
