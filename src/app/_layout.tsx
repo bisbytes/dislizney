@@ -42,7 +42,7 @@ export default function RootLayout() {
         <SoundProvider>
           <RadarProvider>
             <View style={{ flex: 1, backgroundColor: colors.paper }}>
-              <StatusBar style="dark" />
+              <StatusBar style="auto" />
               <Stack
                 screenOptions={{
                   headerShown: false,

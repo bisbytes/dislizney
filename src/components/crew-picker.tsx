@@ -67,7 +67,7 @@ export function CrewPicker({ crew, playing, onChange }: Props) {
               accessibilityHint="Long press to remove"
               onPress={() => toggle(p.id)}
               onLongPress={() => remove(p.id)}
-              style={[styles.chip, { backgroundColor: on ? colors.lemon : colors.white, opacity: on ? 1 : 0.6 }]}>
+              style={[styles.chip, { backgroundColor: on ? colors.lemon : colors.surface, opacity: on ? 1 : 0.6 }]}>
               <Txt weight="bold" size={15}>
                 {p.emoji} {p.name}
                 {on ? ' ✓' : ''}
@@ -118,7 +118,7 @@ export function CrewPicker({ crew, playing, onChange }: Props) {
           </View>
           <View style={styles.row}>
             <StoryButton small label="Add" disabled={!name.trim()} onPress={add} />
-            <StoryButton small label="Cancel" color={colors.white} onPress={() => setAdding(false)} />
+            <StoryButton small label="Cancel" color={colors.surface} onPress={() => setAdding(false)} />
           </View>
         </View>
       )}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     fontSize: 18,
     color: colors.ink,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 2,
     borderColor: colors.ink,
     borderRadius: 12,

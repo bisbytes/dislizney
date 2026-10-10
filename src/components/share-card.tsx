@@ -7,7 +7,7 @@ import { Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { type Keepsake } from '@/lib/journey';
 import { summaryChips } from '@/lib/play-summary';
-import { colors } from '@/theme';
+import { lightColors as colors } from '@/theme';
 
 /** Width of the card on screen. It's captured at 1080 × 1350, the portrait size social apps like best. */
 export const SHARE_CARD_WIDTH = 320;

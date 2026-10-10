@@ -7,7 +7,7 @@ import { Txt } from './ui';
 /** Big, glanceable posted wait so guests can compare lines at a glance. */
 export function WaitBadge({ wait, large }: { wait: PostedWait; large?: boolean }) {
   const open = wait.open;
-  const bg = !open ? '#E4E0EA' : wait.minutes <= 20 ? colors.mint : wait.minutes <= 50 ? colors.gold : colors.berry;
+  const bg = !open ? colors.surfaceDim : wait.minutes <= 20 ? colors.mint : wait.minutes <= 50 ? colors.gold : colors.berry;
   const fg = !open ? colors.inkSoft : wait.minutes <= 20 || wait.minutes > 50 ? colors.white : colors.ink;
   return (
     <View style={[styles.waitBadge, large && styles.waitBadgeLarge, { backgroundColor: bg }]}>

@@ -79,7 +79,7 @@ export function StoryButton({
 export function Card({
   children,
   style,
-  color = colors.white,
+  color = colors.surface,
 }: {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -92,7 +92,7 @@ export function Stars({ n, of, size = 16 }: { n: number; of: number; size?: numb
   return (
     <Txt size={size} accessibilityLabel={`${n} of ${of} stars`}>
       {'★'.repeat(n)}
-      <Txt size={size} color="rgba(43,27,63,0.25)">
+      <Txt size={size} color={colors.inkSoft} style={{ opacity: 0.35 }}>
         {'★'.repeat(Math.max(0, of - n))}
       </Txt>
     </Txt>

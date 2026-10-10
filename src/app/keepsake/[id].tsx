@@ -103,7 +103,7 @@ export default function KeepsakePage() {
         <Txt weight="bold" size={30} color={colors.white} style={{ textAlign: 'center' }}>
           Phones away, it’s ride time!
         </Txt>
-        <Txt size={18} color={colors.paper} style={{ textAlign: 'center', maxWidth: 360 }}>
+        <Txt size={18} color={colors.onGround} style={{ textAlign: 'center', maxWidth: 360 }}>
           Tuck your phone in a pocket or bag, hold on, and keep your hands and feet inside. Enjoy every second of{' '}
           {ref.attraction.name}! Your keepsake is saved and will be right here when you get off.
         </Txt>
@@ -166,7 +166,7 @@ export default function KeepsakePage() {
                     tap();
                     updateKeepsake(k.id, { rating: on ? undefined : r.emoji });
                   }}
-                  style={[styles.rating, { backgroundColor: on ? colors.lemon : colors.white }]}>
+                  style={[styles.rating, { backgroundColor: on ? colors.lemon : colors.surface }]}>
                   <Txt size={30} style={{ lineHeight: 38 }}>
                     {r.emoji}
                   </Txt>
@@ -196,7 +196,7 @@ export default function KeepsakePage() {
           <StoryButton
             small
             label={Platform.OS === 'web' ? '📥 Save my photos' : '📥 Save card and photos to my phone'}
-            color={colors.white}
+            color={colors.surface}
             onPress={save}
             style={{ alignSelf: 'center' }}
           />
@@ -213,7 +213,7 @@ export default function KeepsakePage() {
           <View style={styles.tags}>
             {tags.map((t) => (
               <View key={t} style={styles.tag}>
-                <Txt size={14} weight="medium" color={colors.berry}>
+                <Txt size={14} weight="medium" color={colors.link}>
                   {t}
                 </Txt>
               </View>
@@ -222,7 +222,7 @@ export default function KeepsakePage() {
           <StoryButton
             small
             label="📋 Copy caption + hashtags"
-            color={colors.white}
+            color={colors.surface}
             onPress={() => {
               tap();
               copy();
@@ -265,7 +265,7 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
         <Txt weight="bold" size={26} color={colors.white} style={{ textAlign: 'center' }}>
           {r.attraction.name}
         </Txt>
-        <Txt weight="medium" size={14} color={colors.paper}>
+        <Txt weight="medium" size={14} color={colors.onGround}>
           {r.park.name} · {date}
         </Txt>
       </View>
@@ -501,7 +501,7 @@ function BoardShare({ k, onShared }: { k: Keepsake; onShared: () => void }) {
           ))}
           <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center' }}>
             <StoryButton small label={busy ? 'Sharing…' : 'Share it'} disabled={busy} onPress={send} />
-            <StoryButton small label="Not now" color={colors.white} onPress={() => setNames(undefined)} />
+            <StoryButton small label="Not now" color={colors.surface} onPress={() => setNames(undefined)} />
           </View>
         </>
       )}
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: 16,
     color: colors.ink,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     textAlignVertical: 'top',
   },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' },
@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 10,
     paddingVertical: 3,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
   },
   card: { borderWidth: 4, borderColor: colors.ink, borderRadius: 26, overflow: 'hidden' },
   cardTop: { alignItems: 'center', paddingTop: 18, paddingBottom: 14, paddingHorizontal: 16, overflow: 'hidden' },
@@ -580,14 +580,14 @@ const styles = StyleSheet.create({
   },
   board: {
     gap: 8,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderRadius: 18,
     borderWidth: 2,
     borderColor: colors.ink,
     padding: 12,
   },
   team: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     borderWidth: 2,
     borderColor: colors.ink,

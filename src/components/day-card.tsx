@@ -6,7 +6,7 @@ import { Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { type Keepsake } from '@/lib/journey';
 import { daySummaryChips } from '@/lib/play-summary';
-import { colors } from '@/theme';
+import { lightColors as colors } from '@/theme';
 import { SHARE_CARD_WIDTH, SHARE_IMAGE } from '@/components/share-card';
 
 /** Most rides and photos that fit on the day picture. */

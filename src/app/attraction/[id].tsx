@@ -83,13 +83,13 @@ export default function RideIntro() {
               <Txt size={72} style={{ lineHeight: 88 }}>
                 {a.emoji}
               </Txt>
-              <Txt weight="medium" size={14} color={colors.paper} style={{ letterSpacing: 2 }}>
+              <Txt weight="medium" size={14} color={colors.onGround} style={{ letterSpacing: 2 }}>
                 {land.name.toUpperCase()}
               </Txt>
               <Txt weight="bold" size={30} color={colors.white} style={{ textAlign: 'center' }}>
                 {a.name}
               </Txt>
-              <Txt size={16} color={colors.paper} style={{ textAlign: 'center' }}>
+              <Txt size={16} color={colors.onGround} style={{ textAlign: 'center' }}>
                 {a.blurb}
               </Txt>
               {posted && (
@@ -148,7 +148,7 @@ export default function RideIntro() {
                           setWait(m);
                           setChanging(false);
                         }}
-                        style={[styles.chip, { backgroundColor: on ? c.ground : colors.white, borderColor: c.ground }]}>
+                        style={[styles.chip, { backgroundColor: on ? c.ground : colors.surface, borderColor: c.ground }]}>
                         <Txt weight="bold" size={16} color={on ? colors.white : c.ink}>
                           {label(m)}
                         </Txt>
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   },
   page: { width: '100%', maxWidth: MAX_WIDTH },
   box: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 3,
     borderColor: colors.ink,
     borderRadius: 22,

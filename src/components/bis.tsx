@@ -48,7 +48,7 @@ export function BisFooter() {
           </Txt>
           {url ? (
             <Pressable accessibilityRole="link" onPress={() => Linking.openURL(url)} hitSlop={8}>
-              <Txt weight="bold" size={14} color={colors.berry} style={{ textDecorationLine: 'underline' }}>
+              <Txt weight="bold" size={14} color={colors.link} style={{ textDecorationLine: 'underline' }}>
                 See my portfolio →
               </Txt>
             </Pressable>
@@ -109,7 +109,7 @@ export function BisPop({ seed }: { seed: string }) {
     <View style={popStyles.wrap} accessibilityRole="text">
       <Bis size={58} />
       <View style={popStyles.bubble}>
-        <Txt weight="bold" size={13} color={colors.berry}>
+        <Txt weight="bold" size={13} color={colors.link}>
           Psst, Bis here!
         </Txt>
         <Txt size={15}>{tip}</Txt>
@@ -122,7 +122,7 @@ const popStyles = StyleSheet.create({
   wrap: { flexDirection: 'row', alignItems: 'flex-end', gap: 8, paddingHorizontal: 4 },
   bubble: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 2,
     borderColor: colors.ink,
     borderRadius: 18,

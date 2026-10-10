@@ -1,7 +1,7 @@
 import { getAttraction } from '@/data/parks';
 import { type Keepsake } from '@/lib/journey';
 import { daySummaryChips, summaryChips } from '@/lib/play-summary';
-import { colors } from '@/theme';
+import { lightColors as colors } from '@/theme';
 
 const W = 320;
 const H = 400;
