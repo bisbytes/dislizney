@@ -9,7 +9,7 @@ import { DaySharePanel } from '@/components/day-share-panel';
 import { StoryButton, tap, Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { exportJourney, importJourney } from '@/lib/backup';
-import { useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
+import { useJourney, type Keepsake } from '@/lib/journey';
 import { colors, MAX_WIDTH, pageShadow } from '@/theme';
 
 export default function Journey() {
@@ -51,7 +51,7 @@ export default function Journey() {
     days.set(day, [...(days.get(day) ?? []), k]);
   }
 
-  const minutes = keepsakes.reduce((n, k) => n + waitedMinutes(k), 0);
+  const activities = keepsakes.reduce((n, k) => n + k.quests, 0);
   const stars = keepsakes.reduce((n, k) => n + k.stars, 0);
   const inLine = session && getAttraction(session.attractionId);
 
@@ -83,7 +83,7 @@ export default function Journey() {
           {keepsakes.length > 0 && (
             <View style={[styles.totals, pageShadow]}>
               <Total big={`${keepsakes.length}`} small={keepsakes.length === 1 ? 'ride' : 'rides'} />
-              <Total big={`${minutes}`} small="line minutes" />
+              <Total big={`${activities}`} small="activities" />
               <Total big={`⭐ ${stars}`} small="stars" />
             </View>
           )}
@@ -187,7 +187,7 @@ function Polaroid({ k, tilt }: { k: Keepsake; tilt: number }) {
         {r.attraction.name}
       </Txt>
       <Txt size={12} color={colors.inkSoft}>
-        {time} · {waitedMinutes(k)} min · ⭐ {k.stars}
+        {time} · ⭐ {k.stars}
       </Txt>
     </Pressable>
   );

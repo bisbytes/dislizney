@@ -17,7 +17,7 @@ import { isSlow, track } from '@/lib/log';
 import { shareImage } from '@/lib/share';
 import { drawShareImage } from '@/lib/share-canvas';
 import { boardNamesFor, canShareToBoard, shareToBoard } from '@/lib/board';
-import { hashtag, keepsakeCaption, useJourney, waitedMinutes, type Keepsake } from '@/lib/journey';
+import { hashtag, keepsakeCaption, useJourney, type Keepsake } from '@/lib/journey';
 import { colors, fonts, MAX_WIDTH, pageShadow } from '@/theme';
 
 const RATINGS = [
@@ -35,7 +35,6 @@ export default function KeepsakePage() {
   const [note, setNote] = useState(k?.note ?? '');
   const [toast, setToast] = useState('');
   const [party, setParty] = useState(0);
-  const [fixing, setFixing] = useState(false);
   const [sharing, setSharing] = useState(false);
   // Right after boarding: a calm "phones away" page first, keepsake after the ride.
   const [riding, setRiding] = useState(!!fresh);
@@ -148,24 +147,7 @@ export default function KeepsakePage() {
             </Txt>
           )}
 
-          {(k.actualMinutes === undefined || fixing) && (
-            <WaitCheck
-              k={k}
-              onSave={(m) => {
-                updateKeepsake(k.id, { actualMinutes: m });
-                setFixing(false);
-              }}
-            />
-          )}
-
           <KeepsakeCard ref={card} k={k} note={note.trim()} />
-          {k.actualMinutes !== undefined && !fixing && (
-            <Pressable accessibilityRole="button" onPress={() => setFixing(true)} style={{ alignSelf: 'center' }}>
-              <Txt size={13} color={colors.inkSoft} style={{ textDecorationLine: 'underline' }}>
-                Fix my wait time
-              </Txt>
-            </Pressable>
-          )}
           <StarBurst trigger={party} />
 
           <Txt weight="bold" size={14} color={colors.inkSoft} style={styles.label}>
@@ -301,17 +283,11 @@ function KeepsakeCard({ k, note, ref }: { k: Keepsake; note: string; ref: Ref<Vi
       )}
       <View style={styles.cardBody}>
         <View style={styles.statRow}>
-          <Stat big={`${waitedMinutes(k)}`} small="min wait" />
           <Stat big={`⭐ ${k.stars}`} small="stars" />
           <Stat big={`${k.quests}`} small="quests" />
+          {!!k.played?.spotted && <Stat big={`👀 ${k.played.spotted}`} small="spotted" />}
           {k.rating && <Stat big={k.rating} small="rating" />}
         </View>
-        {k.actualMinutes !== undefined && k.actualMinutes !== k.waitMinutes && (
-          <Txt size={14} color={c.ink} style={{ textAlign: 'center' }}>
-            ⏱️ Posted {k.waitMinutes} min · Really {k.actualMinutes} min
-            {k.actualMinutes < k.waitMinutes ? ' · Faster than posted!' : ''}
-          </Txt>
-        )}
         {!!k.team?.length && (
           <View style={styles.team} accessibilityLabel="Team scoreboard">
             <Txt weight="bold" size={12} color={colors.inkSoft} style={{ letterSpacing: 1, textAlign: 'center' }}>
@@ -535,46 +511,6 @@ function BoardShare({ k, onShared }: { k: Keepsake; onShared: () => void }) {
         </Txt>
       )}
     </View>
-  );
-}
-
-/** Asks how long the wait really was, starting from the app's own timer. */
-function WaitCheck({ k, onSave }: { k: Keepsake; onSave: (minutes: number) => void }) {
-  const [m, setM] = useState(k.actualMinutes ?? k.minutesInLine);
-  const nudge = (d: number) => {
-    tap();
-    setM((v) => Math.min(240, Math.max(1, v + d)));
-  };
-  return (
-    <View style={[styles.check, pageShadow]}>
-      <Txt weight="bold" size={19} style={{ textAlign: 'center' }}>
-        ⏱️ How long was your wait, really?
-      </Txt>
-      <Txt size={14} color={colors.inkSoft} style={{ textAlign: 'center' }}>
-        The sign said {k.waitMinutes} minutes. Our timer says {k.minutesInLine} minute{k.minutesInLine === 1 ? '' : 's'}
-        . Fix it if you joined the line before opening the story.
-      </Txt>
-      <View style={styles.stepper}>
-        <StepBtn label="−5" onPress={() => nudge(-5)} />
-        <StepBtn label="−1" onPress={() => nudge(-1)} />
-        <Txt weight="bold" size={30} accessibilityLiveRegion="polite" style={{ minWidth: 96, textAlign: 'center' }}>
-          {m} min
-        </Txt>
-        <StepBtn label="+1" onPress={() => nudge(1)} />
-        <StepBtn label="+5" onPress={() => nudge(5)} />
-      </View>
-      <StoryButton small label="✅ That’s right" onPress={() => onSave(m)} style={{ alignSelf: 'center' }} />
-    </View>
-  );
-}
-
-function StepBtn({ label, onPress }: { label: string; onPress: () => void }) {
-  return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={styles.stepBtn}>
-      <Txt weight="bold" size={15}>
-        {label}
-      </Txt>
-    </Pressable>
   );
 }
 
