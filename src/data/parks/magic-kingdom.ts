@@ -34,6 +34,8 @@ const SRC = {
   orbiter: WIKI + 'Astro_Orbiter',
   progress: WIKI + "Walt_Disney's_Carousel_of_Progress",
   laughfloor: WIKI + 'Monsters,_Inc._Laugh_Floor',
+  mainstreet: WIKI + 'Main_Street_Vehicles',
+  piratesadv: 'https://disneyworld.disney.go.com/attractions/magic-kingdom/pirates-adventures/',
 };
 
 export const magicKingdom: Park = {
@@ -233,6 +235,36 @@ export const magicKingdom: Park = {
               hint: 'Be home by midnight!',
               choices: ['Snow White', 'Cinderella', 'Rapunzel', 'Sleeping Beauty'],
               answer: 1,
+            },
+          ],
+        },
+        {
+          id: 'main-street-vehicles',
+          name: 'Main Street Vehicles',
+          emoji: '🐴',
+          opened: 'October 1, 1971',
+          coords: { lat: 28.4172, lng: -81.5812 },
+          coordsApprox: true,
+          blurb: 'Hop aboard a turn-of-the-century ride down Main Street, U.S.A.',
+          facts: [
+            {
+              text: 'Each vehicle makes a one-way trip between Town Square and the Central Plaza by the castle.',
+              source: SRC.mainstreet,
+            },
+            {
+              text: 'The streetcars are pulled by draft horses such as Belgians, Clydesdales and Percherons.',
+              source: SRC.mainstreet,
+            },
+          ],
+          quests: [
+            {
+              type: 'trivia',
+              id: 'msv-1',
+              question: 'When did Main Street Vehicles open?',
+              choices: ['October 1, 1971', 'July 17, 1955', 'January 15, 1975', 'October 1, 1982'],
+              answer: 0,
+              explain: 'They opened with Magic Kingdom on October 1, 1971.',
+              source: SRC.mainstreet,
             },
           ],
         },
@@ -568,6 +600,36 @@ export const magicKingdom: Park = {
               id: 'mc-wyr',
               a: 'Get three wishes',
               b: 'Have your own flying carpet forever',
+            },
+          ],
+        },
+        {
+          id: 'pirates-adventure',
+          name: 'A Pirate’s Adventure: Treasures of the Seven Seas',
+          emoji: '🗺️',
+          opened: 'Spring 2013',
+          coords: { lat: 28.4179, lng: -81.5836 },
+          coordsApprox: true,
+          blurb: 'Follow a treasure map around Adventureland and tap hidden spots to wake up pirate surprises.',
+          facts: [
+            {
+              text: 'It is free with Magic Kingdom admission, and any height can play.',
+              source: SRC.piratesadv,
+            },
+            {
+              text: 'You pick up a talisman at The Crow’s Nest, and it lets you read a secret treasure map.',
+              source: SRC.piratesadv,
+            },
+          ],
+          quests: [
+            {
+              type: 'trivia',
+              id: 'pirates-adventure-1',
+              question: 'Where do you pick up your talisman for A Pirate’s Adventure?',
+              choices: ['The Crow’s Nest', 'The Tiki Room', 'The castle', 'The Jungle Cruise dock'],
+              answer: 0,
+              explain: 'You pick up a talisman at The Crow’s Nest in Adventureland.',
+              source: SRC.piratesadv,
             },
           ],
         },
@@ -2133,6 +2195,36 @@ export const magicKingdom: Park = {
               type: 'challenge',
               id: 'lf-ch',
               prompt: 'Knock-knock joke battle! Whoever gets the biggest laugh wins.',
+            },
+          ],
+        },
+        {
+          id: 'tomorrowland-speedway',
+          name: 'Tomorrowland Speedway',
+          emoji: '🏎️',
+          opened: 'October 1, 1971',
+          coords: { lat: 28.4182, lng: -81.5776 },
+          coordsApprox: true,
+          blurb: 'Grab the wheel of a miniature race car and cruise a scenic track.',
+          facts: [
+            {
+              text: 'It opened with the park on October 1, 1971, as the Grand Prix Raceway.',
+              source: 'https://touringplans.com/blog/2020/08/10/everything-you-need-to-know-about-the-tomorrowland-speedway/',
+            },
+            {
+              text: 'The cars are gas-powered, and drivers must be at least 54 inches tall to drive alone.',
+              source: 'https://disneyworld.disney.go.com/attractions/magic-kingdom/tomorrowland-speedway/',
+            },
+          ],
+          quests: [
+            {
+              type: 'trivia',
+              id: 'speedway-1',
+              question: 'How tall must you be to drive a Speedway car by yourself?',
+              choices: ['34 inches', '44 inches', '54 inches', '64 inches'],
+              answer: 2,
+              explain: 'Drivers must be at least 54 inches tall to drive alone.',
+              source: 'https://disneyworld.disney.go.com/attractions/magic-kingdom/tomorrowland-speedway/',
             },
           ],
         },

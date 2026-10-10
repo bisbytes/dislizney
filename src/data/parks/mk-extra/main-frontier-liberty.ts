@@ -39,6 +39,11 @@ const HOP = 'https://en.wikipedia.org/wiki/The_Hall_of_Presidents';
 const HOP_NT =
   'https://wdwnt.com/2025/06/lobby-of-the-hall-of-presidents-reopens-at-magic-kingdom-show-remains-closed-following-trump-update/';
 const HOP_RG = 'https://www.resortsgal.com/parks/hall-of-presidents';
+const MSV = 'https://en.wikipedia.org/wiki/Main_Street_Vehicles';
+const MSV_DIS = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/main-street-vehicles/';
+const MSV_RG = 'https://www.resortsgal.com/blog/main-street-vehicles/';
+const MSV_WDWNT = 'https://wdwnt.com/?p=700536';
+const MSV_AE = 'https://allears.net/?p=583702';
 
 /**
  * Base quests (in magic-kingdom.ts) that are not about the ride itself, or that
@@ -2632,6 +2637,174 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         emojis: '1️⃣ 🇺🇸 🗣️',
         hint: 'The first president, and a speaker in the show since 2009.',
         choices: ['George Washington', 'Abraham Lincoln', 'James Madison', 'Teddy Roosevelt'],
+        answer: 0,
+      },
+    ],
+  },
+  'main-street-vehicles': {
+    facts: [
+      // evidence: "one-way trips between the Town Square at the park's entrance and the Central Plaza at the park's center"
+      { text: 'Each vehicle makes a one-way trip between Town Square and the Central Plaza by the castle.', source: MSV },
+      // evidence: "Guests can ride a horse-drawn trolley, omnibus, jitney, or fire engine."
+      { text: 'The vehicles are a horse-drawn trolley, an omnibus, a jitney and a fire engine.', source: MSV_DIS },
+      // evidence: "around 1,900 pounds" empty / "around 4,000 pounds" with 18 adults
+      { text: 'A horse-drawn streetcar weighs about 1,900 pounds empty and about 4,000 pounds with 18 adults on board.', source: MSV },
+      // evidence: "housed nearby at the Tri-Circle-D Ranch" "located in Disney's Fort Wilderness Resort & Campground"
+      { text: 'The trolley horses live at the Tri-Circle-D Ranch at Fort Wilderness.', source: MSV },
+      // evidence: "During parade times, vehicles are not available."
+      { text: 'The vehicles are not available during parade times.', source: MSV_DIS },
+    ],
+    quests: [
+      // ---- Look around the stop ----
+      // source: MSV_RG. evidence: "It is parked beside a sign reading "Omnibus to Cinderella Castle, One Way Only.""
+      {
+        type: 'spy',
+        id: 'msv-r1',
+        prompt: 'If the omnibus is parked nearby, find its sign. Where does it say the omnibus goes?',
+        hint: 'The sign reads “Omnibus to Cinderella Castle, One Way Only.”',
+      },
+      // source: MSV_RG. evidence: "a pale yellow car and a bright fire-engine red car"
+      {
+        type: 'spy',
+        id: 'msv-r2',
+        prompt: 'Look for the jitneys. Can you spot a pale yellow one or a bright red one?',
+        hint: 'Magic Kingdom has two jitneys, one pale yellow and one bright red.',
+      },
+      // source: MSV_RG. evidence: "Both jitneys stop between the Walt Disney World Railroad and the flagpole in Town Square"
+      {
+        type: 'spy',
+        id: 'msv-r3',
+        prompt: 'In Town Square, find the flagpole. The jitney stops between the train station and the flagpole.',
+        hint: 'The driver waits there for riders.',
+      },
+      // source: MSV_RG. evidence: "The firehouse is inside the park, to the right of City Hall in Town Square."
+      {
+        type: 'spy',
+        id: 'msv-r4',
+        prompt: 'Find the firehouse, Engine Co. 71, to the right of City Hall.',
+        hint: 'An antique fire engine sits inside when the firehouse is open.',
+      },
+
+      // ---- Photo spots ----
+      // evidence: "a breezy drive down Main Street, U.S.A. in a charming turn-of-the-century vehicle"
+      {
+        type: 'photo',
+        id: 'msv-photo1',
+        prompt: 'From the waiting spot, take a photo of a vintage vehicle rolling down Main Street.',
+        tip: 'Wait at the Town Square or Central Plaza pick-up point.',
+        source: MSV_DIS,
+      },
+      // evidence: "It is parked beside a sign reading "Omnibus to Cinderella Castle, One Way Only.""
+      {
+        type: 'photo',
+        id: 'msv-photo2',
+        prompt: 'While you wait, take a photo of the omnibus and its sign, if it’s there.',
+        tip: 'The omnibus is not always out, so it may take some luck.',
+        source: MSV_RG,
+      },
+
+      // ---- Trivia ----
+      // evidence: "Belgians, Clydesdales, and Percherons"
+      {
+        type: 'trivia',
+        id: 'msv-x1',
+        question: 'Which of these is a kind of draft horse that pulls the streetcars?',
+        choices: ['Percheron', 'Shetland pony', 'Mustang', 'Arabian'],
+        answer: 0,
+        explain: 'The streetcar horses are draft breeds such as Belgians, Clydesdales and Percherons.',
+        source: MSV,
+      },
+      // evidence: "The attraction "opened with the park on October 1, 1971,""
+      {
+        type: 'trivia',
+        id: 'msv-x2',
+        question: 'When did Main Street Vehicles open?',
+        choices: ['October 1, 1971', 'July 17, 1955', 'January 15, 1975', 'October 1, 1982'],
+        answer: 0,
+        explain: 'They opened with Magic Kingdom on October 1, 1971.',
+        source: MSV,
+      },
+      // evidence: "four streetcars (originally five)"
+      {
+        type: 'trivia',
+        id: 'msv-x3',
+        question: 'Where are the streetcars kept when they are not in use?',
+        choices: ['A car barn', 'The castle moat', 'City Hall', 'The firehouse'],
+        answer: 0,
+        explain: 'They are stored in a car barn at the end of a spur line off the Town Square loop.',
+        source: MSV,
+      },
+      // evidence: "counterclockwise directions around both the Town Square loop and Central Plaza loop"
+      {
+        type: 'trivia',
+        id: 'msv-x4',
+        question: 'Which way do the streetcars go around the Town Square and Central Plaza loops?',
+        choices: ['Counterclockwise', 'Clockwise', 'Back and forth', 'Figure eight'],
+        answer: 0,
+        explain: 'At Magic Kingdom they travel counterclockwise around both loops.',
+        source: MSV,
+      },
+      // evidence: "The reporter rode with Titan, a Percheron. A sign inside the trolley lists the horse's name and breed."
+      {
+        type: 'trivia',
+        id: 'msv-x5',
+        question: 'What does a sign inside the trolley tell you about the horse?',
+        choices: ['Its name and breed', 'Its age', 'Its favorite snack', 'Its birthday'],
+        answer: 0,
+        explain: 'A sign inside the trolley lists the horse’s name and breed.',
+        source: MSV_WDWNT,
+      },
+
+      // ---- True or false ----
+      // evidence: "During parade times, vehicles are not available."
+      {
+        type: 'truefalse',
+        id: 'msv-x6',
+        statement: 'The Main Street vehicles keep running during parades.',
+        answer: false,
+        explain: 'Fiction! They are not available during parade times.',
+        source: MSV_DIS,
+      },
+      // evidence: "The rides are free, with no extra or special ticket needed."
+      {
+        type: 'truefalse',
+        id: 'msv-x7',
+        statement: 'You need a special ticket to ride Main Street Vehicles.',
+        answer: false,
+        explain: 'Fiction! They are free, and no special ticket is needed.',
+        source: MSV_AE,
+      },
+
+      // ---- Guess ----
+      // evidence: "around 4,000 pounds (1,800 kg)" with a full load of 18 adults
+      {
+        type: 'guess',
+        id: 'msv-x8',
+        question: 'About how much does a horse-drawn streetcar weigh with 18 adults on board?',
+        answer: 4000,
+        min: 1000,
+        max: 8000,
+        step: 100,
+        unit: 'pounds',
+        tolerance: 500,
+        explain: 'About 4,000 pounds. Empty, it weighs around 1,900.',
+        source: MSV,
+      },
+
+      // ---- Ride games ----
+      { type: 'wyr', id: 'msv-r31', a: 'Ride the horse-drawn trolley', b: 'Ride the fire engine' },
+      { type: 'wyr', id: 'msv-r32', a: 'Ride up top on the omnibus', b: 'Ride the jitney' },
+      {
+        type: 'challenge',
+        id: 'msv-r33',
+        prompt: 'Make the sound of an old-fashioned car horn together as the jitney rolls up.',
+      },
+      {
+        type: 'emoji',
+        id: 'msv-x9',
+        emojis: '🐴 🚃 🎩',
+        hint: 'A horse-drawn ride down Main Street.',
+        choices: ['Horse-drawn trolley', 'Space Mountain', 'Monorail', 'Peter Pan’s Flight'],
         answer: 0,
       },
     ],
