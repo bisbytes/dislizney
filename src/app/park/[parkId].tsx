@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { RadarToggle } from '@/components/cards';
 import { LandBar } from '@/components/land-bar';
@@ -95,7 +96,7 @@ export default function PickYourRide() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}>
         <View style={styles.page}>
           <View style={styles.topBar}>
-            <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => router.back()}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => goBack('/')}>
               <Txt weight="bold" size={18}>
                 ← Shelf
               </Txt>

@@ -1,8 +1,9 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { StoryButton, Txt } from '@/components/ui';
 import { getPark } from '@/data/parks';
@@ -46,7 +47,7 @@ export default function Scoreboard() {
         contentContainerStyle={styles.scroll}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}>
         <View style={styles.page}>
-          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.back()} style={{ marginBottom: 8 }}>
+          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => goBack({ pathname: '/park/[parkId]', params: { parkId: park.id } })} style={{ marginBottom: 8 }}>
             <Txt weight="bold" size={18}>
               ← Back
             </Txt>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { DaySharePanel } from '@/components/day-share-panel';
 import { StoryButton, tap, Txt } from '@/components/ui';
@@ -64,7 +65,7 @@ export default function Journey() {
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: colors.paper }}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.page}>
-          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.back()} style={{ marginBottom: 8 }}>
+          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => goBack('/')} style={{ marginBottom: 8 }}>
             <Txt weight="bold" size={18}>
               ← Back
             </Txt>
