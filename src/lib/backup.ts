@@ -54,14 +54,14 @@ export async function exportJourney(keepsakes: Keepsake[]): Promise<string> {
     a.download = name;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 10_000);
-    return 'Backup downloaded! Keep the file somewhere safe, like iCloud Drive or Google Drive.';
+    return 'Keepsakes downloaded! Keep the file somewhere safe, like iCloud Drive or Google Drive.';
   }
   const file = new File(Paths.cache, name);
   file.write(json);
   await Sharing.shareAsync(file.uri, {
     mimeType: 'application/json',
     UTI: 'public.json',
-    dialogTitle: 'Save your journey backup',
+    dialogTitle: 'Save your keepsakes',
   });
   return 'Save it to Files, iCloud Drive or Google Drive so it’s there for good.';
 }

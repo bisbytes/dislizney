@@ -22,7 +22,7 @@ export default function Journey() {
     try {
       setBackupMsg(await exportJourney(keepsakes));
     } catch {
-      setBackupMsg('Something went wrong making the backup. Please try again.');
+      setBackupMsg('Something went wrong saving your keepsakes. Please try again.');
     }
   };
 
@@ -34,11 +34,11 @@ export default function Journey() {
       const added = importKeepsakes(list);
       setBackupMsg(
         added
-          ? `Welcome back! ${added} keepsake${added === 1 ? '' : 's'} restored. ✨`
+          ? `Welcome back! ${added} keepsake${added === 1 ? '' : 's'} added back. ✨`
           : 'Those keepsakes are already here.',
       );
     } catch {
-      setBackupMsg('That file isn’t a Once Upon a Line journey backup.');
+      setBackupMsg('That file doesn’t look like saved Once Upon a Line keepsakes.');
     }
   };
 
@@ -135,13 +135,13 @@ export default function Journey() {
               💾 Keep your journey forever
             </Txt>
             <Txt size={14} color={colors.inkSoft} style={{ textAlign: 'center' }}>
-              Your keepsakes live only on this {Platform.OS === 'web' ? 'browser' : 'phone'}. Save a backup file
-              somewhere you keep things, like iCloud Drive, Google Drive or an email to yourself, and restore it on any
-              phone or browser. This app never uploads anything.
+              Your keepsakes live only on this {Platform.OS === 'web' ? 'browser' : 'phone'}. Download your keepsakes
+              as a file and keep it somewhere you keep things, like iCloud Drive, Google Drive or an email to yourself,
+              then add them back on any phone or browser. This app never uploads anything.
             </Txt>
             <View style={styles.foreverButtons}>
-              {keepsakes.length > 0 && <StoryButton small label="💾 Back up my journey" onPress={backup} />}
-              <StoryButton small label="📂 Restore a backup" color={colors.white} onPress={restore} />
+              {keepsakes.length > 0 && <StoryButton small label="💾 Download my keepsakes" onPress={backup} />}
+              <StoryButton small label="📂 Add keepsakes back" color={colors.white} onPress={restore} />
             </View>
             {!!backupMsg && (
               <Txt weight="medium" size={14} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
