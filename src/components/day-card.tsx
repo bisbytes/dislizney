@@ -4,7 +4,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
-import { waitedMinutes, type Keepsake } from '@/lib/journey';
+import { type Keepsake } from '@/lib/journey';
+import { daySummaryChips } from '@/lib/play-summary';
 import { colors } from '@/theme';
 import { SHARE_CARD_WIDTH, SHARE_IMAGE } from '@/components/share-card';
 
@@ -12,14 +13,12 @@ import { SHARE_CARD_WIDTH, SHARE_IMAGE } from '@/components/share-card';
 export const DAY_MAX_RIDES = 5;
 export const DAY_MAX_PHOTOS = 4;
 
-/** A picture of one whole day: rides, time in line, stars and (if wanted) the guest's own photos. */
+/** A picture of one whole day: rides and what was played and (if wanted) the guest's own photos. */
 export function DayCard({ list, includePhotos, ref }: { list: Keepsake[]; includePhotos: boolean; ref?: Ref<View> }) {
   const rides = list.map((k) => ({ k, r: getAttraction(k.attractionId) })).filter((x) => x.r);
   const photos = includePhotos ? list.flatMap((k) => k.photos ?? []).slice(0, DAY_MAX_PHOTOS) : [];
   const parks = [...new Set(rides.map((x) => x.r!.park.name))].join(' and ');
   const date = new Date(list[0].date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
-  const minutes = list.reduce((n, k) => n + waitedMinutes(k), 0);
-  const stars = list.reduce((n, k) => n + k.stars, 0);
 
   return (
     <View ref={ref} collapsable={false} style={styles.card}>
@@ -50,7 +49,7 @@ export function DayCard({ list, includePhotos, ref }: { list: Keepsake[]; includ
       <View style={{ gap: 3, alignSelf: 'stretch' }}>
         {rides.slice(0, DAY_MAX_RIDES).map(({ k, r }) => (
           <Txt key={k.id} weight="medium" size={14} color={colors.white} numberOfLines={1}>
-            {r!.attraction.emoji} {r!.attraction.name} · {waitedMinutes(k)} min
+            {r!.attraction.emoji} {r!.attraction.name}{k.stars > 0 ? ` · ⭐ ${k.stars}` : ''}
           </Txt>
         ))}
         {rides.length > DAY_MAX_RIDES && (
@@ -61,9 +60,9 @@ export function DayCard({ list, includePhotos, ref }: { list: Keepsake[]; includ
       </View>
 
       <View style={styles.row}>
-        <Chip text={`🎢 ${rides.length} ride${rides.length === 1 ? '' : 's'}`} />
-        <Chip text={`⏱️ ${minutes} min`} />
-        {stars > 0 && <Chip text={`⭐ ${stars}`} />}
+        {daySummaryChips(list).map((c) => (
+          <Chip key={c} text={c} />
+        ))}
       </View>
       <View style={{ flex: 1 }} />
       <Txt size={11} color={colors.paper} style={[styles.center, { opacity: 0.8 }]}>

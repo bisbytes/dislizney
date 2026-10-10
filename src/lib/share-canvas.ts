@@ -1,5 +1,6 @@
 import { getAttraction } from '@/data/parks';
-import { waitedMinutes, type Keepsake } from '@/lib/journey';
+import { type Keepsake } from '@/lib/journey';
+import { daySummaryChips, summaryChips } from '@/lib/play-summary';
 import { colors } from '@/theme';
 
 const W = 320;
@@ -51,6 +52,40 @@ function text(ctx: CanvasRenderingContext2D, s: string, y: number, size: number,
  * Draws the share picture straight onto a canvas (web only). Quick and reliable on phones, where
  * taking a snapshot of the on-screen card can stall.
  */
+/** Lemon badges, centered and wrapped onto more rows when they don't fit. Returns the y below the last row. */
+function drawChips(ctx: CanvasRenderingContext2D, chips: string[], top: number, size: number) {
+  ctx.font = `700 ${size}px ${FONT}`;
+  const widths = chips.map((t) => ctx.measureText(t).width + 24);
+  const rows: number[][] = [[]];
+  let used = 0;
+  widths.forEach((w, i) => {
+    if (used && used + 6 + w > W - 32) {
+      rows.push([]);
+      used = 0;
+    }
+    rows.at(-1)!.push(i);
+    used += (used ? 6 : 0) + w;
+  });
+  let y = top;
+  for (const row of rows) {
+    const total = row.reduce((n, i) => n + widths[i], 0) + 6 * (row.length - 1);
+    let x = (W - total) / 2;
+    for (const i of row) {
+      ctx.fillStyle = colors.lemon;
+      roundRect(ctx, x, y, widths[i], 26, 13);
+      ctx.fill();
+      ctx.fillStyle = colors.ink;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `700 ${size}px ${FONT}`;
+      ctx.fillText(chips[i], x + widths[i] / 2, y + 14);
+      x += widths[i] + 6;
+    }
+    y += 32;
+  }
+  return y;
+}
+
 export async function drawShareImage(k: Keepsake, pixelWidth = 1080): Promise<string> {
   const r = getAttraction(k.attractionId);
   if (!r) throw new Error('no ride');
@@ -110,24 +145,9 @@ export async function drawShareImage(k: Keepsake, pixelWidth = 1080): Promise<st
     y += 156;
   }
 
-  const chips = [`⏱️ ${waitedMinutes(k)} min wait`];
-  if (k.stars > 0) chips.push(`⭐ ${k.stars}`);
+  const chips = summaryChips(k);
   if (k.rating) chips.push(k.rating);
-  ctx.font = `700 15px ${FONT}`;
-  const widths = chips.map((t) => ctx.measureText(t).width + 24);
-  let x = (W - (widths.reduce((a, b) => a + b, 0) + 6 * (chips.length - 1))) / 2;
-  chips.forEach((t, i) => {
-    ctx.fillStyle = colors.lemon;
-    roundRect(ctx, x, y, widths[i], 26, 13);
-    ctx.fill();
-    ctx.fillStyle = colors.ink;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `700 15px ${FONT}`;
-    ctx.fillText(t, x + widths[i] / 2, y + 14);
-    x += widths[i] + 6;
-  });
-  y += 42;
+  y = drawChips(ctx, chips, y, 15) + 16;
 
   if (team) {
     text(
@@ -165,8 +185,6 @@ export async function drawDayImage(list: Keepsake[], includePhotos: boolean, pix
   const photos = (await Promise.all(uris.map(loadImage))).filter((p): p is HTMLImageElement => !!p);
   const parks = [...new Set(rides.map((x) => x.r!.park.name))].join(' and ');
   const date = new Date(list[0].date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
-  const minutes = list.reduce((n, k) => n + waitedMinutes(k), 0);
-  const stars = list.reduce((n, k) => n + k.stars, 0);
 
   ctx.fillStyle = '#4b38d6';
   ctx.fillRect(0, 0, W, H);
@@ -207,7 +225,7 @@ export async function drawDayImage(list: Keepsake[], includePhotos: boolean, pix
   rides.slice(0, 5).forEach(({ k, r }, i) => {
     ctx.font = `500 14px ${FONT}`;
     ctx.fillStyle = colors.white;
-    ctx.fillText(`${r!.attraction.emoji} ${r!.attraction.name} · ${waitedMinutes(k)} min`, 16, y + i * 20, W - 32);
+    ctx.fillText(`${r!.attraction.emoji} ${r!.attraction.name}${k.stars > 0 ? ` · ⭐ ${k.stars}` : ''}`, 16, y + i * 20, W - 32);
   });
   y += Math.min(5, rides.length) * 20;
   if (rides.length > 5) {
@@ -217,21 +235,7 @@ export async function drawDayImage(list: Keepsake[], includePhotos: boolean, pix
   }
   y += 14;
 
-  const chips = [`🎢 ${rides.length} ride${rides.length === 1 ? '' : 's'}`, `⏱️ ${minutes} min`];
-  if (stars > 0) chips.push(`⭐ ${stars}`);
-  ctx.font = `700 14px ${FONT}`;
-  const widths = chips.map((t) => ctx.measureText(t).width + 24);
-  let cx = (W - (widths.reduce((a, b) => a + b, 0) + 6 * (chips.length - 1))) / 2;
-  chips.forEach((t, i) => {
-    ctx.fillStyle = colors.lemon;
-    roundRect(ctx, cx, y, widths[i], 26, 13);
-    ctx.fill();
-    ctx.fillStyle = colors.ink;
-    ctx.textAlign = 'center';
-    ctx.font = `700 14px ${FONT}`;
-    ctx.fillText(t, cx + widths[i] / 2, y + 14);
-    cx += widths[i] + 6;
-  });
+  drawChips(ctx, daySummaryChips(list), y, 14);
 
   ctx.globalAlpha = 0.8;
   text(ctx, 'Once Upon a Line · by Bis Bytes', H - 20, 11, colors.paper, 400);
