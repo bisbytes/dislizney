@@ -39,7 +39,7 @@ test('a day adds everything up', () => {
 test('the caption sentence reads naturally and has no minutes', () => {
   assert.equal(
     summarySentence({ stars: 4, quests: 9, played: { spotted: 3, games: 0, rather: 0 } }),
-    'I got 4 trivia questions right and spotted 3 hidden details while I waited ⭐',
+    'I got 4 trivia questions right and spotted 3 hidden details while I waited in line ⭐',
   );
   assert.equal(summarySentence({ stars: 0, quests: 0 }), '');
 });
