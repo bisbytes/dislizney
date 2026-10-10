@@ -52,7 +52,7 @@ npx expo export --platform web   # outputs to dist/
 The board is a tiny Cloudflare Worker in [`board/`](board/), separate from the app, so the website itself can stay a plain static site (GitHub Pages). It keeps only made-up names, emoji and points, plus the random ids of rides already shared so nothing counts twice, in a Durable Object that erases itself at 3am Orlando time. It keeps no accounts, real names, IP addresses or request logs.
 
 - **Deploy:** add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets and `.github/workflows/deploy-board.yml` deploys it on every push (or run `cd board && npm install && npx wrangler deploy`). Cloudflare's free plan covers it.
-- **Connect the app:** build with `EXPO_PUBLIC_BOARD_URL` set to the Worker's address (for example `https://dislizney-board.<you>.workers.dev`). Without it the board is switched off in the app.
+- **Connect the app:** build with `EXPO_PUBLIC_BOARD_URL` set to the Worker's address (for example `https://onceuponaline-board.<you>.workers.dev`). Without it the board is switched off in the app.
 - **Try it locally:** `cd board && npx wrangler dev`, then build the app with `EXPO_PUBLIC_BOARD_URL=http://localhost:8787`.
 
 ## Project layout

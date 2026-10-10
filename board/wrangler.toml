@@ -1,5 +1,5 @@
 # Today's public scoreboard. Deploy with: cd board && npm install && npx wrangler deploy
-name = "dislizney-board"
+name = "onceuponaline-board"
 main = "src/index.ts"
 compatibility_date = "2026-09-01"
 
