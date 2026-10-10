@@ -1,27 +1,16 @@
 import { Platform } from 'react-native';
 
-import { seasonFor } from './seasons';
+import { colors } from './palette';
+import { HALLOWEEN_LEMON, seasonFor } from './seasons';
 
-export const colors = {
-  paper: '#FFF8E7',
-  paperEdge: '#F1E3C2',
-  ink: '#2B1B3F',
-  inkSoft: '#6B5A7E',
-  lemon: '#FFFD54',
-  gold: '#F4B400',
-  ears: '#BDBDBD',
-  berry: '#E0457B',
-  sky: '#5AB4F0',
-  mint: '#3CC48A',
-  wrong: '#E4572E',
-  white: '#FFFFFF',
-};
+
+export { colors };
 
 /** Set once when the app opens: the current season, if it has a look of its own. */
 export const season = seasonFor(new Date());
 
 // Halloween: the storybook's lemon yellow turns pumpkin orange everywhere it's used.
-if (season === 'halloween') colors.lemon = '#FF9F45';
+if (season === 'halloween') colors.lemon = HALLOWEEN_LEMON;
 
 export const fonts = {
   regular: 'Fredoka_400Regular',
