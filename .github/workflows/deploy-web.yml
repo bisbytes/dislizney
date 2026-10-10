@@ -37,6 +37,9 @@ jobs:
 
       - run: npm ci
 
+      # The site only publishes if the tests pass.
+      - run: npm test
+
       - name: Find the site's base path
         id: pages
         if: github.event_name != 'pull_request' && vars.PUBLISH_SITE == 'true'
