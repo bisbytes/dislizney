@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { FactCard, WikiCard } from '@/components/cards';
 import { CrewPicker } from '@/components/crew-picker';
@@ -74,7 +75,7 @@ export default function RideIntro() {
             <LandScene landId={land.id} opacity={0.16} />
           </View>
           <View style={styles.page}>
-            <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => router.back()}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Back" hitSlop={12} onPress={() => goBack({ pathname: '/park/[parkId]', params: { parkId: ref.park.id } })}>
               <Txt weight="bold" size={18} color={colors.white}>
                 ← Rides
               </Txt>

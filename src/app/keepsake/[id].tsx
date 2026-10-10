@@ -6,6 +6,7 @@ import { Modal, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } f
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { LandScene } from '@/components/land-scene';
 import { StarBurst } from '@/components/star-burst';
@@ -128,7 +129,7 @@ export default function KeepsakePage() {
               accessibilityRole="button"
               hitSlop={12}
               onPress={() =>
-                fresh ? router.replace({ pathname: '/park/[parkId]', params: { parkId: ref.park.id } }) : router.back()
+                fresh ? router.replace({ pathname: '/park/[parkId]', params: { parkId: ref.park.id } }) : goBack('/journey')
               }>
               <Txt weight="bold" size={18}>
                 {fresh ? '← Next ride' : '← Back'}

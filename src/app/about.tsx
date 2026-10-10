@@ -1,8 +1,8 @@
-import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { goBack } from '@/lib/nav';
 import { BisFooter } from '@/components/bis';
 import { Card, StoryButton, Txt } from '@/components/ui';
 import { useProgress } from '@/lib/progress';
@@ -16,7 +16,7 @@ export default function About() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.paper }}>
       <ScrollView contentContainerStyle={{ alignItems: 'center', padding: 16, paddingBottom: 48 }}>
         <View style={styles.page}>
-          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => router.back()}>
+          <Pressable accessibilityRole="button" hitSlop={12} onPress={() => goBack('/')}>
             <Txt weight="bold" size={18}>
               ← Back
             </Txt>
