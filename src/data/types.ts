@@ -8,7 +8,7 @@
  * register it in `src/data/parks/index.ts`. See CONTRIBUTING.md.
  */
 
-import type { Season } from '@/theme/seasons';
+import type { Season } from '../theme/seasons';
 
 export type LatLng = { lat: number; lng: number };
 
