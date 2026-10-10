@@ -740,6 +740,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         explain: 'Fact! Since 2018 she’s joined the pirate crew.',
         source: PI,
       },
+      // source: PI_AE. evidence: "The black pirate flag, which flies just outside the entrance to the attraction, features a white skull and crossing swords."
+      {
+        type: 'spy',
+        id: 'pirates-r-spy13',
+        prompt: 'Look for the black pirate flag by the entrance. What is on it?',
+        hint: 'A white skull and crossing swords.',
+      },
+      // source: PI, PI_FAN. evidence: "guarded by the Caribbean watchtower Torre del Sol"; golden Spanish fort "Castillo Del Morro"
+      {
+        type: 'spy',
+        id: 'pirates-r-spy14',
+        prompt: 'Look up at the fort for its watchtower, called Torre del Sol.',
+        hint: 'It stands guard over the golden Spanish fort, Castillo del Morro.',
+      },
       // source: PI_AE. evidence: "The drawbridge at the attraction's entrance is non-operational." (AllEars guide; Disney World Pirates page)
       {
         type: 'spy',
@@ -774,6 +788,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'pirates-r-spy10',
         prompt: 'Find the two skeletons playing chess in a cell. Who do you think is winning?',
         hint: 'Nobody! Marc Davis set the board so the game never ends.',
+      },
+      // source: PI. evidence: "A talking skull on the wall gives a brief safety warning, then flashes its eyes"
+      {
+        type: 'spy',
+        id: 'pirates-r-spy15',
+        prompt: 'At the boats, look on the wall for a talking skull.',
+        hint: 'It gives a safety warning. It was brought back in 2017.',
       },
       // source: PI. evidence: "a pirate ship is visible in the distance from the loading area"
       {
@@ -818,6 +839,51 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'pirates-r-photo4',
         prompt: 'From the line, take a photo of a barred window. Who was locked up in there?',
         source: PI_TP,
+      },
+      // evidence: "The black pirate flag, which flies just outside the entrance to the attraction, features a white skull and crossing swords."
+      {
+        type: 'photo',
+        id: 'pirates-r-photo5',
+        prompt: 'From the line, snap the black pirate flag with the skull and crossed swords.',
+        tip: 'It flies just outside the entrance.',
+        source: PI_AE,
+      },
+      // evidence: "guarded by the Caribbean watchtower Torre del Sol"
+      {
+        type: 'photo',
+        id: 'pirates-r-photo6',
+        prompt: 'From the line, photograph the Torre del Sol watchtower above the fort.',
+        tip: 'Step back a bit so it fits in the picture.',
+        source: PI,
+      },
+      // evidence: "Two queues evoke different atmospheres: a 'Soldier' side and a 'Pirate' side"
+      {
+        type: 'trivia',
+        id: 'pirates-r-t1',
+        question: 'The fort has two queues with different moods. What are they named for?',
+        choices: ['Soldiers and pirates', 'Captains and cooks', 'Parrots and crocodiles', 'Kings and queens'],
+        answer: 0,
+        explain: 'A “Soldier” side and a “Pirate” side. Both meet at Pirate’s Cove.',
+        source: PI,
+      },
+      // evidence: "Pieces were accidentally moved during a minor refurbishment and restored after someone found Davis's original sketches."
+      {
+        type: 'truefalse',
+        id: 'pirates-r-t2',
+        statement: 'The skeletons’ chess pieces were once moved by accident and later put back using Marc Davis’s sketches.',
+        answer: true,
+        explain: 'Fact! The never-ending game was restored from his original sketches.',
+        source: PI_FAN,
+      },
+      // evidence: "The queue is guarded by the Caribbean watchtower Torre del Sol."
+      {
+        type: 'trivia',
+        id: 'pirates-r-t3',
+        question: 'What is the fort’s watchtower called?',
+        choices: ['Torre del Sol', 'Skull Tower', 'Fort Morro Light', 'Crow’s Peak'],
+        answer: 0,
+        explain: 'Torre del Sol, which guards the golden fort.',
+        source: PI_FAN,
       },
       {
         type: 'challenge',

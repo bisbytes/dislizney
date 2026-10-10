@@ -52,6 +52,7 @@ const LF = WIKI + 'Monsters,_Inc._Laugh_Floor';
 const LF_DISNEY = 'https://disneyworld.disney.go.com/attractions/magic-kingdom/monsters-inc-laugh-floor/';
 const LF_FAN = 'https://disney.fandom.com/wiki/Monsters,_Inc._Laugh_Floor';
 const LF_TP = 'https://touringplans.com/blog/five-things-to-know-about-monsters-inc-laugh-floor/';
+const LF_RG = 'https://www.resortsgal.com/blog/monsters-inc-laugh-floor/';
 const LF_DA = 'https://www.disneyavenue.com/2017/10/exploring-monsters-inc-laugh-floor.html';
 const TIMEKEEPER = WIKI + 'The_Timekeeper';
 
@@ -2493,6 +2494,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find the sign that explains how to send a joke to the monsters.',
         hint: 'Grown-ups can text a joke before the show. A few get read on stage!',
       },
+      // source: LF_RG. evidence: sign reading "Monstropolis Needs You!" "Text us Your Jokes Today"; "Monitors overhead display the following instructions" (updated April 2026)
+      {
+        type: 'spy',
+        id: 'laugh-floor-r-spy2',
+        prompt: 'Find the “Monstropolis Needs You!” sign and the screens with the joke-texting steps.',
+        hint: 'The overhead monitors list the steps for texting in a joke.',
+      },
+      // source: LF_RG. evidence: Roz sign "asking audience members to text in votes before the show" (updated April 2026)
+      {
+        type: 'spy',
+        id: 'laugh-floor-r-spy3',
+        prompt: 'Look for a sign with Roz on it asking for your help.',
+        hint: 'Roz asks the audience to text in votes before the show.',
+      },
       // source: LF_DISNEY. evidence: Guests can watch Mike Wazowski's video while they wait
       {
         type: 'spy',
@@ -2520,6 +2535,20 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'laugh-floor-r-spy1',
         prompt: 'Inside, look for screens that show the audience. Who might show up on them?',
         hint: 'They can show guests with silly captions. You might see yourself!',
+      },
+      // source: LF_RG. evidence: "You may notice that some seats have lights in front of them." (updated April 2026)
+      {
+        type: 'spy',
+        id: 'laugh-floor-r-spy4',
+        prompt: 'Once you sit down, look for little lights in front of some seats.',
+        hint: 'They light up when a guest is called on, so everyone can see them.',
+      },
+      // source: LF_RG, LF_TP. evidence: "fill the giant canister with enough laughter to open the exit doors"; Mike announces the canister full
+      {
+        type: 'spy',
+        id: 'laugh-floor-r-spy5',
+        prompt: 'Look for the giant laugh canister. The show is all about filling it up.',
+        hint: 'Laugh loudly! At the end, Mike checks whether it is full.',
       },
       // source: LF_TP. evidence: Roz is one of only two characters from the original movie in the show, the other being Mike. She makes a final joke that credits "That Guy."
       {
@@ -2551,6 +2580,22 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'From the line, photograph the sign that tells you how to send a joke to the monsters.',
         tip: 'A grown-up can text a joke before the show starts.',
         source: LF_DISNEY,
+      },
+      // evidence: sign reading "Monstropolis Needs You!" "Text us Your Jokes Today"
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo6',
+        prompt: 'From the line, take a photo of the “Monstropolis Needs You!” sign.',
+        tip: 'Try to fit the overhead screens in too.',
+        source: LF_RG,
+      },
+      // evidence: "glide above the queue Monsters, Inc. Laugh Floor as you head to the station to disembark."
+      {
+        type: 'photo',
+        id: 'laugh-floor-r-photo7',
+        prompt: 'From the line, snap a PeopleMover train gliding over the queue.',
+        tip: 'Look up and wait for a train to pass.',
+        source: PM_TP,
       },
 
       // ---- Trivia ----
@@ -2688,6 +2733,25 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         answer: 0,
         explain: 'Live actors voice digital puppets, just like Turtle Talk with Crush at Epcot.',
         source: LF_FAN,
+      },
+      // evidence: "The working title was 'Laugh Floor Comedy Club.' It became 'Monsters, Inc. Laugh Floor' two weeks before opening."
+      {
+        type: 'trivia',
+        id: 'laugh-floor-r-t1',
+        question: 'What was the show’s working title before it opened?',
+        choices: ['Laugh Floor Comedy Club', 'Monstropolis Live', 'Mike’s Joke Factory', 'Scream Floor'],
+        answer: 0,
+        explain: 'It became Monsters, Inc. Laugh Floor about two weeks before opening.',
+        source: LF_TP,
+      },
+      // evidence: "fill the giant canister with enough laughter to open the exit doors"
+      {
+        type: 'truefalse',
+        id: 'laugh-floor-r-t2',
+        statement: 'In the show’s story, the audience’s laughter has to fill a giant canister to open the exit doors.',
+        answer: true,
+        explain: 'Fact! So laugh loudly!',
+        source: LF_RG,
       },
       // evidence: "After guests entered the Theatre, Timekeeper (voiced by Robin Williams) came to life"
       {

@@ -1625,6 +1625,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
     ],
     quests: [
       // ---- Look around Grizzly Hall, in walk order ----
+      // source: CB_TP. evidence: "Each Frontierland building has a date, and Grizzly Hall's is 1898, shown at the peak of the building" (March 2025)
+      {
+        type: 'spy',
+        id: 'country-bears-s17',
+        prompt: 'Before you go in, look at the peak of the building for a year.',
+        hint: 'It says 1898. That is the year Grizzly Hall “opened” in the bears’ story.',
+      },
       // source: CB_NT. evidence: three bears, "Big Al is center, Zeke left, and Zeb right"
       {
         type: 'spy',
@@ -1638,6 +1645,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'country-bears-s2',
         prompt: 'Find the poster with reviews from critics. Read the funniest one out loud.',
         hint: 'Try “Don’t hibernate on this one! Go!” from the National Growl.',
+      },
+      // source: CB_TP, CB_IM. evidence: scratch marks on the floor "made by bear claws, naturally!" (March 2025); "Yes, the claw marks are still on the floor"
+      {
+        type: 'spy',
+        id: 'country-bears-s18',
+        prompt: 'Look down at the lobby floor for scratch marks.',
+        hint: 'They are claw marks, made by bears, naturally!',
       },
       // source: CB_NT. evidence: oval portraits "Mostly holdovers by Imagineer Marc Davis"
       {
@@ -1653,12 +1667,61 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         prompt: 'Find Ernest’s burnt fiddle in a display case.',
         hint: 'He played so hot at rehearsal that “fireproofing proved necessary.”',
       },
+      // source: CB_NT, CB_IM. evidence: case holds a Hungry Bear Restaurant napkin with Henry's handwritten notes and his lyric notebook; "Setlist development on a Hungry Bear Restaurant napkin"
+      {
+        type: 'spy',
+        id: 'country-bears-s19',
+        prompt: 'In the same case, find a napkin with a song list scribbled on it.',
+        hint: 'Henry wrote his setlist on a napkin from the Hungry Bear Restaurant.',
+      },
+      // source: CB_NT, CB_IM. evidence: "A wooden metronome set to 88 BPM, provided by Gomer"; "Wooden metronome used in the recording studio (Bees/min)"
+      {
+        type: 'spy',
+        id: 'country-bears-s20',
+        prompt: 'Find the wooden metronome. What is it counting?',
+        hint: 'Not beats per minute, but bees per minute! It was provided by Gomer.',
+      },
+      // source: CB_NT, CB_IM. evidence: vintage props case: "Ted's washboard, three jugs ... Fred's harmonica, Oscar's original teddy bear, and the top hat of Ursus H. Bear"
+      {
+        type: 'spy',
+        id: 'country-bears-s21',
+        prompt: 'Find a case of the bands’ early gear: a washboard, jugs and a top hat.',
+        hint: 'The top hat belonged to Ursus H. Bear, who founded Grizzly Hall.',
+      },
+      // source: CB_NT, CB_IM. evidence: "The Daily Bee" newspaper, headline "Venue Promises a 'Wild and Wooly' Time," opening in "Octobear 1898"
+      {
+        type: 'spy',
+        id: 'country-bears-s22',
+        prompt: 'Find the old newspaper from opening day. What is the month called?',
+        hint: 'Octobear! Another bear pun, and it says 1898 like the building.',
+      },
+      // source: CB_NT, CB_IM. evidence: "A red vest worn by Big Al on his farewell tour"; center patch "Big Al's 10th Farewell Tour" with an "11" added; "he'll never retire"
+      {
+        type: 'spy',
+        id: 'country-bears-s23',
+        prompt: 'Find Big Al’s red tour vest. Look closely at the center patch.',
+        hint: 'It says 10th Farewell Tour, but somebody added an 11. He never retires!',
+      },
+      // source: CB_NT, CB_IM. evidence: "'Les Paw' guitar belonging to Romeo McGrowl, plus his gold belt buckle with an 'R'"
+      {
+        type: 'spy',
+        id: 'country-bears-s24',
+        prompt: 'Find Romeo McGrowl’s guitar. What is its pun name?',
+        hint: 'It is a “Les Paw,” a pun on a famous guitar.',
+      },
       // source: CB_NT, CB_BM, CB_IM. evidence: "Beary Poppins" poster in the "Awards & Memorabilia" case; Trixie's book "I Bearly Remember" on display
       {
         type: 'spy',
         id: 'country-bears-s14',
         prompt: 'Find the poster called “Beary Poppins.”',
         hint: 'It sits near Trixie’s book, “I Bearly Remember.” The bears love a good pun.',
+      },
+      // source: CB_NT. evidence: awards case: "A golden statue of Teddi Barra in her floral swing"
+      {
+        type: 'spy',
+        id: 'country-bears-s25',
+        prompt: 'In the awards case, find the golden statue of a bear on a swing.',
+        hint: 'That is Teddi Barra, in her floral swing.',
       },
       // source: CB_IM. evidence: lobby cases hold "artifacts, magazines, awards, and…a book!"
       {
@@ -1673,6 +1736,13 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'country-bears-s16',
         prompt: 'Before the show, look at the wall for a moose, a buffalo and a deer.',
         hint: 'They are Melvin, Buff and Max. They banter with guests before the show!',
+      },
+      // source: CB_TP. evidence: Hidden Mickey "in the ornate frame of the bear portrait over the center stage" ("Take a close look at the ornate frame") (March 2025)
+      {
+        type: 'spy',
+        id: 'country-bears-s26',
+        prompt: 'In the theater, look at the ornate frame of the bear portrait over the center stage. Can you find a hidden Mickey?',
+        hint: 'It is tucked into the frame. Look closely before the show starts!',
       },
       // evidence: three bears, "Big Al is center, Zeke left, and Zeb right"
       {
@@ -1696,6 +1766,31 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         id: 'country-bears-photo3',
         prompt: 'From the lobby, snap Ernest’s burnt fiddle in its display case.',
         tip: 'Look for the label about fireproofing.',
+        source: CB_NT,
+      },
+
+      // evidence: "A red vest worn by Big Al on his farewell tour" in the World Tour case
+      {
+        type: 'photo',
+        id: 'country-bears-photo4',
+        prompt: 'From the lobby, photograph Big Al’s red farewell tour vest in its case.',
+        tip: 'Zoom in on the center patch with the added “11.”',
+        source: CB_NT,
+      },
+      // evidence: "A golden statue of Teddi Barra in her floral swing"
+      {
+        type: 'photo',
+        id: 'country-bears-photo5',
+        prompt: 'From the lobby, snap the golden statue of Teddi Barra on her swing.',
+        tip: 'It is in the awards case.',
+        source: CB_NT,
+      },
+      // evidence: "'Les Paw' guitar belonging to Romeo McGrowl"
+      {
+        type: 'photo',
+        id: 'country-bears-photo6',
+        prompt: 'From the lobby, take a photo of Romeo McGrowl’s “Les Paw” guitar.',
+        tip: 'Look in the world tour case.',
         source: CB_NT,
       },
 
@@ -1903,6 +1998,55 @@ export const extra: Record<string, { facts: Fact[]; quests: Quest[] }> = {
         hint: 'A big bear with a blue bow.',
         choices: ['Trixie', 'Teddi Barra', 'Bunny', 'Beulah'],
         answer: 0,
+      },
+      // evidence: newspaper "The Daily Bee" announcing Grizzly Hall's opening in "Octobear 1898"
+      {
+        type: 'trivia',
+        id: 'country-bears-y1',
+        question: 'In the lobby’s old newspaper, in which pun-filled month did Grizzly Hall open?',
+        choices: ['Octobear', 'Junebug', 'Marchmallow', 'Decembear'],
+        answer: 0,
+        explain: 'The Daily Bee says it opened in “Octobear 1898.”',
+        source: CB_NT,
+      },
+      // evidence: center patch reads "Big Al's 10th Farewell Tour" with an "11" added
+      {
+        type: 'truefalse',
+        id: 'country-bears-y2',
+        statement: 'Big Al’s farewell tour vest in the lobby has an extra “11” added to its “10th” patch.',
+        answer: true,
+        explain: 'Fact! He keeps saying farewell, but he never retires.',
+        source: CB_NT,
+      },
+      // evidence: "'Les Paw' guitar belonging to Romeo McGrowl"
+      {
+        type: 'trivia',
+        id: 'country-bears-y3',
+        question: 'What pun name is on Romeo McGrowl’s guitar in the lobby case?',
+        choices: ['Les Paw', 'Fender Bender', 'Big Claw', 'Bear Strat'],
+        answer: 0,
+        explain: 'It is a “Les Paw,” a play on a famous guitar brand.',
+        source: CB_NT,
+      },
+      // evidence: "I Bearly Remember: My Long Journey From the Foothills to the Footlights"
+      {
+        type: 'trivia',
+        id: 'country-bears-y4',
+        question: 'What is the title of Trixie’s book in the lobby?',
+        choices: ['I Bearly Remember', 'Honey and Me', 'Bear Necessities', 'Grizzly Gossip'],
+        answer: 0,
+        explain: '“I Bearly Remember: My Long Journey From the Foothills to the Footlights.”',
+        source: CB_IM,
+      },
+      // evidence: "Oscar's original teddy bear (modeled from Marc Davis sketches)"
+      {
+        type: 'trivia',
+        id: 'country-bears-y5',
+        question: 'Oscar’s original teddy bear in the lobby case is modeled from whose sketches?',
+        choices: ['Marc Davis', 'Walt Disney', 'Xavier Atencio', 'Al Bertino'],
+        answer: 0,
+        explain: 'Marc Davis sketched the original bears.',
+        source: CB_IM,
       },
     ],
   },
