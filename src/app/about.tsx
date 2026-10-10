@@ -64,7 +64,7 @@ export default function About() {
             <StoryButton
               small
               label="Start my storybook over"
-              color={colors.white}
+              color={colors.surface}
               onPress={reset}
               style={{ alignSelf: 'center' }}
             />

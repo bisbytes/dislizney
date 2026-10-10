@@ -346,11 +346,11 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingVertical: 2,
     paddingHorizontal: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
   },
   scores: { gap: 6, paddingRight: 8 },
   score: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 2,
     borderColor: colors.ink,
     borderRadius: 999,

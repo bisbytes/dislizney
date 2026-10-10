@@ -7,7 +7,7 @@ import type { GuessQuest, OrderQuest, PhotoQuest, Quest } from '@/data/types';
 import { pickPhoto, sharePhoto, takePhoto } from '@/lib/photos';
 import { useProgress } from '@/lib/progress';
 import { useSound } from '@/lib/sound';
-import { colors } from '@/theme';
+import { colors, isDark, shade } from '@/theme';
 import { StarBurst } from './star-burst';
 import { Card, StoryButton, tap, Txt } from './ui';
 
@@ -77,9 +77,9 @@ export function QuestCard({
   };
 
   return (
-    <Card color={locked ? '#EEE7D6' : kind.color} style={styles.card}>
+    <Card color={locked ? colors.surfaceDim : isDark ? shade(kind.color, 0.2) : kind.color} style={styles.card}>
       <View style={styles.header}>
-        <View style={[styles.step, { backgroundColor: finished ? colors.gold : colors.white, borderColor: accent }]}>
+        <View style={[styles.step, { backgroundColor: finished ? colors.gold : colors.surface, borderColor: accent }]}>
           <Txt weight="bold" size={15} color={colors.ink}>
             {finished ? '★' : step}
           </Txt>
@@ -260,7 +260,7 @@ function QuestBody({
                   setPicked(i);
                   finish(true, opt);
                 }}
-                style={[styles.choice, { backgroundColor: picked === i ? colors.mint : colors.white }]}>
+                style={[styles.choice, { backgroundColor: picked === i ? colors.mint : colors.surface }]}>
                 <Txt weight="medium" size={17} color={picked === i ? colors.white : colors.ink}>
                   {i === 0 ? '🅰️ ' : '🅱️ '}
                   {opt}
@@ -309,7 +309,7 @@ function Choices({
         {choices.map((choice, i) => {
           const isAnswer = i === answer;
           const isPicked = i === picked;
-          let bg: string = colors.white;
+          let bg: string = colors.surface;
           if (revealed && isAnswer) bg = colors.mint;
           else if (isPicked) bg = colors.wrong;
           return (
@@ -406,7 +406,7 @@ function OrderBody({ quest, finished, finish }: { quest: OrderQuest; finished: D
                         ? colors.wrong
                         : used
                           ? colors.paperEdge
-                          : colors.white,
+                          : colors.surface,
                 },
               ]}>
               <View style={styles.orderNum}>
@@ -576,7 +576,7 @@ function PhotoBody({
               textColor={colors.white}
               onPress={async () => setMsg(await sharePhoto(photo, shareCaption ?? '#OnceUponALine'))}
             />
-            <StoryButton small label="🔄 Retake" color={colors.white} onPress={() => snap('camera')} />
+            <StoryButton small label="🔄 Retake" color={colors.surface} onPress={() => snap('camera')} />
           </View>
         </View>
       ) : (
@@ -588,7 +588,7 @@ function PhotoBody({
             disabled={busy}
             onPress={() => snap('camera')}
           />
-          <StoryButton small label="🖼️ Pick one" color={colors.white} disabled={busy} onPress={() => snap('library')} />
+          <StoryButton small label="🖼️ Pick one" color={colors.surface} disabled={busy} onPress={() => snap('library')} />
         </View>
       )}
       {!photo && !finished && (
@@ -611,7 +611,7 @@ function PhotoBody({
 const styles = StyleSheet.create({
   polaroid: {
     marginTop: 12,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 2,
     borderColor: colors.ink,
     borderRadius: 6,
@@ -655,7 +655,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 2,
     borderColor: colors.ink,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -667,7 +667,7 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     borderWidth: 2,
     borderColor: colors.ink,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -141,7 +141,7 @@ export default function Journey() {
             </Txt>
             <View style={styles.foreverButtons}>
               {keepsakes.length > 0 && <StoryButton small label="💾 Download my keepsakes" onPress={backup} />}
-              <StoryButton small label="📂 Add keepsakes back" color={colors.white} onPress={restore} />
+              <StoryButton small label="📂 Add keepsakes back" color={colors.surface} onPress={restore} />
             </View>
             {!!backupMsg && (
               <Txt weight="medium" size={14} style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   resume: {
     marginTop: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 3,
     borderColor: colors.ink,
     borderRadius: 18,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   empty: {
     marginTop: 16,
     gap: 14,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 3,
     borderColor: colors.ink,
     borderRadius: 22,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   forever: {
     marginTop: 24,
     gap: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 3,
     borderColor: colors.ink,
     borderRadius: 22,
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 16 },
   polaroid: {
     width: '47%',
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 2,
     borderColor: colors.ink,
     borderRadius: 6,

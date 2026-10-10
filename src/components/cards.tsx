@@ -41,7 +41,7 @@ export function WikiCard({ title }: { title: string }) {
   if (state === 'error') return null;
 
   return (
-    <Card color={colors.white}>
+    <Card color={colors.surface}>
       <Txt weight="bold" size={14} color={colors.inkSoft} style={{ letterSpacing: 1 }}>
         🌐 FRESH FROM THE WEB
       </Txt>
@@ -79,7 +79,7 @@ export function RadarToggle() {
       <StoryButton
         small
         label={label}
-        color={status === 'on' ? colors.mint : colors.white}
+        color={status === 'on' ? colors.mint : colors.surface}
         onPress={() => (status === 'on' ? stop() : start())}
         accessibilityHint="Uses your location to pop up fun facts when you are near an attraction"
       />
@@ -119,7 +119,7 @@ export function RadarBanner() {
           <Txt size={14} numberOfLines={3}>
             {ping.fact}
           </Txt>
-          <Txt weight="medium" size={13} color={colors.berry}>
+          <Txt weight="medium" size={13} color={colors.link}>
             Tap to play its quests →
           </Txt>
         </View>

@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: 16,
     color: colors.ink,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     textAlignVertical: 'top',
   },
 });

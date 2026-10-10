@@ -44,7 +44,7 @@ export default function Cover() {
 
           <StoryButton
             label={`📖 My Journey${keepsakes.length ? ` · ${keepsakes.length} keepsake${keepsakes.length === 1 ? '' : 's'}` : ''}`}
-            color={colors.white}
+            color={colors.surface}
             onPress={() => router.push('/journey')}
             style={{ marginTop: 6 }}
           />
@@ -65,7 +65,7 @@ export default function Cover() {
                 }}>
                 {({ pressed }) => (
                   <Card
-                    color={park.comingSoon ? '#F5EFD9' : colors.white}
+                    color={park.comingSoon ? colors.surfaceDim : colors.surface}
                     style={[
                       styles.parkCard,
                       { opacity: park.comingSoon ? 0.7 : 1, transform: [{ translateY: pressed ? 3 : 0 }] },
@@ -79,7 +79,7 @@ export default function Cover() {
                         {park.tagline}
                       </Txt>
                     </View>
-                    <Txt weight="bold" size={14} color={park.comingSoon ? colors.inkSoft : colors.berry}>
+                    <Txt weight="bold" size={14} color={park.comingSoon ? colors.inkSoft : colors.link}>
                       {park.comingSoon ? 'SOON' : 'OPEN →'}
                     </Txt>
                   </Card>
@@ -91,7 +91,7 @@ export default function Cover() {
           <StoryButton
             small
             label={sound.enabled ? '🔊 Sounds on' : '🔇 Sounds off'}
-            color={colors.white}
+            color={colors.surface}
             onPress={sound.toggle}
             style={{ alignSelf: 'center', marginTop: 18 }}
           />

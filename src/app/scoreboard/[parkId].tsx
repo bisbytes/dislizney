@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   box: {
     marginTop: 16,
     gap: 12,
-    backgroundColor: colors.white,
+    backgroundColor: colors.surface,
     borderWidth: 3,
     borderColor: colors.ink,
     borderRadius: 22,

@@ -60,7 +60,7 @@ export function LandBar({
                 style={({ pressed }) => [
                   styles.chip,
                   {
-                    backgroundColor: isActive ? land.colors.ground : colors.white,
+                    backgroundColor: isActive ? land.colors.ground : colors.surface,
                     borderColor: land.colors.ground,
                     transform: [{ scale: pressed ? 0.95 : 1 }],
                   },
@@ -70,7 +70,7 @@ export function LandBar({
                   <Txt weight="bold" size={14} color={isActive ? colors.white : land.colors.ink} numberOfLines={1}>
                     {shortName(land.name)}
                   </Txt>
-                  <Txt size={11} color={isActive ? colors.paper : colors.inkSoft}>
+                  <Txt size={11} color={isActive ? colors.onGround : colors.inkSoft}>
                     {sub}
                   </Txt>
                 </View>

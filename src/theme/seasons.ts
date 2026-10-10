@@ -12,3 +12,6 @@ export const SEASON_SPARKLES: Record<Season | 'none', readonly string[]> = {
 
 /** Halloween turns the storybook's lemon yellow into this pumpkin orange. */
 export const HALLOWEEN_LEMON = '#FF9F45';
+
+/** The same pumpkin orange, deepened for dark mode. */
+export const HALLOWEEN_LEMON_DARK = '#8A4A12';

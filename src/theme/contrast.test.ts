@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { parks } from '@/data/parks';
-import { colors } from './palette.ts';
-import { HALLOWEEN_LEMON } from './seasons.ts';
+import { darkColors, lightColors as colors } from './palette.ts';
+import { HALLOWEEN_LEMON, HALLOWEEN_LEMON_DARK } from './seasons.ts';
 
 /** WCAG contrast ratio between two hex colors. */
 function ratio(a: string, b: string) {
@@ -39,4 +39,20 @@ test('light text is readable on every land color', () => {
     check(colors.white, land.colors.ground, `white on ${land.id}`);
     check(colors.paper, land.colors.ground, `paper on ${land.id}`);
   }
+});
+
+test('dark mode: light text is readable on the dark pages, cards and fills', () => {
+  const d = darkColors;
+  for (const [name, fg] of Object.entries({ ink: d.ink, inkSoft: d.inkSoft, link: d.link, white: d.white }))
+    for (const [bgName, bg] of Object.entries({ paper: d.paper, surface: d.surface, surfaceDim: d.surfaceDim }))
+      check(fg, bg, `dark ${name} on ${bgName}`);
+  for (const bg of ['lemon', 'gold', 'sky', 'mint'] as const) {
+    check(d.ink, d[bg], `dark ink on ${bg}`);
+    check(d.white, d[bg], `dark white on ${bg}`);
+  }
+  check(d.white, d.berry, 'dark white on berry');
+  check(d.onGround, d.berry, 'dark onGround on berry');
+  check(d.white, d.wrong, 'dark white on wrong');
+  check(d.white, HALLOWEEN_LEMON_DARK, 'dark white on Halloween orange');
+  check(d.ink, HALLOWEEN_LEMON_DARK, 'dark ink on Halloween orange');
 });
