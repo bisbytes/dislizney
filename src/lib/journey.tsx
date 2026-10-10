@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { getAttraction } from '@/data/parks';
 import { keepBrowserData } from '@/lib/backup';
 import { deletePhotos } from '@/lib/photos';
+import { countPlayed, summarySentence, type Played } from '@/lib/play-summary';
 
 /** Someone playing in team mode. Just a nickname and an emoji, kept on this device only. */
 export type Player = { id: string; name: string; emoji: string };
@@ -44,6 +45,8 @@ export type Keepsake = {
   actualMinutes?: number;
   stars: number;
   quests: number;
+  /** What else was played in line (counts only), for the share picture. */
+  played?: Played;
   picks: string[];
   fact: string;
   /** Photos taken at photo spots in the line, in the order they were taken. */
@@ -139,6 +142,7 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       minutesInLine: Math.max(1, Math.round((Date.now() - session.startedAt) / 60000)),
       stars: Object.values(session.done).filter((d) => d.star).length,
       quests: Object.keys(session.done).length,
+      played: countPlayed(session.done, ref?.attraction.quests ?? []),
       picks: session.picks.slice(0, 3),
       photos: Object.values(session.photos ?? {}),
       team: session.players
@@ -264,7 +268,6 @@ export function keepsakeCaption(k: Keepsake) {
   const park = ref?.park.name ?? 'Walt Disney World';
   const team = k.team && k.team.length > 1 ? k.team : undefined;
   const we = team ? 'We' : 'I';
-  const mins = (n: number) => `${n} minute${n === 1 ? '' : 's'}`;
 
   const opener =
     {
@@ -275,12 +278,6 @@ export function keepsakeCaption(k: Keepsake) {
     }[k.rating ?? ''] ??
     pickFor(k.id, [`Just rode ${ride}! ${emoji}`, `${ride}: done! ${emoji}`, `${we} just got off ${ride}! ${emoji}`]);
 
-  const waited = waitedMinutes(k);
-  const wait =
-    k.actualMinutes !== undefined && k.actualMinutes !== k.waitMinutes
-      ? `The sign said ${mins(k.waitMinutes)}, ${team ? 'we' : 'I'} waited ${k.actualMinutes}.`
-      : `${mins(waited)} in line and it flew by.`;
-
   let fun = '';
   if (team) {
     const [first, second] = team;
@@ -288,11 +285,11 @@ export function keepsakeCaption(k: Keepsake) {
       first.score > second.score
         ? `${first.name} won our line trivia ${first.score} to ${second.score}! 👑`
         : `Our line trivia ended in a tie! 🤝`;
-  } else if (k.stars > 0) {
-    fun = `Got ${k.stars} trivia question${k.stars === 1 ? '' : 's'} right while ${team ? 'we' : 'I'} waited ⭐`;
+  } else {
+    fun = summarySentence(k);
   }
 
-  const story = [opener, wait, fun].filter(Boolean).join(' ');
+  const story = [opener, fun].filter(Boolean).join(' ');
   return `${story}${k.note ? `\n\n${k.note}` : ''}\n\n${rideTags(ride, park)}`;
 }
 

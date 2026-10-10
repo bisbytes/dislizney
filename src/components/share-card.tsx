@@ -5,7 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import { LandScene } from '@/components/land-scene';
 import { Txt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
-import { waitedMinutes, type Keepsake } from '@/lib/journey';
+import { type Keepsake } from '@/lib/journey';
+import { summaryChips } from '@/lib/play-summary';
 import { colors } from '@/theme';
 
 /** Width of the card on screen. It's captured at 1080 × 1350, the portrait size social apps like best. */
@@ -57,8 +58,9 @@ export function ShareCard({ k, ref }: { k: Keepsake; ref?: Ref<View> }) {
       )}
 
       <View style={styles.chips}>
-        <Chip text={`⏱️ ${waitedMinutes(k)} min wait`} />
-        {k.stars > 0 && <Chip text={`⭐ ${k.stars}`} />}
+        {summaryChips(k).map((c) => (
+          <Chip key={c} text={c} />
+        ))}
         {k.rating && <Chip text={k.rating} />}
       </View>
       {team && (
