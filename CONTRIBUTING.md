@@ -68,3 +68,7 @@ npx tsc --noEmit    # typecheck before opening a pull request
 ```
 
 This project uses Expo (SDK 57) and Expo Router. Install native packages with `npx expo install <package>` so versions match the SDK.
+
+## License for contributions
+
+By opening a pull request you agree that your contribution is licensed under the [GNU AGPL v3.0 or later](LICENSE), the same as the rest of the project, and that BisBytes may also offer it under other license terms. Please don't contribute content you didn't write or don't have the right to share.

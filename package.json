@@ -57,6 +57,6 @@
     "build:web": "expo export --platform web"
   },
   "description": "Line-time storybook adventures for Walt Disney World",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "repository": "github:bisbytes/dislizney"
 }
