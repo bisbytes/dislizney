@@ -1,0 +1,27 @@
+# Type-checks the board Worker on pull requests, so a break is caught before it can
+# stop the board deploy after merging.
+name: Check board
+
+on:
+  pull_request:
+    paths:
+      - 'board/**'
+      - 'src/data/**'
+      - 'src/lib/board-names.ts'
+      - '.github/workflows/check-board.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+        working-directory: board
+      - run: npx tsc --noEmit
+        working-directory: board
