@@ -1,13 +1,16 @@
 import { Image } from 'expo-image';
-import type { Ref } from 'react';
+import type { ComponentProps, Ref } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { LandScene } from '@/components/land-scene';
-import { Txt } from '@/components/ui';
+import { Txt as BaseTxt } from '@/components/ui';
 import { getAttraction } from '@/data/parks';
 import { type Keepsake } from '@/lib/journey';
 import { summaryChips } from '@/lib/play-summary';
 import { lightColors as colors } from '@/theme';
+
+/** Share pictures are always light, so their writing stays dark even when the phone is in dark mode. */
+const Txt = (props: ComponentProps<typeof BaseTxt>) => <BaseTxt color={colors.ink} {...props} />;
 
 /** Width of the card on screen. It's captured at 1080 × 1350, the portrait size social apps like best. */
 export const SHARE_CARD_WIDTH = 320;
