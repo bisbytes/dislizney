@@ -8,6 +8,8 @@
  * register it in `src/data/parks/index.ts`. See CONTRIBUTING.md.
  */
 
+import type { Season } from '@/theme/seasons';
+
 export type LatLng = { lat: number; lng: number };
 
 /** A fact must always carry the URL it came from, so anyone can check it. */
@@ -32,6 +34,8 @@ export type TriviaQuest = {
 export type SpyQuest = {
   type: 'spy';
   id: string;
+  /** Only shown during this holiday season. Left out of the content minimums. */
+  season?: Season;
   prompt: string;
   hint?: string;
 };
@@ -104,6 +108,8 @@ export type EmojiQuest = {
 export type PhotoQuest = {
   type: 'photo';
   id: string;
+  /** Only shown during this holiday season. Left out of the content minimums. */
+  season?: Season;
   prompt: string;
   /** Where to look in the line. */
   tip?: string;

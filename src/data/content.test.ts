@@ -5,6 +5,17 @@ import { allAttractions } from '@/data/parks';
 import { categoryOf } from '@/lib/plan';
 
 const rides = allAttractions();
+/** Holiday items only show part of the year, so they don't count toward minimums. */
+const yearRound = (qs: { season?: string }[]) => qs.filter((q) => !q.season);
+
+test('seasonal items are known seasons, cite a source for photos, and quote evidence in the source file', () => {
+  for (const { attraction } of rides)
+    for (const q of attraction.quests as { season?: string; type: string; id: string; source?: string }[]) {
+      if (!q.season) continue;
+      assert.equal(q.season, 'halloween', q.id);
+      if (q.type === 'photo') assert.match(q.source ?? '', /^https:\/\//, q.id);
+    }
+});
 
 test('every quest id is unique across all parks', () => {
   const seen = new Set<string>();
@@ -29,7 +40,7 @@ test('trivia and photo items name their source; games and look-around items may 
 });
 
 test('every ride has enough of its own content', () => {
-  for (const { attraction } of rides) assert.ok(attraction.quests.length >= 10, `${attraction.id} has ${attraction.quests.length} items`);
+  for (const { attraction } of rides) assert.ok(yearRound(attraction.quests).length >= 10, `${attraction.id} has ${yearRound(attraction.quests).length} year-round items`);
 });
 
 test('every attraction has a unique id and a location', () => {

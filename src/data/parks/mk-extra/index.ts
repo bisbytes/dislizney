@@ -3,6 +3,7 @@ import * as adventureland from './adventureland';
 import * as fantasyland1 from './fantasyland-1';
 import * as fantasyland2 from './fantasyland-2';
 import * as mainFrontierLiberty from './main-frontier-liberty';
+import { seasonalQuests } from './main-street-halloween';
 import * as tomorrowland from './tomorrowland';
 
 type ExtraFile = { extra: Record<string, { facts: Fact[]; quests: Quest[] }>; drop?: string[] };
@@ -22,7 +23,11 @@ export function withExtras(park: Park): Park {
       attractions: land.attractions.map((a) => {
         const more = extras[a.id];
         const own = a.quests.filter((q) => !dropped.has(q.id));
-        return more ? { ...a, facts: [...a.facts, ...more.facts], quests: [...own, ...more.quests] } : { ...a, quests: own };
+        // Seasonal items come last; buildQueue hides them outside their season.
+        const seasonal = seasonalQuests[a.id] ?? [];
+        return more || seasonal.length
+          ? { ...a, facts: [...a.facts, ...(more?.facts ?? [])], quests: [...own, ...(more?.quests ?? []), ...seasonal] }
+          : { ...a, quests: own };
       }),
     })),
   };
