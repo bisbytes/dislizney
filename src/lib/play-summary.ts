@@ -47,7 +47,7 @@ export function daySummaryChips(list: Summarizable[]): string[] {
   return summaryChips(total);
 }
 
-/** A sentence for a post caption: "I got 4 trivia questions right and spotted 3 hidden details while I waited". */
+/** A sentence for a post caption: "I got 4 trivia questions right and spotted 3 hidden details while I waited in line". */
 export function summarySentence(k: Summarizable): string {
   const parts: string[] = [];
   if (k.stars > 0) parts.push(`got ${plural(k.stars, 'trivia question')} right`);
@@ -56,5 +56,5 @@ export function summarySentence(k: Summarizable): string {
   if (k.played?.games) parts.push(`played ${plural(k.played.games, 'game')}`);
   if (!parts.length) return '';
   const list = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : parts[0];
-  return `I ${list} while I waited ⭐`;
+  return `I ${list} while I waited in line ⭐`;
 }
