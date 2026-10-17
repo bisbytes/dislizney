@@ -60,6 +60,24 @@ export default function About() {
               a ride. It is never sent anywhere.
             </Txt>
           </Card>
+          <Card>
+            <Txt weight="bold" size={18}>
+              🔒 Your privacy
+            </Txt>
+            <Txt size={16}>
+              No accounts, no cookies, no ads, no tracking. Your stars, keepsakes, photos, crew names and settings are
+              saved only on this device. Clear the app or your browser data and they are gone.
+            </Txt>
+            <Txt size={16}>
+              Nothing leaves your device unless you choose to share a score to today's public board, which only shows
+              the made-up name you pick and is wiped every night. The app also sends an anonymous count when it opens
+              (just web, iOS or Android, with no id) so we know how many visits there are.
+            </Txt>
+            <Txt size={16}>
+              Like any website, the services the app talks to (GitHub Pages, Cloudflare, Queue-Times.com for wait
+              times and Wikipedia) see your IP address when they answer. We don't save it.
+            </Txt>
+          </Card>
           {totalStars > 0 && (
             <StoryButton
               small
